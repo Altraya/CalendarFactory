@@ -9,7 +9,7 @@ class ErrorOrSuccessView{
     public function alreadyConnected(){
     	$html="";
     	$html.='
-			<div class="alert alert-warning center">
+			<div class="alert alert-danger center">
 				<strong>Erreur :</strong> Vous êtes déja connecté !
 			</div>
     	';
@@ -19,7 +19,7 @@ class ErrorOrSuccessView{
     public function errorButtonNotClicked(){
     	$html="";
     	$html.='
-			<div class="alert alert-warning center">
+			<div class="alert alert-danger center">
 				<strong>Erreur :</strong> Vous devez valider le formulaire pour pouvoir vous connecter !
 			</div>
     	';
@@ -29,7 +29,7 @@ class ErrorOrSuccessView{
     public function redirection($time){
     	$html="";
     	$html.='
-			<div class="alert alert-info center">
+			<div class="alert alert-warning center">
 				<strong>Attention :</strong> Vous allez être redirigé dans '.$time.' secondes.
 			</div>
     	';
@@ -39,8 +39,28 @@ class ErrorOrSuccessView{
     public function errorNeedToCompleteForm(){
     	$html="";
     	$html.='
-			<div class="alert alert-warning center">
+			<div class="alert alert-danger center">
 				<strong>Erreur :</strong> Vous devez valider tous les champs du formulaire avant de pouvoir vous connecter !
+			</div>
+    	';
+    	echo($html);
+    }
+
+    public function errorUserDoesntExist(){
+    	$html="";
+    	$html.='
+			<div class="alert alert-danger center">
+				<strong>Erreur :</strong> Vous devez être inscrit pour pouvoir vous connecter !
+			</div>
+    	';
+    	echo($html);
+    }
+
+    public function successConnexion(){
+    	$html="";
+    	$html.='
+			<div class="alert alert-success center">
+				<strong>Félicitation :</strong> Vous vous êtes bien connecté !
 			</div>
     	';
     	echo($html);

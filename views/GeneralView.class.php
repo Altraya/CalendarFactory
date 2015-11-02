@@ -38,6 +38,7 @@ class GeneralView{
     public function navBar($pageTitle){
         $html = "";
         $html.='
+        <div id="wrap">
             <div class="container">
                 <div class="row">
                     <div class="col-md-12">
@@ -57,12 +58,10 @@ class GeneralView{
                                             <div class="bigNavTitle">
                                                 '.$pageTitle.'
                                             </div>
-                                            
                                         </div>
                                     </div>
 
                                     <div class="col-md-8">
-
                                         <div class="row">
                                             <div class="col-md-12">
 
@@ -74,7 +73,7 @@ class GeneralView{
                                                         <li><a href="account.php">Mon compte</a></li>
                                                         <li><a href="admin.php">Admin</a></li>
                                                         <li><a href="connexion.php">Connexion</a></li>
-                                                        <li><a href="deconnexion.php">Deconnexion</a></li>                                                </li>
+                                                        <li><a href="deconnexion.php">Deconnexion</a></li>
                                                     </ul>
                                                 </div>
                                             </div>
@@ -239,31 +238,33 @@ class GeneralView{
     public function footer(){
         $html = "";
         $html.='
-        <footer>
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="panel panel-default">
-                        <div class="panel-body">
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <p class="center">&#169; CalendarFactory - 2015 - Karakayn</p>
-                                </div>
+            </div>
+        </div>
+        <footer id="footer">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="panel panel-default noMargin">
+                            <div class="panel-body">
+                                
+                                <p class="center">&#169; CalendarFactory - 2015 - Karakayn</p>
+                                    
                             </div>
                         </div>
-                    </div>
+                    </div>   
                 </div>
             </div>
         </footer>
 
-            <!-- jQuery (necessary for Bootstrap\'s JavaScript plugins) -->
-            <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-            <!-- Include all compiled plugins (below), or include individual files as needed -->
-            <script src="js/bootstrap.min.js"></script>
+        <!-- jQuery (necessary for Bootstrap\'s JavaScript plugins) -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+        <!-- Include all compiled plugins (below), or include individual files as needed -->
+        <script src="js/bootstrap.min.js"></script>
 
         ';
         echo($html);
 
-        /**
+        /*
                                     </div>
                         </div>
                     </div>

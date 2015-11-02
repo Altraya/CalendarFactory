@@ -1,5 +1,4 @@
 <?php
-	var_dump($_POST);
 
 	require_once("views/GeneralView.class.php");
 
@@ -22,12 +21,28 @@
 		}
 
 		//Check if the user have complete the form
-		if((isset($_POST['login']) && $_POST['login'] != '') && (isset($_POST['pwd']) && $_POST['pwd'] != ''))
-			$login = htmlspecialchars($_POST['login']);
+		if((isset($_POST['login']) && $_POST['login'] != '') && (isset($_POST['pwd']) && $_POST['pwd'] != '')){
+			//force login with uppercase
+			$login = htmlspecialchars(ucfirst($_POST['login']));
 			$pass = htmlspecialchars($_POST['pwd']);
 			$passCrypt = sha1($pass);
 
-			//@TODO SESSION VARIABLE + Check DB
+			require_once("private/config.php");
+			require_once("models/UserManager.class.php");
+			$userManager = new UserManager($db);
+
+			//verif if the user exist
+			if(!($currentUser = $userManager->verifConnexion($login, $passCrypt))){
+				$errorView->errorUserDoesntExist();
+				$errorView->redirection(5);
+				header('Refresh: 5; url=index.php');
+			}else{
+				$_SESSION['login'] = $login;
+				$errorView->successConnexion();
+				$errorView->redirection(5);
+				header('Refresh: 5; url=calendar.php');
+			}
+			
 		}else{
 			$errorView->errorNeedToCompleteForm();
 		}
