@@ -1,5 +1,5 @@
 <?php
-/* Vue général */
+/* General view */
 
 class GeneralView{
 
