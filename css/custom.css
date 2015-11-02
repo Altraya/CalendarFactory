@@ -1,0 +1,232 @@
+.floatLeft{
+	float: left;
+}
+
+.smallerTitle{
+	font-size: 20px;
+}
+
+.titreNav{
+	padding-left: 15px;
+	padding-right: 15px;
+	color: #9d9d9d;
+	font-size: 14px;
+	font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+	text-align: center;
+}
+
+.center{
+	text-align: center;
+}
+
+.commentNav{
+	padding-left: 15px;
+	padding-right: 15px;
+	color: #9d9d9d;
+	font-size: 12px;
+	font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+	text-align: center;
+}
+
+.plus{
+	background : url('../img/img-export/2015---TP-WEB---IHM-export_26.png') 0 center no-repeat;
+	padding-left: 32px;
+	background-size: contain;
+	height: 18px;
+	width: 20px;
+}
+
+.download{
+	background : url('../img/img-export/2015---TP-WEB---IHM-export_30.png') 0 center no-repeat;
+	padding-left: 32px;
+	background-size: contain;
+	height: 18px;
+	width: 20px;
+}
+
+.bigNavTitle{
+	color : white;
+	line-height: 50px;
+	font-size: 25px;
+}
+
+.paddingBotMini{
+	padding-bottom: 15px;
+}
+
+.black{
+	background-color: black;
+}
+
+.gras{
+	font-weight: bold;
+}
+
+.inverseColor{
+	color: black;
+}
+
+.inverseColor:hover{
+	color: white;
+}
+
+.inlineuh{
+	display: inline-block;
+}
+
+.moreTransparent{
+	opacity: 0.5;
+}
+
+body{
+	background-color: #f5f5f5;
+}
+
+.breadcrumb{
+	background-color: transparent;
+}
+
+/*.breadcrumb li:before{
+	border-left: 3px solid green;
+	content: "toto";
+}*/
+
+.breadcrumb > li + li:before{
+    content: "-> ";
+    padding: 0 5px;
+    color: #9d9d9d;
+}
+
+.breadcrumb>.active {
+    color : red;
+}
+
+.breadcrumb li a {
+	color: #9d9d9d;
+}
+
+.thumbnail{
+	background-color: transparent;
+	border: none;
+}
+
+.notRound{
+	border-radius: 0px !important;
+}
+
+.red{
+	color : red;
+}
+
+.floatRight{
+	float: right;
+}
+
+.noMargin{
+	margin : 0px;
+}
+
+.whiteFont{
+	color:white;
+}
+
+.forceMid{
+	line-height: 50px;
+}
+
+.noPadding{
+	padding: 0px;
+}
+
+.selectWidth {
+	width: 200px;
+}
+
+.miniMarginRight{
+	margin-right: 15px;
+}
+
+.miniMarginLeft{
+	margin-left: 15px;
+}
+
+.overBlue:hover{
+	color : blue;
+}
+
+.stop_it{
+	display:inline;
+}
+
+.hackDegueu{
+	height: 40px;
+    margin-top: -20px;
+}
+
+.smallMarginLeft{
+	margin-left: 15px;
+}
+
+.verySmallPaddingBot{
+	padding-bottom: 5px;
+}
+
+.block{
+	display: block;
+}
+
+.smallMarginBot{
+	margin-bottom: 10px;
+}
+
+.hineritHeight{
+	height: 100%;
+}
+
+.customHeight{
+	height: 50px;
+}
+
+.fuckYEAH{
+	width: 20px;
+	margin-top: 10px;
+	margin-bottom: 0px;
+}
+
+.fuckYEAHdeux{
+	width: 20px;
+	margin-top: 10px;
+	margin-bottom: -20px;
+}
+
+.titleFooter{
+	color: red;
+	font-size: 13px;
+}
+
+.center{
+	text-align: center;
+}
+
+.list-group-item.active, .list-group-item.active:focus, .list-group-item.active:hover{
+	background-color : black;
+	border-color : black;
+}
+.list-group-item-text{
+	color: #9d9d9d;
+	padding-bottom: 5px;
+}
+
+.list-group-item-text.active{
+    padding: 0 10px;
+    color: black;
+    padding-bottom: 5px;
+}
+
+.list-group-item-text.active:before{
+	content: "> ";
+}
+
+.list-group-item-heading {
+    font-size: 15px;
+}
