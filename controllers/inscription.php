@@ -4,8 +4,7 @@
 
 	$viewG = new GeneralView();
 
-	$viewG->header("CalendarFactory");
-	$viewG->navBar("Mes agendas");
-	$viewG->body();
+	$viewG->header("Inscription");
+	$viewG->inscriptionPage();
 	$viewG->footer();
 ?>

@@ -42,7 +42,7 @@ class GeneralView{
             <div class="container">
                 <div class="row">
                     <div class="col-md-12">
-                        <nav class="navbar navbar-inverse black notRound">
+                        <nav class="navbar navbar-inverse white_bg notRound">
                             <div class="container-fluid">
                                 <div class="row">
                                     <div class="col-md-4">
@@ -92,66 +92,6 @@ class GeneralView{
         echo($html);
     }
 
-    //return a string who contain a form using for connexion
-    public function formConnexion(){
-        $html="";
-        $html.='
-        <div class="col-md-12">       
-            <form role="connexionForm" action="connexion.php" method="post">
-                <div class="form-group">
-                    <label for="login">Login :</label>
-                    <input type="text" class="form-control" name="login" id="login" placeholder="Le pseudo renseigné à votre inscription">
-                </div>
-                <div class="form-group">
-                    <label for="pwd">Mot de passe :</label>
-                    <input type="password" class="form-control" name="pwd" id="pwd" placeholder="Le mot de passe renseigné à votre inscription">
-                </div>
-        </div>
-        <div class="col-md-6">  
-                <div class="checkbox center">
-                    <label><input name="remember" type="checkbox">Remember me</label>
-                </div>
-        </div>
-            <div class="col-md-6"> 
-                <div class="center"> 
-                    <button type="submit" name="connexion" class="btn btn-default">Connexion</button>
-                </div>
-            </form>
-        </div>
-        ';
-        return $html;
-    }
-
-    public function startingPage(){
-        $html = "";
-        $html.='
-                <div class="container">
-                    <div class="row center">
-                        <div class="col-md-12">
-                            <h1>Bienvenue sur CalendarFactory</h1>
-                            <p>Vous souhaitez gérer vos évenements ou rendez-vous ? <a href="inscription.php">Inscrivez-vous maintenant !</a></p> 
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-3">
-                        </div>
-                        <div class="col-md-6">
-                        
-                ';
-        $html.= $this->formConnexion();
-
-        $html.='
-                        </div>
-
-                        <div class="col-md-3">
-                        </div>
-                    </div>
-                </div>
-            </body>
-        </html>
-        ';
-        echo($html);
-    }
 
     public function body(){
         $html = "";
@@ -272,6 +212,165 @@ class GeneralView{
             </html>  
 
         */
+    }
+
+    /*
+        Could be on an other view file @TODO
+    */
+
+    //return a string who contain a form using for connexion
+    public function formConnexion(){
+        $html="";
+        $html.='
+        <div class="col-md-12">       
+            <form role="connexionForm" action="connexion.php" method="post">
+                <div class="form-group">
+                    <label for="login">Login :</label>
+                    <input type="text" class="form-control" name="login" id="login" placeholder="Le pseudo renseigné à votre inscription">
+                </div>
+                <div class="form-group">
+                    <label for="pwd">Mot de passe :</label>
+                    <input type="password" class="form-control" name="pwd" id="pwd" placeholder="Le mot de passe renseigné à votre inscription">
+                </div>
+        </div>
+        <div class="col-md-6">  
+                <div class="checkbox center">
+                    <label><input name="remember" type="checkbox">Remember me</label>
+                </div>
+        </div>
+            <div class="col-md-6"> 
+                <div class="center"> 
+                    <button type="submit" name="connexion" class="btn btn-default">Connexion</button>
+                </div>
+            </form>
+        </div>
+        ';
+        return $html;
+    }
+
+    public function startingPage(){
+        $html = "";
+        $html.='
+                <div class="container">
+                    <div class="row center">
+                        <div class="col-md-12">
+                            <h1>Bienvenue sur CalendarFactory</h1>
+                            <p>Vous souhaitez gérer vos évenements ou rendez-vous ? <a href="inscription.php">Inscrivez-vous maintenant !</a></p> 
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3">
+                        </div>
+                        <div class="col-md-6">
+                            <div class="row">
+                ';
+                                $html.= $this->formConnexion();
+        $html.='
+                            </div>
+                        </div>
+
+                        <div class="col-md-3">
+                        </div>
+                    </div>
+                </div>
+            </body>
+        </html>
+        ';
+        echo($html);
+    }
+
+    //return a string who contain a form using for registration
+    public function formInscription(){
+        $html="";
+        $html.='
+        <div class="col-md-12">       
+            <form role="inscriptionForm" action="inscription.php" method="post">
+                <div class="row">
+                    <div class="col-md-12"> 
+                        <div class="form-group">
+                            <label for="login">Login :</label>
+                            <input type="text" class="form-control" name="login" id="login" placeholder="Le pseudo que vous utiliserez pour vous connecter">
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label for="pwd">Mot de passe :</label>
+                            <input type="password" class="form-control" name="pwd" id="pwd" placeholder="Le mot de passe que vous utiliserez pour vous connecter">
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label for="pwdConfirm">Confirmation de mot de passe :</label>
+                            <input type="password" class="form-control" name="pwdConfirm" id="pwdConfirm" placeholder="Confirmation de mot de passe">
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6"> 
+                        <div class="form-group">
+                            <label for="nom">Nom :</label>
+                            <input type="text" class="form-control" name="nom" id="nom" placeholder="Votre nom">
+                        </div>
+                    </div>
+                    <div class="col-md-6"> 
+                        <div class="form-group">
+                            <label for="prenom">Prenom :</label>
+                            <input type="text" class="form-control" name="prenom" id="prenom" placeholder="Votre prenom">
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label for="adresse">Adresse :</label>
+                            <input type="text" class="form-control" name="adresse" id="adresse" placeholder="Votre adresse">
+                        </div>
+                    </div> 
+                </div>
+        
+                <div class="col-md-12"> 
+                    <div class="center"> 
+                        <button type="submit" name="inscription" class="btn btn-default">Inscription</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        ';
+        return $html;
+    }
+
+    public function inscriptionPage(){
+        $html = "";
+        $html.='
+                <div class="container">
+                    <div class="row center">
+                        <div class="col-md-12">
+                            <h1>Inscription</h1>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3">
+                        </div>
+                        <div class="col-md-6">
+                            <div class="row">
+                ';
+                                $html.= $this->formInscription();
+        $html.='
+                            </div>
+                        </div>
+
+                        <div class="col-md-3">
+                        </div>
+                    </div>
+                </div>
+            </body>
+        </html>
+        ';
+        echo($html);
     }
 }
 ?>

@@ -1,10 +1,51 @@
+/**
+		Current operation
+
+*/
+
 .floatLeft{
 	float: left;
 }
 
-.smallerTitle{
-	font-size: 20px;
+.floatRight{
+	float: right;
 }
+
+.noPadding{
+	padding: 0px;
+}
+
+.noMargin{
+	margin : 0px;
+}
+
+.inlineuh{
+	display: inline-block;
+}
+
+.paddingBotMini{
+	padding-bottom: 15px;
+}
+
+.forceMid{
+	line-height: 50px;
+}
+
+.miniMarginRight{
+	margin-right: 15px;
+}
+
+.miniMarginLeft{
+	margin-left: 15px;
+}
+
+.center{
+	text-align: center;
+}
+
+/**
+		Custom title
+*/
 
 .titreNav{
 	padding-left: 15px;
@@ -12,10 +53,6 @@
 	color: #9d9d9d;
 	font-size: 14px;
 	font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
-	text-align: center;
-}
-
-.center{
 	text-align: center;
 }
 
@@ -29,114 +66,50 @@
 }
 
 .bigNavTitle{
-	color : white;
+	color : #9d9d9d;
 	line-height: 50px;
 	font-size: 25px;
 }
 
-.paddingBotMini{
-	padding-bottom: 15px;
-}
-
-.black{
-	background-color: black;
-}
-
-.gras{
-	font-weight: bold;
-}
-
-.inverseColor{
-	color: black;
-}
-
-.inverseColor:hover{
+/**
+		Color
+*/
+.white_text{
 	color: white;
 }
 
-.inlineuh{
-	display: inline-block;
+.black_bg{
+	background-color: black;
+}
+
+.white_bg{
+	background-color: white;
+}
+
+/**
+		Other operation with text
+*/
+
+.gras{
+	font-weight: bold;
 }
 
 .moreTransparent{
 	opacity: 0.5;
 }
 
-.breadcrumb{
-	background-color: transparent;
-}
-
-/*.breadcrumb li:before{
-	border-left: 3px solid green;
-	content: "toto";
-}*/
-
-.breadcrumb > li + li:before{
-    content: "-> ";
-    padding: 0 5px;
-    color: #9d9d9d;
-}
-
-.breadcrumb>.active {
-    color : red;
-}
-
-.breadcrumb li a {
-	color: #9d9d9d;
-}
-
-.thumbnail{
-	background-color: transparent;
-	border: none;
-}
-
 .notRound{
 	border-radius: 0px !important;
 }
 
-.red{
-	color : red;
-}
+/**
+		Page container
+*/
 
-.floatRight{
-	float: right;
-}
-
-.noMargin{
-	margin : 0px;
-}
-
-.whiteFont{
-	color:white;
-}
-
-.forceMid{
-	line-height: 50px;
-}
-
-.noPadding{
-	padding: 0px;
-}
-
-.selectWidth {
-	width: 200px;
-}
-
-.miniMarginRight{
-	margin-right: 15px;
-}
-
-.miniMarginLeft{
-	margin-left: 15px;
-}
-
-.titleFooter{
-	color: red;
-	font-size: 13px;
-}
-
-.center{
-	text-align: center;
+html, body{
+	height: 100%;
+	margin: 0;
+	padding: 0;
 }
 
 body{
@@ -160,8 +133,13 @@ footer{
 	height: auto;
 }
 
-html, body{
-	height: 100%;
-	margin: 0;
-	padding: 0;
+/**
+		General
+*/
+.navbar-inverse .navbar-nav>li>a:hover{
+	color:black;
+}
+
+.navbar-inverse{
+	border-color: #ddd;
 }
