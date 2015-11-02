@@ -6,6 +6,24 @@ class ErrorOrSuccessView{
     public function __construct(){
     }
 
+/**
+*           Warning message 
+*/
+
+    public function redirection($time){
+        $html="";
+        $html.='
+            <div class="alert alert-warning center">
+                <strong>Attention :</strong> Vous allez être redirigé dans '.$time.' secondes.
+            </div>
+        ';
+        echo($html);
+    }
+
+/**
+*           Error message 
+*/
+
     public function alreadyConnected(){
     	$html="";
     	$html.='
@@ -21,16 +39,6 @@ class ErrorOrSuccessView{
     	$html.='
 			<div class="alert alert-danger center">
 				<strong>Erreur :</strong> Vous devez valider le formulaire pour pouvoir vous connecter !
-			</div>
-    	';
-    	echo($html);
-    }
-
-    public function redirection($time){
-    	$html="";
-    	$html.='
-			<div class="alert alert-warning center">
-				<strong>Attention :</strong> Vous allez être redirigé dans '.$time.' secondes.
 			</div>
     	';
     	echo($html);
@@ -56,14 +64,59 @@ class ErrorOrSuccessView{
     	echo($html);
     }
 
+    public function errorCompleteForm($type){
+        $html="";
+        $html.='
+            <div class="alert alert-danger center">
+                <strong>Erreur :</strong> Vous devez completer le champ '.$type.' pour continuer !
+            </div>
+        ';
+        echo($html);
+    }
+
+    public function errorMismatchPwd(){
+        $html="";
+        $html.='
+            <div class="alert alert-danger center">
+                <strong>Erreur :</strong> Vous devez entrer deux mots de passe identique !
+            </div>
+        ';
+        echo($html);
+    }
+
+    public function errorUserAlreadyExist(){
+        $html="";
+        $html.='
+            <div class="alert alert-danger center">
+                <strong>Erreur :</strong> ce nom d\'utilisateur existe déjà !
+            </div>
+        ';
+        echo($html);
+    }
+
+/**
+*           Success message 
+*/
+
+    public function successInscription(){
+        $html="";
+        $html.='
+            <div class="alert alert-success center">
+                <strong>Félicitation :</strong> Votre inscription à bien été validé. Vous pouvez dès à présent vous connecter !
+            </div>
+        ';
+        echo($html);
+    }
+
+
     public function successConnexion(){
-    	$html="";
-    	$html.='
-			<div class="alert alert-success center">
-				<strong>Félicitation :</strong> Vous vous êtes bien connecté !
-			</div>
-    	';
-    	echo($html);
+        $html="";
+        $html.='
+            <div class="alert alert-success center">
+                <strong>Félicitation :</strong> Vous vous êtes bien connecté !
+            </div>
+        ';
+        echo($html);
     }
 }
 ?>

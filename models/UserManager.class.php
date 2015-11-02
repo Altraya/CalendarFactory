@@ -58,7 +58,7 @@ class UserManager{
 		if(empty($users))
 			return false;
 		else
-			return $users;
+			return $users[0];
 	}
 
 }
