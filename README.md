@@ -1,0 +1,2 @@
+# CalendarFactory
+A diary manager
