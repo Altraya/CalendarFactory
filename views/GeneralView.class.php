@@ -22,6 +22,12 @@ class GeneralView{
                 <!-- Bootstrap -->
                 <link href="css/bootstrap.min.css" rel="stylesheet">
                 <link href="css/custom.css" rel="stylesheet">
+                <!-- FullCalendar -->
+                <link href="css/fullcalendar.css" rel="stylesheet" />
+                <link href="css/fullcalendar.print.css" rel="stylesheet" media="print" />
+
+                <!-- jQuery (necessary for Bootstrap\'s JavaScript plugins) -->
+                <script src="js/jquery.min.js"></script>
 
                 <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
                 <!-- WARNING: Respond.js doesn\'t work if you view the page via file:// -->
@@ -96,80 +102,45 @@ class GeneralView{
     public function body(){
         $html = "";
         $html.='
+        <div class="row">
+            <div class="col-md-3">
+                <div class="panel panel-default notRound noMargin">
+                    <div class="panel-body">
+                        <div class="row">
+                            Calendar?
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-                    
+            <div class="col-md-9">
+                <div class="row">
+                    <div class="panel panel-default notRound noMargin">
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <h1 class="smallerTitle red gras noMargin">VULPUTATE ADIPISCING</h1>
+                                </div>
 
-                                <div class="row">
-                                    <div class="col-md-3">
-                                        
-                                        <div class="panel panel-default notRound noMargin">
-                                            <div class="panel-body">
-                                                <div class="row">
-                                                    Calendar?
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-9">
-                                        <div class="row">
-                                            <div class="panel panel-default notRound noMargin">
-                                                <div class="panel-body">
-                                                    <div class="row">
-                                                        <div class="col-md-6">
-                                                            <h1 class="smallerTitle red gras noMargin">VULPUTATE ADIPISCING</h1>
-                                                        </div>
-
-                                                        <div class="col-md-6">
-                                                            <div class="floatRight">
-                                                                Hide Option
-                                                                <span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="row">
-                                            <div class="panel panel-default notRound">
-                                                <div class="panel-body">
-                                                    <div class="row">
-                                                        <div class="col-md-2">
-                                                            <span class="glyphicon glyphicon-th-large moreTransparent" aria-hidden="true"></span>
-                                                            <span class="glyphicon glyphicon-list red" aria-hidden="true"></span>
-                                                        </div>
-
-                                                        <div class="col-md-5">
-                                                            <div class="inlineuh floatRight">
-                                                                <div class="miniMarginRight gras inlineuh">Show</div>
-                                                                <select class="form-control notRound inlineuh selectWidth">
-                                                                    <option>12 per pages</option>
-                                                                    <option>24 per pages</option>
-                                                                </select>
-                                                            </div>
-
-                                                        </div>
-                                                        <div class="col-md-5">
-                                                            <div class="inlineuh floatRight">
-                                                                <div class="miniMarginRight gras inlineuh">Sort by</div>
-                                                                
-                                                                <select class="form-control notRound inlineuh selectWidth">
-                                                                    <option>position</option>
-                                                                    <option>others</option>
-                                                                </select>
-                                                                
-                                                                <span class="glyphicon glyphicon-arrow-up miniMarginLeft" aria-hidden="true"></span>
-                                                            </div>
-                                                            
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                             
+                                <div class="col-md-6">
+                                    <div class="floatRight">
+                                        Hide Option
+                                        <span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span>
                                     </div>
                                 </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+            ';
+        $html.= $this->calendar();
+        $html.='
+            </div>
+        </div>
           
         ';
         echo($html);
@@ -196,8 +167,9 @@ class GeneralView{
             </div>
         </footer>
 
-        <!-- jQuery (necessary for Bootstrap\'s JavaScript plugins) -->
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+        <!-- FullCalendar requirement -->
+        <script src="js/moment.min.js"></script>
+        <script src="js/fullcalendar.min.js"></script>
         <!-- Include all compiled plugins (below), or include individual files as needed -->
         <script src="js/bootstrap.min.js"></script>
 
@@ -217,6 +189,24 @@ class GeneralView{
     /*
         Could be on an other view file @TODO
     */
+
+    //return string to show calendar
+    public function calendar(){
+        $html="";
+        $html.='
+
+            <div id="calendar"></div>
+
+            <script src="js/myCalendar.js"></script>
+            <script>
+                $(document).ready(function() {
+                    generateCalendar();
+                });
+            </script>
+
+        ';
+        return $html;
+    }
 
     //return a string who contain a form using for connexion
     public function formConnexion(){

@@ -143,3 +143,10 @@ footer{
 .navbar-inverse{
 	border-color: #ddd;
 }
+
+/**
+		Others
+*/
+#calendar {
+	margin: 0 auto;
+}
