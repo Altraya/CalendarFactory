@@ -8,11 +8,17 @@
 
 	$errorView = new ErrorOrSuccessView();
 
-	$viewG->header("CalendarFactory");
-	$viewG->navBar("Mes agendas");
+	$viewG->header("Creation d'agenda ou d'activité");
+	$viewG->navBar("Creation d'agenda ou d'activité");
 
 	if(isset($_SESSION['login'])){
-		$viewG->body();
+		if(isset($_POST['createAgenda'])){
+
+		}elseif (isset($_POST['createActivity'])) {
+			# code...
+		}else{
+			$viewG->createAgendaOrActivity();
+		}
 	}else{
 		$errorView->errorNotConnected();
 	}

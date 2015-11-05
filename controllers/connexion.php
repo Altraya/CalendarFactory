@@ -16,8 +16,8 @@
 		//the user have not click on the connexion button => redirect and display error
 		if(!isset($_POST['connexion'])){
 			$errorView->errorButtonNotClicked();
-			$errorView->redirection(5);
-			header('Refresh: 5; url=index.php');
+			$errorView->redirection(1);
+			header('Refresh: 1; url=index.php');
 		}
 
 		//Check if the user have complete the form

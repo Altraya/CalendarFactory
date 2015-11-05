@@ -94,6 +94,16 @@ class ErrorOrSuccessView{
         echo($html);
     }
 
+    public function errorNotConnected(){
+        $html="";
+        $html.='
+            <div class="alert alert-danger center">
+                <strong>Erreur :</strong> vous devez être connecté pour voir cette page. <a href="index.php">Cliquez ici pour vous connectez.</a>
+            </div>
+        ';
+        echo($html);
+    }
+
 /**
 *           Success message 
 */
@@ -114,6 +124,16 @@ class ErrorOrSuccessView{
         $html.='
             <div class="alert alert-success center">
                 <strong>Félicitation :</strong> Vous vous êtes bien connecté !
+            </div>
+        ';
+        echo($html);
+    }
+
+    public function successDeconnexion(){
+        $html="";
+        $html.='
+            <div class="alert alert-success center">
+                <strong>Félicitation :</strong> Vous vous êtes bien deconnecté !
             </div>
         ';
         echo($html);

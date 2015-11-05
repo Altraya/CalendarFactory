@@ -22,9 +22,6 @@ class GeneralView{
                 <!-- Bootstrap -->
                 <link href="css/bootstrap.min.css" rel="stylesheet">
                 <link href="css/custom.css" rel="stylesheet">
-                <!-- FullCalendar -->
-                <link href="css/fullcalendar.css" rel="stylesheet" />
-                <link href="css/fullcalendar.print.css" rel="stylesheet" media="print" />
 
                 <!-- jQuery (necessary for Bootstrap\'s JavaScript plugins) -->
                 <script src="js/jquery.min.js"></script>
@@ -77,10 +74,16 @@ class GeneralView{
                                                     <ul class="nav navbar-nav navbar-right">
                                                         <li><a href="calendar.php">Mes agendas</a></li>
                                                         <li><a href="account.php">Mon compte</a></li>
+                                                        <li><a href="createCalendar.php">Creer un agenda / une activité</a></li>
                                                         <li><a href="admin.php">Admin</a></li>
-                                                        <li><a href="connexion.php">Connexion</a></li>
-                                                        <li><a href="deconnexion.php">Deconnexion</a></li>
-                                                    </ul>
+                                                    ';
+                                                    if(isset($_SESSION['login'])){
+                                                        $html.='<li><a href="deconnexion.php">Deconnexion</a></li>';
+                                                    }else{
+                                                        $html.='<li><a href="connexion.php">Connexion</a></li>';
+                                                    }
+
+                                        $html.='    </ul>
                                                 </div>
                                             </div>
                                         </div>
@@ -120,6 +123,7 @@ class GeneralView{
                             <div class="row">
                                 <div class="col-md-6">
                                     <h1 class="smallerTitle red gras noMargin">VULPUTATE ADIPISCING</h1>
+                                    <p>Ici recherche et tri pour les agendas</p>
                                 </div>
 
                                 <div class="col-md-6">
@@ -135,10 +139,13 @@ class GeneralView{
             </div>
         </div>
         <div class="row">
-            <div class="col-md-12">
+            <div class="col-md-8">
             ';
         $html.= $this->calendar();
         $html.='
+            </div>
+            <div class="col-md-4">
+                Ecrire ici une petite div pour pouvoir commenter / sabonner a lagenda selectionné / evaluer / liker et la description
             </div>
         </div>
           
@@ -167,9 +174,6 @@ class GeneralView{
             </div>
         </footer>
 
-        <!-- FullCalendar requirement -->
-        <script src="js/moment.min.js"></script>
-        <script src="js/fullcalendar.min.js"></script>
         <!-- Include all compiled plugins (below), or include individual files as needed -->
         <script src="js/bootstrap.min.js"></script>
 
@@ -361,6 +365,194 @@ class GeneralView{
         </html>
         ';
         echo($html);
+    }
+
+    public function createAgendaOrActivity(){
+        $html = "";
+        $html.='
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h1>Outils de création</h1>
+                            <div>
+
+                                <!-- Nav tabs -->
+                                <ul class="nav nav-tabs" role="tablist">
+                                    <li role="presentation" class="active"><a href="#createAgenda" aria-controls="createAgenda" role="tab" data-toggle="tab">Creation d\'agenda</a></li>      
+                                    <li role="presentation"><a href="#createActivity" aria-controls="createActivity" role="tab" data-toggle="tab">Creation d\'activité</a></li>
+                                </ul>
+                                
+
+                                <!-- Tab panes -->
+                                <div class="tab-content">
+                                    <div role="tabpanel" class="tab-pane active" id="createAgenda">
+                                        <div class="row">
+                                            <div class="col-md-2">
+                                            </div>
+
+                                            <div class="col-md-8">
+                                ';
+                                        $html.=$this->formCreateAgenda();
+                                $html.='
+                                            </div>
+                                            <div class="col-md-2">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div role="tabpanel" class="tab-pane" id="createActivity">
+                                        <div class="row">
+
+                                            <div class="col-md-12">
+                                ';
+                                        $html.=$this->formCreateActivity();
+                                $html.='
+                                            </div>
+                                            
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </body>
+        </html>
+        ';
+        echo($html);
+    }
+
+    public function formCreateAgenda(){
+        $html="";
+        $html.='
+        <div class="col-md-12">       
+
+        </div>
+        ';
+        return $html;
+    }
+
+    public function formCreateActivity(){
+        $html="";
+        $html.='
+        <div class="col-md-12">       
+            <form role="createActivityForm" action="createCalendar.php" method="post">
+                <div class="row">
+                    <div class="col-md-8">
+                        <div class="row">
+                            <div class="col-md-12"> 
+                                <div class="form-group">
+                                    <label for="nom">Nom :</label>
+                                    <input type="text" class="form-control" name="nom" id="nom" placeholder="Nom de votre activite">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <label for="description">Description :</label>
+                                <textarea class="form-control" rows="3" name="description" id="description" placeholder="Entrez la description de votre évenement"></textarea>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <label for="localisation">Localisation :</label>
+                                <input type="text" class="form-control" name="localisation" id="localisation" placeholder="Ex : Lyon / Centre équestre etc...">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <small>Entrez une date de début et une date de fin (ou une date de début et un nombre d\'occurence).<br/>
+                        Si vous ne renseignez pas d\'heure, l\'evenement prendra toute la journée.</small>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label for="dateDebut">Date de début :</label>
+                                <input type="date" class="form-control" name="dateDebut" id="dateDebut" placeholder="Date sous forme : jj/mm/aaaa">
+                            </div>
+                            <div class="col-md-6">
+                                <label for="dateFin">Date de fin :</label>
+                                <input type="date" class="form-control" name="dateFin" id="dateFin" placeholder="Date sous forme : jj/mm/aaaa">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label for="heureDebut">Heure de début :</label>
+                                <input type="time" class="form-control" name="heureDebut" id="heureDebut" placeholder="Heure sous forme : 20:57">
+                            </div>
+                            <div class="col-md-6">
+                                <label for="heureFin">Heure de fin :</label>
+                                <input type="time" class="form-control" name="heureFin" id="heureFin" placeholder="Heure sous forme : 20:57">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-8">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label for="type">Type :</label>
+                                <input type="text" class="form-control" name="type" id="type" placeholder="Type de votre activité">
+                            </div>
+                            <div class="col-md-6">
+                                <label for="priorite">Priorité :</label>
+                                <input type="text" class="form-control" name="priorite" id="priorite" placeholder="Ex : 3 (0 < 1 < 2)">
+                            </div>
+                        </div>
+
+                        <div class="row center">
+                            <div class="col-md-6">
+                                <label for="periodicite">Périodicité de votre evenement <br/>
+                                <small>(Pas défaut non périodique)</small></label>
+                                <select class="form-control" name="periodicite" id="periodicite">
+                                    <option>Pas périodique</option>
+                                    <option>Quotidien</option>
+                                    <option>Hebdomadaire</option>
+                                    <option>Trimestrielle</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="occurence">Nombre d\'occurence de votre evenement <br/>
+                                <small>(Laissez vide si evenement ponctuel)</small></label>
+                                <input type="text" class="form-control" name="occurence" id="occurence" placeholder="Ex : 2">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="row center">
+                            <div class="col-md-6">
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox" value="inscriptionPossible">
+                                        Inscription possible <br/>
+                                        <small>(tout le monde pourra s\'inscrire à votre evenement)</small>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox" value="eventPublic">
+                                        Evenement public <br/> 
+                                        <small>(tout le monde pourra voir votre evenement)</small>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12"> 
+                        <div class="center"> 
+                            <button type="submit" name="createActivity" class="btn btn-default">Créer l\'activité</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        ';
+        return $html;
     }
 }
 ?>
