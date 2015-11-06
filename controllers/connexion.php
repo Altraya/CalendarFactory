@@ -37,12 +37,12 @@
 				$errorView->redirection(5);
 				header('Refresh: 5; url=index.php');
 			}else{
+				$_SESSION['idUser'] = $currentUser->getIdUtilisateur();
 				$_SESSION['login'] = $login;
 				$errorView->successConnexion();
-				$errorView->redirection(5);
-				header('Refresh: 5; url=calendar.php');
+				$errorView->redirection(2);
+				header('Refresh: 2; url=calendar.php');
 			}
-			
 		}else{
 			$errorView->errorNeedToCompleteForm();
 		}

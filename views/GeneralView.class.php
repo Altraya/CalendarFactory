@@ -67,7 +67,6 @@ class GeneralView{
                                     <div class="col-md-8">
                                         <div class="row">
                                             <div class="col-md-12">
-
                                                 <!-- Collect the nav links, forms, and other content for toggling -->
                                                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 
@@ -82,14 +81,11 @@ class GeneralView{
                                                     }else{
                                                         $html.='<li><a href="connexion.php">Connexion</a></li>';
                                                     }
-
                                         $html.='    </ul>
                                                 </div>
                                             </div>
                                         </div>
-
                                     </div>
-                                    
                                 </div><!-- /.navbar-collapse -->
                                 
                             </div><!-- /.container-fluid -->
@@ -141,7 +137,7 @@ class GeneralView{
         <div class="row">
             <div class="col-md-8">
             ';
-        $html.= $this->calendar();
+        //$html.= $this->calendar();
         $html.='
             </div>
             <div class="col-md-4">
@@ -426,7 +422,49 @@ class GeneralView{
         $html="";
         $html.='
         <div class="col-md-12">       
+            <form role="createAgendaForm" action="createCalendar.php" method="post">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label for="nomAgenda">Nom de l\'agenda:</label>
+                            <input type="text" class="form-control" name="nomAgenda" id="nomAgenda" placeholder="Ex : Mes cours">
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label for="prioriteAgenda">Priorité :</label>
+                            <input type="text" class="form-control" name="prioriteAgenda" id="prioriteAgenda" placeholder="Ex : 1 (si plus important qu\'un evenement 0)">
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label for="categorieAgenda">Catégorie :</label>
+                            <input type="text" class="form-control" name="categorieAgenda" id="categorieAgenda" placeholder="Ex : Sport">
+                        </div>
+                    </div>
+                </div>
+                <div class="row center">
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" value="estSuperposable">
+                            Superposition possible <br/>
+                            <small>Indiquez si vous pouvez superposer plusieurs activités dans le même créneau pour votre agenda.</small>
+                        </label>
+                    </div>
+                </div>
 
+                <div class="row center">
+                    <div class="col-md-12"> 
+                        <div class="center"> 
+                            <button type="submit" name="createAgenda" class="btn btn-default">Créer l\'agenda</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
         </div>
         ';
         return $html;

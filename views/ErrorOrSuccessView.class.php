@@ -104,6 +104,26 @@ class ErrorOrSuccessView{
         echo($html);
     }
 
+    public function errorAgendaCreateFailed(){
+        $html="";
+        $html.='
+            <div class="alert alert-danger center">
+                <strong>Erreur :</strong> Une erreur c\'est produite, votre agenda n\'a pas été crée.
+            </div>
+        ';
+        echo($html);
+    }
+
+    public function errorGeneral(){
+        $html="";
+        $html.='
+            <div class="alert alert-danger center">
+                <strong>Erreur :</strong> Une erreur c\'est produite.
+            </div>
+        ';
+        echo($html);
+    }
+
 /**
 *           Success message 
 */
@@ -112,7 +132,7 @@ class ErrorOrSuccessView{
         $html="";
         $html.='
             <div class="alert alert-success center">
-                <strong>Félicitation :</strong> Votre inscription à bien été validé. Vous pouvez dès à présent vous connecter !
+                <strong>Félicitations :</strong> Votre inscription à bien été validé. Vous pouvez dès à présent vous connecter !
             </div>
         ';
         echo($html);
@@ -123,7 +143,7 @@ class ErrorOrSuccessView{
         $html="";
         $html.='
             <div class="alert alert-success center">
-                <strong>Félicitation :</strong> Vous vous êtes bien connecté !
+                <strong>Félicitations :</strong> Vous vous êtes bien connecté !
             </div>
         ';
         echo($html);
@@ -133,7 +153,17 @@ class ErrorOrSuccessView{
         $html="";
         $html.='
             <div class="alert alert-success center">
-                <strong>Félicitation :</strong> Vous vous êtes bien deconnecté !
+                <strong>Félicitations :</strong> Vous vous êtes bien deconnecté !
+            </div>
+        ';
+        echo($html);
+    }
+
+    public function successAgendaCreated(){
+        $html="";
+        $html.='
+            <div class="alert alert-success center">
+                <strong>Félicitations :</strong> Votre agenda a bien été crée !
             </div>
         ';
         echo($html);

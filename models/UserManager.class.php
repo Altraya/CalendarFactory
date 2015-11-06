@@ -55,6 +55,7 @@ class UserManager{
 			
 		}
 		$req->closeCursor();
+
 		if(empty($users))
 			return false;
 		else

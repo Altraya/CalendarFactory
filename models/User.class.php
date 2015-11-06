@@ -6,7 +6,7 @@
 */
 class User{
 
-	private $_id;				//user's id
+	private $_idUtilisateur;	//user's id
 	private $_login;			//his login
 	private $_pwd;				//his password
 	private $_nom;				//his name
@@ -23,7 +23,7 @@ class User{
 		Accesseur of the class
 	****************************/
 
-	public function getId(){
+	public function getIdUtilisateur(){
 		return $this->_id;
 	}
 
@@ -49,7 +49,7 @@ class User{
 
 	/************************/
 
-	public function setId($id){
+	public function setIdUtilisateur($id){
 		$this->_id = $id;
 	}
 
