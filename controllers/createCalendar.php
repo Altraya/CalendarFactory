@@ -1,11 +1,11 @@
 <?php
 
+	require_once("private/config.php");
 	require_once("views/GeneralView.class.php");
+	require_once("views/ErrorOrSuccessView.class.php");
+	
 
 	$viewG = new GeneralView();
-
-	require_once("views/ErrorOrSuccessView.class.php");
-
 	$errorView = new ErrorOrSuccessView();
 
 	$viewG->header("Creation d'agenda ou d'activité");
@@ -19,7 +19,6 @@
 				$errorView->errorNeedToCompleteForm();
 			}else{
 				require_once("models/Agenda.class.php");
-				require_once("private/config.php");
 				require_once("models/AgendaManager.class.php");
 				$agendaManager = new AgendaManager($db);
 				//check is la valeur de isSuperposable
@@ -63,8 +62,40 @@
 					$errorView->errorAgendaCreateFailed();
 				}
 			}
+			//we want to create an activity / event
 		}elseif (isset($_POST['createActivity'])) {
-			# code...
+			$dataActivity["name"] = htmlspecialchars($_POST['nom']);
+
+			//we always need a title for us event
+			if($dataActivity["name"] == ""){
+				$errorView->errorNeedToCompleteForm();
+			}else{
+				$dataActivity["description"] = htmlspecialchars($_POST['description']);
+				$dataActivity["geoPos"] = htmlspecialchars($_POST['localisation']);
+				$dataActivity["startDate"] = htmlspecialchars($_POST['dateDebut']);
+				$dataActivity["endDate"] = htmlspecialchars($_POST['dateFin']);
+				$dataActivity["startHour"] = htmlspecialchars($_POST['heureDebut']);
+				$dataActivity["endHour"] = htmlspecialchars($_POST['heureFin']);
+				$dataActivity['type'] = htmlspecialchars($_POST['type']);
+				$dataActivity["periodicity"] = htmlspecialchars($_POST['periodicite']);
+				$dataActivity["nbOccur"] = htmlspecialchars($_POST['occurence']);
+
+				//in all case if we dont have a starting date > error
+				if($dataActivity["startDate"] == ""){
+					$errorView->errorNeedToCompleteForm();
+				}else{
+					//if we dont have a starting date + a ending date or a startDate + a periodicity or a number of occurence > error
+					if($dataActivity["endDate"] == "" || $dataActivity["periodicite"] == "" || $dataActivity["occurence"] == ""){
+						$errorView->errorNeedToCompleteForm();
+					}else{
+						//start to add in database us activity
+						require_once("models/Activity.class.php");
+						require_once("models/ActivityManager.class.php");
+						$activityManager = new ActivityManager($db);
+						$activity = new Activity($dataActivity);
+					}
+				}
+			}
 		}else{
 			$viewG->createAgendaOrActivity();
 		}
