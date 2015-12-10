@@ -363,7 +363,7 @@ class GeneralView{
         echo($html);
     }
 
-    public function createAgendaOrActivity(){
+    public function createAgendaOrActivity($dataIdAgendaOfUser){
         $html = "";
         $html.='
                 <div class="container">
@@ -400,7 +400,7 @@ class GeneralView{
 
                                             <div class="col-md-12">
                                 ';
-                                        $html.=$this->formCreateActivity();
+                                        $html.=$this->formCreateActivity($dataIdAgendaOfUser);
                                 $html.='
                                             </div>
                                             
@@ -470,7 +470,7 @@ class GeneralView{
         return $html;
     }
 
-    public function formCreateActivity(){
+    public function formCreateActivity($dataIdAgendaOfUser){
         $html="";
         $html.='
         <div class="col-md-12">       
@@ -554,6 +554,21 @@ class GeneralView{
                                 <label for="occurence">Nombre d\'occurence de votre evenement <br/>
                                 <small>(Laissez vide si evenement ponctuel)</small></label>
                                 <input type="text" class="form-control" name="occurence" id="occurence" placeholder="Ex : 2">
+                            </div>
+                        </div>
+
+                        <div class="row center">
+                            <div class="col-md-6">
+                                <label for="idAgenda">Agenda<br/>
+                                <select class="form-control" name="idAgenda" id="idAgenda">
+                            ';
+                                foreach ($dataIdAgendaOfUser as $dat => $data) {
+                                    $html.='<option>$data[\'id\'] - $data[\'nom\']</option>';
+                                }
+                        $html.='
+                                </select>
+                            </div>
+                            <div class="col-md-6">
                             </div>
                         </div>
                     </div>

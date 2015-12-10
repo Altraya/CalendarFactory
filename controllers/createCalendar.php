@@ -3,7 +3,10 @@
 	require_once("private/config.php");
 	require_once("views/GeneralView.class.php");
 	require_once("views/ErrorOrSuccessView.class.php");
-	
+	require_once("models/Agenda.class.php");
+	require_once("models/AgendaManager.class.php");
+
+	$agendaManager = new AgendaManager($db);
 
 	$viewG = new GeneralView();
 	$errorView = new ErrorOrSuccessView();
@@ -18,9 +21,7 @@
 			if($nomAgenda == '' && $priorite == ''){
 				$errorView->errorNeedToCompleteForm();
 			}else{
-				require_once("models/Agenda.class.php");
-				require_once("models/AgendaManager.class.php");
-				$agendaManager = new AgendaManager($db);
+
 				//check is la valeur de isSuperposable
 					$isSuperposable = 1;
 				$isSuperposable = 0;
@@ -97,7 +98,8 @@
 				}
 			}
 		}else{
-			$viewG->createAgendaOrActivity();
+			$dataIdAgenda[] = $agendaManager->getAllAgenda($_SESSION['idUser']);
+			$viewG->createAgendaOrActivity($dataIdAgenda);
 		}
 	}else{
 		$errorView->errorNotConnected();

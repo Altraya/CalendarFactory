@@ -58,7 +58,7 @@ class AgendaManager{
 	*/
 	public function addCategorie($nomCategorie){
 		$nom = htmlspecialchars($nomCategorie);
-				$sql = "INSERT INTO categorie (nomCategorie)
+		$sql = "INSERT INTO categorie (nomCategorie)
 			VALUES (:nomCategorie)";
 		$req = $this->_db->prepare($sql);                     
 		$req->bindParam(':nomCategorie', $nom, PDO::PARAM_STR);
@@ -90,6 +90,21 @@ class AgendaManager{
 		$req->closeCursor();
 		//check if insert has failed
 		if($nbTupleInsert < 1)
+			return false;
+		return true;
+	}
+
+	/**
+	*	Get all agenda for a specific user
+	*	@param userId : user's id
+	*	@return : false if the user don't have any agenda, or a table with id and name of the agenda.
+	*/
+	public function getAllAgenda($userId){
+
+		//@TODO a finir 
+		$nbTupleObt = $req->rowCount();
+
+		if($nbTupleObt < 1)
 			return false;
 		return true;
 	}
