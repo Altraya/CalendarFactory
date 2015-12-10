@@ -500,6 +500,7 @@ class GeneralView{
                     </div>
 
                     <div class="col-md-4">
+                        <label>Horaires :</label><br/>
                         <small>Entrez une date de début et une date de fin (ou une date de début et un nombre d\'occurence).<br/>
                         Si vous ne renseignez pas d\'heure, l\'evenement prendra toute la journée.</small>
                         <div class="row">
