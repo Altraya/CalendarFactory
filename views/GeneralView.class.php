@@ -558,17 +558,23 @@ class GeneralView{
                         </div>
 
                         <div class="row center">
-                            <div class="col-md-6">
-                                <label for="idAgenda">Agenda<br/>
+                            <div class="col-md-12">
+                                <label for="idAgenda">Agenda :<br/></label>
                                 <select class="form-control" name="idAgenda" id="idAgenda">
                             ';
-                                foreach ($dataIdAgendaOfUser as $dat => $data) {
-                                    $html.='<option>$data[\'id\'] - $data[\'nom\']</option>';
+                             
+                                foreach ($dataIdAgendaOfUser as $dat => $simpleArray) {
+                                    foreach ($simpleArray as $dat2 => $data) {
+                                        if($data['id'] == ""){
+                                            $html.='<option>Vous devez créer un agenda pour pouvoir ajouter une activité dedant</option>';
+                                        }else{
+                                            $html.='<option>'.$data['id'].' - '.$data['nom'].'</option>';
+                                        }
+                                    }
                                 }
+                                
                         $html.='
                                 </select>
-                            </div>
-                            <div class="col-md-6">
                             </div>
                         </div>
                     </div>
@@ -599,7 +605,15 @@ class GeneralView{
                 <div class="row">
                     <div class="col-md-12"> 
                         <div class="center"> 
-                            <button type="submit" name="createActivity" class="btn btn-default">Créer l\'activité</button>
+                            <div class="row">
+                                <div class="col-md-4">
+                                </div> 
+                                <div class="col-md-4">
+                                    <button type="submit" name="createActivity" class="btn btn-default marginTop allWidth">Créer l\'activité</button>
+                                </div>
+                                <div class="col-md-4">
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

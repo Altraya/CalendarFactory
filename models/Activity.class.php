@@ -107,7 +107,7 @@ class Activity{
 	}
 
 	public function setDescription($description){
-		$this->_idActivity = htmlspecialchars($idActivity);
+		$this->_description = htmlspecialchars($description);
 	}
 
 	public function setGeoPos($geoPos){
@@ -158,7 +158,7 @@ class Activity{
 		$this->_isPublic = htmlspecialchars($isPublic);
 	}
 
-	public function getIdAgenda($idAgenda){
+	public function setIdAgenda($idAgenda){
 		$this->_idAgenda = htmlspecialchars($idAgenda);
 	}
 

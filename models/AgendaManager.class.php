@@ -101,12 +101,22 @@ class AgendaManager{
 	*/
 	public function getAllAgenda($userId){
 
-		//@TODO a finir 
+		$infos = array();
+		$infosReturn = array();
+
+		$req = $this->_db->query('SELECT idAgenda, nom FROM agenda NATURAL JOIN utilisateur WHERE idUtilisateur = '.$userId.' ');
+		while ($donnees = $req->fetch(PDO::FETCH_ASSOC)){
+			$infos['id'] = $donnees['idAgenda'];
+			$infos['nom'] = $donnees['nom'];
+			$infosReturn[] = $infos;
+		}
+
 		$nbTupleObt = $req->rowCount();
+		$req->closeCursor();
 
 		if($nbTupleObt < 1)
 			return false;
-		return true;
+		return $infosReturn;
 	}
 
 }

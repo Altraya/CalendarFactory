@@ -39,6 +39,14 @@
 	margin-left: 15px;
 }
 
+.allWidth{
+	min-width: 100%;
+}
+
+.marginTop{
+	margin-top: 40px;
+}
+
 .center{
 	text-align: center;
 }

@@ -26,24 +26,41 @@ class ActivityManager{
 	*/
 	public function add(Activity $activite){
 
+		var_dump($activite);
+		$title = $activite->getTitle();
+		$descr = $activite->getDescription();
+		$pos = $activite->getGeoPos();
+		$type = $activite->getType();
+		$priority = $activite->getPriority();
+		$sd = $activite->getStartDate();
+		$ed = $activite->getEndDate();
+		$sh = $activite->getStartHour();
+		$eh = $activite->getEndHour();
+		$per = $activite->getPeriodic();
+		$nbOcc = $activite->getNbOccur();
+		$isInBreak = $activite->getIsInBreak();
+		$sub =  $activite->getIsPossibleToSubscribe();
+		$public = $activite->getIsPublic();
+		$idAgenda = $activite->getIdAgenda();
+
 		$sql = "INSERT INTO activite (titre, description, positionGeographique, type, priorite, dateDebut, dateFin, heureDebut, heureFin, periodicite, nbOccurence, estEnPause, estPossibleDeSinscrire, estPublic, idAgenda)
 			VALUES (:titre, :description, :positionGeographique, :type, :priorite, :dateDebut, :dateFin, :heureDebut, :heureFin, :periodicite, :nbOccurence, :estEnPause, :estPossibleDeSinscrire, :estPublic, :idAgenda)";
-		$req = $this->_db->prepare($sql);                     
-		$req->bindParam(':titre', $activite->getTitle(), PDO::PARAM_STR);
-		$req->bindParam(':description', $activite->getDescription(), PDO::PARAM_STR);
-		$req->bindParam(':positionGeographique', $activite->getGeoPos(), PDO::PARAM_STR);
-		$req->bindParam(':type', $activite->getType(), PDO::PARAM_STR);
-		$req->bindParam(':priorite', $activite->getPriority(), PDO::PARAM_STR);
-		$req->bindParam(':dateDebut', $activite->getStartDate(), PDO::PARAM_STR);
-		$req->bindParam(':dateFin', $activite->getEndDate(), PDO::PARAM_STR);
-		$req->bindParam(':heureDebut', $activite->getStartHour(), PDO::PARAM_STR);
-		$req->bindParam(':heureFin', $activite->getEndHour(), PDO::PARAM_STR);
-		$req->bindParam(':periodicite', $activite->getPeriodic(), PDO::PARAM_STR);
-		$req->bindParam(':nbOccurence', $activite->getNbOccur(), PDO::PARAM_STR);
-		$req->bindParam(':estEnPause', $activite->getIsInBreak(), PDO::PARAM_STR);
-		$req->bindParam(':estPossibleDeSinscrire', $activite->getIsPossibleToSubscribe(), PDO::PARAM_STR);
-		$req->bindParam(':estPublic', $activite->getIsPublic(), PDO::PARAM_STR);
-		$req->bindParam(':idAgenda', $activite->getIdAgenda(), PDO::PARAM_STR);
+		$req = $this->_db->prepare($sql);           
+		$req->bindParam(':titre', $title, PDO::PARAM_STR);
+		$req->bindParam(':description', $descr, PDO::PARAM_STR);
+		$req->bindParam(':positionGeographique', $pos, PDO::PARAM_STR);
+		$req->bindParam(':type', $type, PDO::PARAM_STR);
+		$req->bindParam(':priorite', $priority, PDO::PARAM_INT);
+		$req->bindParam(':dateDebut', $sd, PDO::PARAM_STR);
+		$req->bindParam(':dateFin', $ed, PDO::PARAM_STR);
+		$req->bindParam(':heureDebut', $sh, PDO::PARAM_STR);
+		$req->bindParam(':heureFin', $eh, PDO::PARAM_STR);
+		$req->bindParam(':periodicite', $per, PDO::PARAM_STR);
+		$req->bindParam(':nbOccurence', $nbOcc, PDO::PARAM_INT);
+		$req->bindParam(':estEnPause', $isInBreak, PDO::PARAM_INT);
+		$req->bindParam(':estPossibleDeSinscrire', $sub, PDO::PARAM_INT);
+		$req->bindParam(':estPublic', $public, PDO::PARAM_INT);
+		$req->bindParam(':idAgenda', $idAgenda, PDO::PARAM_INT);
 		$req->execute();
 		$nbTupleInsere = $req->rowCount();
 		$req->closeCursor();
