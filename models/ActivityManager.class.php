@@ -71,5 +71,75 @@ class ActivityManager{
 		return true;
 	}
 
+	//Delete  l'activité donnée en paramètre
+	public function remove(Activity $activite){
+		$sql = "DELETE FROM activite WHERE idActivite = :idActivite ";
+		$req = $this->_db->prepare($sql);
+		$req->bindParam(':idActivite', $activite->getIdActivity(), PDO::PARAM_INT);
+		$req->execute();
+		$req->closeCursor();
+	}
+
+	//récupérer une activité en fonction de son ID
+	public function getActivity($id){
+		$activity;
+		$req = $this->_db->query('SELECT titre, description, type, dateDebut, dateFin, positionGeographique 
+								FROM activity WHERE idActivite = \''.$id.'\' ');
+		while ($donnees = $req->fetch(PDO::FETCH_ASSOC)){
+			$activity = new Activity($donnees);
+		}
+		$req->closeCursor();
+		return $activity;
+
+	}
+
+	//Lister toutes les activités
+	public function getAllActivities(){
+		$activity = array();
+		$query = $this->_db->query('SELECT idActivite, titre, description, type, dateDebut, dateFin, positionGeographique 
+									FROM activity GROUP BY idAgenda');
+		while ($donnees = $query->fetch(PDO::FETCH_ASSOC)) {
+			$activity[] = new Activity($donnees);
+		}
+
+		$query->closeCursor();
+
+		return $activity;
+	}
+
+	//modifie une activité
+	public function modify(Activity $activity){
+		$sql = "UPDATE activite
+			SET titre = :titre,
+			description = :description,
+			positionGeographique = :positionGeographique,
+			type = :type,
+			priorite = :priorite,
+			dateDebut = :dateDebut,
+			dateFin = :dateFin,
+			periodicite = :periodicite,
+			nbOccurence = :nbOccurence,
+			estEnPause = :estEnPause,
+			estPublic = :estPublic
+			WHERE idActivite = :idActivite";
+		$req = $this->_db->prepare($sql);
+		$req->bindParam(':titre', $activity->getTitle(), PDO::PARAM_STR);
+		$req->bindParam(':description', $activity->getDescription(), PDO::PARAM_STR);
+		$req->bindParam(':positionGeographique', $activity->getGeoPos(), PDO::PARAM_STR);
+		$req->bindParam(':type', $activity->getType(), PDO::PARAM_STR);
+		$req->bindParam(':priorite', $activity->getPriority(), PDO::PARAM_STR);
+		$req->bindParam(':dateDebut', $activity->getStartDate(), PDO::PARAM_STR);
+		$req->bindParam(':dateFin', $activity->getEndDate(), PDO::PARAM_STR);
+		$req->bindParam(':periodicite', $activity->getPeriodic(), PDO::PARAM_STR);
+		$req->bindParam(':nbOccurence', $activity->getNbOccur(), PDO::PARAM_STR);
+		$req->bindParam(':estEnPause', $activity->getIsInBreak(), PDO::PARAM_STR);
+		$req->bindParam(':estPublic', $activity->getIsPublic(), PDO::PARAM_STR);
+		$req->execute();
+
+		$req->closeCursor();
+	}
+
+
+
 }
 ?>
