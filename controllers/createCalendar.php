@@ -101,10 +101,11 @@
 							require_once("models/ActivityManager.class.php");
 							$activityManager = new ActivityManager($db);
 							$activity = new Activity($dataActivity);
-							if($activityManager->add($activity))
+							if($activityManager->add($activity)){
 								$errorView->successActivityCreated();
-							else
+							}else{
 								$errorView->errorActivityCreateFailed();
+							}
 						}
 					}
 				}

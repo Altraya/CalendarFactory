@@ -114,6 +114,16 @@ class ErrorOrSuccessView{
         echo($html);
     }
 
+    public function errorActivityCreateFailed(){
+        $html="";
+        $html.='
+            <div class="alert alert-danger center">
+                <strong>Erreur :</strong> Une erreur c\'est produite, votre activité n\'a pas été crée.
+            </div>
+        ';
+        echo($html);
+    }
+
     public function errorGeneral(){
         $html="";
         $html.='
@@ -164,6 +174,16 @@ class ErrorOrSuccessView{
         $html.='
             <div class="alert alert-success center">
                 <strong>Félicitations :</strong> Votre agenda a bien été crée !
+            </div>
+        ';
+        echo($html);
+    }
+
+    public function successActivityCreated(){
+        $html="";
+        $html.='
+            <div class="alert alert-success center">
+                <strong>Félicitations :</strong> Votre activité a bien été crée !
             </div>
         ';
         echo($html);
