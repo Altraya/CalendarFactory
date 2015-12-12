@@ -124,6 +124,23 @@ class AgendaManager{
 			return $infosReturn;
 	}
 
+	public function getAgenda($id){
+
+		$agenda;
+		$req = $this->_db->query('SELECT *
+								FROM agenda WHERE idAgenda = \''.$id.'\' ');
+		while ($donnees = $req->fetch(PDO::FETCH_ASSOC)){
+			$agenda = new Agenda($donnees);
+		}
+		$nbTupleObt = $req->rowCount();	
+		$req->closeCursor();
+
+		if($nbTupleObt < 1)
+			return false;
+		return $agenda;
+
+	}
+
 	//Get all agenda of all time 
 	public function getAllAllAgenda(){
 		$agenda = array();
