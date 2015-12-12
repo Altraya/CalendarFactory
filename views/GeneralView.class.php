@@ -710,7 +710,7 @@ class GeneralView{
                                         <div class="row">
                                             <div class="col-md-12">
                                             ';
-                                            $this->displayUserList($dataTabUser)
+                                            $this->displayUserList($dataTabUser);
                                     $html.='
                                             </div>
                                         </div>
