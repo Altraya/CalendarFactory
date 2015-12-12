@@ -624,6 +624,30 @@ class GeneralView{
         return $html;
     }
 
+    public function displayAgenda($agenda) {
+        require_once("models/Agenda.class.php");
+
+        $html = '<table>';
+        foreach ($agenda as $ag)
+        {
+            $html .= '
+            <tr>
+               <td>'. $ag->getId() .'</td>
+               <td>'. $ag->getNom() .'</td>
+               <td>'. $ag->getPriorite() .'</td>
+               <td>'. $ag->getLastEdition() .'</td>
+               <td>'. $ag->getIsSuperposable() .'</td>
+               <td>'. $ag->getOwnerId() .'</td>
+               <td><a href="modifier.php?nom='.$ag->getId().'"><img src="http://www.cesbio.ups-tlse.fr/data_all/images/16x16/edit.png" alt="Bouton edit"/>Edit</td>
+               <td><a href="supprimer.php?nom='.$ag->getId().'"><img src="http://www.sportrelax-vicemil.cz/en/css/DeleteIcon.gif" alt="Bouton delete"/>Delete</td>
+            </tr>
+            ';
+        }
+        $html .= '</table>';
+        echo $html;
+        
+    }
+
     public function generateAdminPanel()
     {
         $html = "";
@@ -659,8 +683,12 @@ class GeneralView{
                                     <div role="tabpanel" class="tab-pane" id="adminAgenda">
                                         <div class="row">
 
-                                            <div class="col-md-12">
-
+                                            <div class="col-md-12">';
+                                            require_once("models/AgendaManager.class.php");
+                                            require_once("private/config.php");
+                                            $manager = new AgendaManager($db);
+                                            $html.=$this->displayAgenda($manager->getAllAllAgenda());
+                                            $html.='
                                             </div>
 
                                         </div>

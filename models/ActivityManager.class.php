@@ -159,7 +159,7 @@ class ActivityManager{
 
 		if($nbTupleObt < 1)
 			return false;
-		return $true;
+		return true;
 	}
 
 
