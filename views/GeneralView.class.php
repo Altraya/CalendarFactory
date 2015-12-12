@@ -622,7 +622,7 @@ class GeneralView{
     public function displayAgendaList($agenda) {
 
         $html = '<table>';
-        foreach ($agenda as $ag)
+        foreach ($agendas as $ag)
         {
             $html .= '
             <tr>
@@ -638,7 +638,7 @@ class GeneralView{
             ';
         }
         $html .= '</table>';
-        echo $html;
+        return $html;
         
     }
 
@@ -660,7 +660,7 @@ class GeneralView{
             ';
         }
         $html .= '</table>';
-        echo $html;
+        return $html;
     }
 
     public function displayCommentList($comments){
@@ -683,10 +683,10 @@ class GeneralView{
             ';
         }
         $html .= '</table>';
-        echo $html;
+        return $html;
     }
 
-    public function generateAdminPanel()
+    public function generateAdminPanel($dataTabUser, $dataTabAgenda, $dataTabComment)
     {
         $html = "";
         $html.='
@@ -708,14 +708,10 @@ class GeneralView{
                                 <div class="tab-content">
                                     <div role="tabpanel" class="tab-pane active" id="adminUser">
                                         <div class="row">
-                                            <div class="col-md-2">
-
-                                            </div>
-
-                                            <div class="col-md-8">
-
-                                            </div>
-                                            <div class="col-md-2">
+                                            <div class="col-md-12">
+                                            ';
+                                            $this->displayUserList($dataTabUser)
+                                    $html.='
                                             </div>
                                         </div>
                                     </div>
@@ -723,6 +719,9 @@ class GeneralView{
                                         <div class="row">
 
                                             <div class="col-md-12">
+                                            ';
+                                                $this->displayAgendaList($dataTabAgenda);
+                                    $html.='
                                             </div>
 
                                         </div>
@@ -731,7 +730,9 @@ class GeneralView{
                                         <div class="row">
 
                                             <div class="col-md-12">
-
+                                            ';
+                                                $this->displayCommentList($dataTabComment);
+                                    $html.='
                                             </div>
 
                                         </div>
