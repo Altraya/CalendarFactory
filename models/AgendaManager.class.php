@@ -170,12 +170,10 @@ class AgendaManager{
 
 	}
 
-=======
 	/**
 	*	Remove an Agenda
 	*	@param : Agenda we want to remove
 	*/
->>>>>>> f6220e15f2c79155e1eea42160ef0c1624f5045a
 	public function remove(Agenda $agenda){
 		$idAgenda = $agenda->getId();
 		$sql = "DELETE FROM agenda WHERE idAgenda = :idAgenda ";
