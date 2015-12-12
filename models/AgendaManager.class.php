@@ -142,8 +142,8 @@ class AgendaManager{
 			$agenda['nom'] = $donnees['nom'];
 			$agenda['priorite'] = $donnees['priorite'];
 			$agenda['lastEdition'] = $donnees['lastEdition'];
-			$agenda['estSuperposable'] = $donnees['estSuperposable'];
-			$agenda['idUtilisateur'] = $donnees['idUtilisateur'];
+			$agenda['isSuperposable'] = $donnees['estSuperposable'];
+			$agenda['ownerId'] = $donnees['idUtilisateur'];
 			$return[] = new Agenda($agenda);
 		}
 		$nbTupleObt = $req->rowCount();
@@ -168,7 +168,12 @@ class AgendaManager{
 		$req = $this->_db->query('SELECT *
 								FROM agenda WHERE idAgenda = \''.$id.'\' ');
 		while ($donnees = $req->fetch(PDO::FETCH_ASSOC)){
+			
 			$agenda = new Agenda($donnees);
+			$agenda->setId($donnees['idAgenda']);
+			$agenda->setIsSuperposable($donnees['estSuperposable']);
+			$agenda->setOwnerId($donnees['idUtilisateur']);
+
 		}
 		$nbTupleObt = $req->rowCount();	
 		$req->closeCursor();
@@ -198,18 +203,25 @@ class AgendaManager{
 	*	@return : Return true if the update is a success / else
 	*/
 	public function modify(Agenda $agenda){
-		$sql = "UPDATE activite
+		$id = $agenda->getId();
+		$nom = $agenda->getNom();
+		$priorite = $agenda->getPriorite();
+		$last = $agenda->getLastEdition();
+		$super = $agenda->getIsSuperposable();
+
+		$sql = "UPDATE agenda
 			SET nom = :nom,
 			priorite = :priorite,
 			lastEdition = :lastEdition,
-			estSuperposable = :estSuperposable,
+			estSuperposable = :estSuperposable
 			WHERE idAgenda = :idAgenda";
+		var_dump($sql);
 		$req = $this->_db->prepare($sql);
-		$req->bindParam(':idAgenda', $agenda->getId(), PDO::PARAM_STR);
-		$req->bindParam(':nom', $agenda->getNom(), PDO::PARAM_STR);
-		$req->bindParam(':priorite', $agenda->getPriorite(), PDO::PARAM_STR);
-		$req->bindParam(':lastEdition', $agenda->getLastEdition(), PDO::PARAM_STR);
-		$req->bindParam(':estSuperposable', $agenda->getIsSuperposable(), PDO::PARAM_STR);
+		$req->bindParam(':idAgenda', $id, PDO::PARAM_STR);
+		$req->bindParam(':nom', $nom , PDO::PARAM_STR);
+		$req->bindParam(':priorite',$priorite , PDO::PARAM_STR);
+		$req->bindParam(':lastEdition', $last, PDO::PARAM_STR);
+		$req->bindParam(':estSuperposable',$super , PDO::PARAM_STR);
 		$req->execute();
 
 		$nbTupleObt = $req->rowCount();	
