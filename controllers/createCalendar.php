@@ -132,7 +132,7 @@
 				}
 			}
 		}else{
-			$dataIdAgenda[] = $agendaManager->getAllAgenda($_SESSION['idUser']);
+			$dataIdAgenda = $agendaManager->getAllAgenda($_SESSION['idUser']);
 			$viewG->createAgendaOrActivity($dataIdAgenda);
 		}
 	}else{

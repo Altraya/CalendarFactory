@@ -557,18 +557,13 @@ class GeneralView{
                                 <select class="form-control" name="idAgenda" id="idAgenda">
                             ';
                             if(isset($dataIdAgendaOfUser)){
-                                foreach ($dataIdAgendaOfUser as $dat => $simpleArray) {
-                                    if($dataIdAgendaOfUser[0] != 0){
-                                        foreach ($simpleArray as $dat2 => $data) {
-                                            if($data['id'] == ""){
-                                                $html.='<option>Vous devez créer un agenda pour pouvoir ajouter une activité dedant</option>';
-                                            }else{
-                                                $html.='<option>'.$data['id'].' - '.$data['nom'].'</option>';
-                                            }
-                                        }
-                                    }else{
-                                        $html.='<option>Vous devez créer un agenda pour pouvoir ajouter une activité dedant</option>';
+                                //$dataIdAgendaOfUser can be equal to false
+                                if($dataIdAgendaOfUser){ 
+                                    foreach ($dataIdAgendaOfUser as $dat => $agenda) {
+                                        $html.='<option>'.$agenda->getId().' - '.$agenda->getNom().'</option>';
                                     }
+                                }else{
+                                    $html.='<option>Vous devez créer un agenda pour pouvoir ajouter une activité dedant</option>';
                                 }
                             }else{
                                 $html.='<option>Vous devez créer un agenda pour pouvoir ajouter une activité dedant</option>';

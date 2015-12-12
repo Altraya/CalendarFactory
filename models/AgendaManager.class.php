@@ -108,11 +108,11 @@ class AgendaManager{
 		$infos = array();
 		$infosReturn = array();
 
-		$req = $this->_db->query('SELECT * FROM agenda NATURAL JOIN utilisateur WHERE idUtilisateur = '.$userId.' ');
+		$req = $this->_db->query('SELECT * FROM agenda WHERE idUtilisateur = '.$userId.' ');
 		while ($donnees = $req->fetch(PDO::FETCH_ASSOC)){
-			$infos['idAgenda'] = $donnees['idAgenda'];
-			$infos['title'] = $donnees['nom'];
-			$infos['priority'] = $donnees['priorite'];
+			$infos['id'] = $donnees['idAgenda'];
+			$infos['nom'] = $donnees['nom'];
+			$infos['priorite'] = $donnees['priorite'];
 			$infos['lastEdition'] = $donnees['lastEdition'];
 			$infos['isSuperposable'] = $donnees['estSuperposable'];
 			$infos['ownerId'] = $donnees['idUtilisateur'];
@@ -144,7 +144,7 @@ class AgendaManager{
 	/**
 	*	Update an Agenda
 	*	@param : Agenda we want to update
-	*	@return : Return true if the update is a success / else false
+	*	@return : Return true if the update is a success / else
 	*/
 	public function modify(Agenda $agenda){
 		$sql = "UPDATE activite
