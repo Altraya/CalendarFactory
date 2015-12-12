@@ -21,15 +21,21 @@
 			if($nomAgenda == '' && $priorite == ''){
 				$errorView->errorNeedToCompleteForm();
 			}else{
-
-				//check is la valeur de isSuperposable
-					$isSuperposable = 1;
-				$isSuperposable = 0;
+				
+				//isSuperposable checked
+				if (isset($_POST['isSuperposable'])) {
+					if(htmlspecialchars($_POST['isSuperposable']) == "isSuperposable"){
+						$data['isSuperposable'] = true;
+					}
+				}else{
+					//isSuperposable not checked
+					$data['isSuperposable'] = false;
+				}
+				
 				$data['id'] = null;
 				$data['nom'] = $nomAgenda;
 				$data['priorite'] = $prioriteAgenda;
 				$data['lastEdition'] = null;
-				$data['isSuperposable'] = $isSuperposable;
 				$data['ownerId'] = $_SESSION['idUser'];
 				$agenda = new Agenda($data);
 				if($idAgenda = $agendaManager->add($agenda)){
@@ -49,8 +55,8 @@
 						if($agendaManager->addCategorieAgenda($idAgenda, $idCategorie)){
 							//all work -> success message
 							$errorView->successAgendaCreated();
-							$errorView->redirection(1);
-							header('Refresh: 1; url=createCalendar.php');
+							//$errorView->redirection(1);
+							//header('Refresh: 1; url=createCalendar.php');
 						}else{
 							//link between categorie and agenda failed
 							$errorView->errorGeneral();
@@ -63,7 +69,6 @@
 			}
 			//we want to create an activity / event
 		}elseif (isset($_POST['createActivity'])) {
-
 			$dataActivity["idAgenda"] = htmlspecialchars($_POST['idAgenda']);
 			//if we don't have already create an agenda, we can't add any activity
 			if($dataActivity["idAgenda"] == ""){
@@ -86,22 +91,34 @@
 					$dataActivity["periodic"] = htmlspecialchars($_POST['periodicite']);
 					$dataActivity["nbOccur"] = htmlspecialchars($_POST['occurence']);
 					$dataActivity['isInBreak'] = false;
-					if(htmlspecialchars($_POST['isPossibleToSubscribe']) == "isPossibleToSubscribe")
-						$dataActivity['isPossibleToSubscribe'] = true;
-					else
-						$dataActivity['isPossibleToSubscribe'] = false;
 
-					if(htmlspecialchars($_POST['isPublic']) == "isPublic")
-						$dataActivity['isPublic'] = true;
-					else
+					//if endHour == "" is that mean that the event is on all the day -> so we fix the last hour to add in DB
+					if($dataActivity["endHour"] == ""){
+						$dataActivity["endHour"] = '23:59:59';
+					}
+
+					if (isset($_POST['isPossibleToSubscribe'])) {
+						if(htmlspecialchars($_POST['isPossibleToSubscribe']) == "isPossibleToSubscribe"){
+							$dataActivity['isPossibleToSubscribe'] = true;
+						}
+					}else{
+						$dataActivity['isPossibleToSubscribe'] = false;
+					}
+
+					if (isset($_POST['isPublic'])) {
+						if(htmlspecialchars($_POST['isPublic']) == "isPublic"){
+							$dataActivity['isPublic'] = true;
+						}
+					}else{
 						$dataActivity['isPublic'] = false;
+					}
 
 					//in all case if we dont have a starting date > error
 					if($dataActivity["startDate"] == ""){
 						$errorView->errorNeedToCompleteForm();
 					}else{
 						//if we dont have a starting date + a ending date or a startDate + a periodicity or a number of occurence > error
-						if($dataActivity["endDate"] == "" || $dataActivity["periodic"] == "" || $dataActivity["nbOccur"] == ""){
+						if($dataActivity["endDate"] == "" && $dataActivity["periodic"] == "" && $dataActivity["nbOccur"] == ""){
 							$errorView->errorNeedToCompleteForm();
 						}else{
 							//start to add in database us activity
@@ -119,7 +136,7 @@
 				}
 			}
 		}else{
-			$dataIdAgenda[] = $agendaManager->getAllAgenda($_SESSION['idUser']);
+			$dataIdAgenda = $agendaManager->getAllAgenda($_SESSION['idUser']);
 			$viewG->createAgendaOrActivity($dataIdAgenda);
 		}
 	}else{

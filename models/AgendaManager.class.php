@@ -101,18 +101,22 @@ class AgendaManager{
 	/**
 	*	Get all agenda for a specific user
 	*	@param userId : user's id
-	*	@return : false if the user don't have any agenda, or a table with id and name of the agenda.
+	*	@return : false if the user don't have any agenda, or an array of Agenda Object
 	*/
 	public function getAllAgenda($userId){
 
 		$infos = array();
 		$infosReturn = array();
 
-		$req = $this->_db->query('SELECT idAgenda, nom FROM agenda NATURAL JOIN utilisateur WHERE idUtilisateur = '.$userId.' ');
+		$req = $this->_db->query('SELECT * FROM agenda WHERE idUtilisateur = '.$userId.' ');
 		while ($donnees = $req->fetch(PDO::FETCH_ASSOC)){
 			$infos['id'] = $donnees['idAgenda'];
 			$infos['nom'] = $donnees['nom'];
-			$infosReturn[] = $infos;
+			$infos['priorite'] = $donnees['priorite'];
+			$infos['lastEdition'] = $donnees['lastEdition'];
+			$infos['isSuperposable'] = $donnees['estSuperposable'];
+			$infos['ownerId'] = $donnees['idUtilisateur'];
+			$infosReturn[] = new Agenda($infos);
 		}
 
 		$nbTupleObt = $req->rowCount();
@@ -123,6 +127,7 @@ class AgendaManager{
 		else
 			return $infosReturn;
 	}
+
 
 	public function getAgenda($id){
 
@@ -165,6 +170,12 @@ class AgendaManager{
 
 	}
 
+=======
+	/**
+	*	Remove an Agenda
+	*	@param : Agenda we want to remove
+	*/
+>>>>>>> f6220e15f2c79155e1eea42160ef0c1624f5045a
 	public function remove(Agenda $agenda){
 		$idAgenda = $agenda->getId();
 		$sql = "DELETE FROM agenda WHERE idAgenda = :idAgenda ";
@@ -174,6 +185,11 @@ class AgendaManager{
 		$req->closeCursor();
 	}
 
+	/**
+	*	Update an Agenda
+	*	@param : Agenda we want to update
+	*	@return : Return true if the update is a success / else
+	*/
 	public function modify(Agenda $agenda){
 		$sql = "UPDATE activite
 			SET nom = :nom,
