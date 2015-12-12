@@ -9,14 +9,21 @@
 	require_once("models/AgendaManager.class.php");
 	require_once("models/User.class.php");
 	require_once("models/UserManager.class.php");
+	require_once("models/Commentaire.class.php");
+	require_once("models/CommentaireManager.class.php");
+
 
 	$viewG = new GeneralView();
 	$manager = new AgendaManager($db);
+	$userMan = new UserManager($db);
+	$commentMan = new CommentaireManager($db);
 
 	$viewG->header("CalendarFactory");
 	$viewG->navBar("Admin");
 	$dataTabAgenda = $manager->getAllAllAgenda();
-	var_dump($dataTabAgenda);
-	$viewG->generateAdminPanel("", $dataTabAgenda, "");
+	$dataTabUser = $userMan->getAllUsers();
+	$dataTabComm = $commentMan->getAllComments();
+//	var_dump($dataTabAgenda);
+	$viewG->generateAdminPanel($dataTabUser, $dataTabAgenda, $dataTabComm);
 	$viewG->footer();
 ?>
