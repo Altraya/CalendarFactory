@@ -85,11 +85,11 @@ class CommentaireManager{
 	*	List all comments
 	*	@return : false if the insert failed / else return an array of comment object
 	*/
-	public function getCommentsList(){
+	public function getAllComments(){
 		$comment = array();
-		$query = $this->_db->query('SELECT *
+		$req = $this->_db->query('SELECT *
 									FROM commentaire GROUP BY idActivite');
-		while ($donnees = $query->fetch(PDO::FETCH_ASSOC)) {
+		while ($donnees = $req->fetch(PDO::FETCH_ASSOC)) {
 			$comment[] = new Commentaire($donnees);
 		}
 

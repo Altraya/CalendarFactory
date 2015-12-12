@@ -79,9 +79,9 @@ class UserManager{
 	//retourne un tableau avec tout les utilisateurs
 	public function getAllUsers(){
 		$user = array();
-		$query = $this->_db->query('SELECT *
+		$req = $this->_db->query('SELECT *
 									FROM utilisateur');
-		while ($donnees = $query->fetch(PDO::FETCH_ASSOC)) {
+		while ($donnees = $req->fetch(PDO::FETCH_ASSOC)) {
 			$user[] = new User($donnees);
 		}
 
