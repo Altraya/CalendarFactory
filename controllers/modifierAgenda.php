@@ -13,13 +13,6 @@
 	$viewG->header("Modification d'agenda");
 	$viewG->navBar("Modification d'agenda");
 	if(isset($_SESSION['login'])) {
-		if (isset($_POST['supprAgenda']) && isset($_POST['idAgenda'])) {
-			require_once('config.php');
-
-			require_once('Agenda.class.php');
-
-			require_once('AgendaManager.class.php');
-		}
 
 		$agenda = $agendaManager->getAgenda(htmlspecialchars($_GET['idAgenda']));
 	}
@@ -43,10 +36,10 @@
 		</p>
 	<?php
 		
-		if (isset($_POST['EnvoyerModifAgenda'])&& $_POST['EnvoyerModifAgenda'] == 'Envoyer')
+		if (isset($_POST['nom'])&& $_POST['priorite'] && $_POST['lastEdition'] && $_POST['estSuperposable'] && $_POST['EnvoyerModifAgenda']=="Envoyer")
 		{
-			$activite = new Activity($_POST);
-			$manager->modify($activite);
+			$agenda = new Agenda($_POST);
+			$agendaManager->modify($agenda);
 			echo('La modification de votre agenda a bien été prise en compte.<br/>');
 		
 			
