@@ -7,7 +7,7 @@ class ErrorOrSuccessView{
     }
 
 /**
-*           Warning message 
+*           Warning message
 */
 
     public function redirection($time){
@@ -21,7 +21,7 @@ class ErrorOrSuccessView{
     }
 
 /**
-*           Error message 
+*           Error message
 */
 
     public function alreadyConnected(){
@@ -135,7 +135,7 @@ class ErrorOrSuccessView{
     }
 
 /**
-*           Success message 
+*           Success message
 */
 
     public function successInscription(){
@@ -147,7 +147,6 @@ class ErrorOrSuccessView{
         ';
         echo($html);
     }
-
 
     public function successConnexion(){
         $html="";
@@ -188,5 +187,6 @@ class ErrorOrSuccessView{
         ';
         echo($html);
     }
+
 }
 ?>

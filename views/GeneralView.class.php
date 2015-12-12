@@ -57,19 +57,16 @@ class GeneralView{
                                                 <span class="icon-bar"></span>
                                                 <span class="icon-bar"></span>
                                             </button>
-                                             
                                             <div class="bigNavTitle">
                                                 '.$pageTitle.'
                                             </div>
                                         </div>
                                     </div>
-
                                     <div class="col-md-8">
                                         <div class="row">
                                             <div class="col-md-12">
                                                 <!-- Collect the nav links, forms, and other content for toggling -->
                                                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-
                                                     <ul class="nav navbar-nav navbar-right">
                                                         <li><a href="calendar.php">Mes agendas</a></li>
                                                         <li><a href="account.php">Mon compte</a></li>
@@ -81,19 +78,16 @@ class GeneralView{
                                                     }else{
                                                         $html.='<li><a href="connexion.php">Connexion</a></li>';
                                                     }
-                                        $html.='    </ul>
+                                            $html.='</ul>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div><!-- /.navbar-collapse -->
-                                
                             </div><!-- /.container-fluid -->
                         </nav>
                     </div>
-                </div>
-        ';
-
+                </div>';
         echo($html);
     }
 

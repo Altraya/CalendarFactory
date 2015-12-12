@@ -49,15 +49,14 @@
 						if($agendaManager->addCategorieAgenda($idAgenda, $idCategorie)){
 							//all work -> success message
 							$errorView->successAgendaCreated();
+							$errorView->redirection(1);
+							header('Refresh: 1; url=createCalendar.php');
 						}else{
 							//link between categorie and agenda failed
 							$errorView->errorGeneral();
 						}
 					}
-					/*$errorView->redirection(1);
-					header('Refresh: 1; url=calendar.php');
-					Marche pas a cause despace introuvable <<
-					*/
+
 				}else{
 					$errorView->errorAgendaCreateFailed();
 				}
@@ -109,7 +108,6 @@
 							require_once("models/Activity.class.php");
 							require_once("models/ActivityManager.class.php");
 							$activityManager = new ActivityManager($db);
-							var_dump($dataActivity);
 							$activity = new Activity($dataActivity);
 							if($activityManager->add($activity)){
 								$errorView->successActivityCreated();
