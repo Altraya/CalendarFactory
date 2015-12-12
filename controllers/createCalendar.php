@@ -92,22 +92,29 @@
 					$dataActivity["periodic"] = htmlspecialchars($_POST['periodicite']);
 					$dataActivity["nbOccur"] = htmlspecialchars($_POST['occurence']);
 					$dataActivity['isInBreak'] = false;
-					if(htmlspecialchars($_POST['isPossibleToSubscribe']) == "isPossibleToSubscribe")
-						$dataActivity['isPossibleToSubscribe'] = true;
-					else
-						$dataActivity['isPossibleToSubscribe'] = false;
 
-					if(htmlspecialchars($_POST['isPublic']) == "isPublic")
-						$dataActivity['isPublic'] = true;
-					else
+					if (isset($_POST['isPossibleToSubscribe'])) {
+						if(htmlspecialchars($_POST['isPossibleToSubscribe']) == "isPossibleToSubscribe"){
+							$dataActivity['isPossibleToSubscribe'] = true;
+						}
+					}else{
+						$dataActivity['isPossibleToSubscribe'] = false;
+					}
+
+					if (isset($_POST['isPublic'])) {
+						if(htmlspecialchars($_POST['isPublic']) == "isPublic"){
+							$dataActivity['isPublic'] = true;
+						}
+					}else{
 						$dataActivity['isPublic'] = false;
+					}
 
 					//in all case if we dont have a starting date > error
 					if($dataActivity["startDate"] == ""){
 						$errorView->errorNeedToCompleteForm();
 					}else{
 						//if we dont have a starting date + a ending date or a startDate + a periodicity or a number of occurence > error
-						if($dataActivity["endDate"] == "" || $dataActivity["periodic"] == "" || $dataActivity["nbOccur"] == ""){
+						if($dataActivity["endDate"] !== "" || $dataActivity["periodic"] !== "" || $dataActivity["nbOccur"] !== ""){
 							$errorView->errorNeedToCompleteForm();
 						}else{
 							//start to add in database us activity
