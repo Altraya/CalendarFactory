@@ -21,11 +21,17 @@
 			if($nomAgenda == '' && $priorite == ''){
 				$errorView->errorNeedToCompleteForm();
 			}else{
-				//check is la valeur de isSuperposable
-				if(htmlspecialchars($_POST['isSuperposable']) == "isSuperposable")
-					$data['isSuperposable'] = true;
-				else
+				
+				//isSuperposable checked
+				if (isset($_POST['isSuperposable'])) {
+					if(htmlspecialchars($_POST['isSuperposable']) == "isSuperposable"){
+						$data['isSuperposable'] = true;
+					}
+				}else{
+					//isSuperposable not checked
 					$data['isSuperposable'] = false;
+				}
+				
 				$data['id'] = null;
 				$data['nom'] = $nomAgenda;
 				$data['priorite'] = $prioriteAgenda;
