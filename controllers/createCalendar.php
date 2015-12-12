@@ -32,14 +32,14 @@
 				$data['isSuperposable'] = $isSuperposable;
 				$data['ownerId'] = $_SESSION['idUser'];
 				$agenda = new Agenda($data);
-				if($agendaManager->add($agenda)){
+				if($idAgenda = $agendaManager->add($agenda)){
 					$nomCategorie = htmlspecialchars($_POST['categorieAgenda']);
 					if($nomCategorie != ''){
-						if(!($idCategorie = checkCategorieExist($nomCategorie))){
+						if(!($idCategorie = $agendaManager->checkCategorieExist($nomCategorie))){
 							//this categorie dos not exist -> we add it in database
 							if($agendaManager->addCategorie($nomCategorie)){
 								//insert success -> get the id
-								$idCategorie = checkCategorieExist($nomCategorie); 
+								$idCategorie = $agendaManager->checkCategorieExist($nomCategorie); 
 							}else{
 								//error the categorie was not add in DB
 								$errorView->errorGeneral();
@@ -54,7 +54,6 @@
 							$errorView->errorGeneral();
 						}
 					}
-					$errorView->successAgendaCreated();
 					/*$errorView->redirection(1);
 					header('Refresh: 1; url=calendar.php');
 					Marche pas a cause despace introuvable <<
@@ -77,7 +76,6 @@
 				if($dataActivity["title"] == ""){
 					$errorView->errorNeedToCompleteForm();
 				}else{
-					var_dump($_POST);
 					$dataActivity["description"] = htmlspecialchars($_POST['description']);
 					$dataActivity["geoPos"] = htmlspecialchars($_POST['localisation']);
 					$dataActivity["priority"] = htmlspecialchars($_POST['prioriteActivity']);

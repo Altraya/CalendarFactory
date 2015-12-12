@@ -22,7 +22,7 @@ class AgendaManager{
 	/**
 	*	Add agenda in database
 	*	@param : Agenda object
-	*	@return : false if the insert failed / else true
+	*	@return : false if the insert failed / else the id of this agenda
 	*/
 	public function add(Agenda $agenda){
 
@@ -43,12 +43,14 @@ class AgendaManager{
 		$req->bindParam(':idUtilisateur', $idOwner, PDO::PARAM_STR);
 		$req->execute();
 		$nbTupleInsere = $req->rowCount();
+		$idAgenda = $this->_db->lastInsertId();
 		$req->closeCursor();
 
 		//check if insert has failed
 		if($nbTupleInsere < 1)
 			return false;
-		return true;
+		else
+			return $idAgenda;
 	}
 
 	/**
@@ -68,7 +70,8 @@ class AgendaManager{
 		//check if insert has failed
 		if($nbTupleInsert < 1)
 			return false;
-		return true;
+		else
+			return true;
 	}
 
 	/**
@@ -91,7 +94,8 @@ class AgendaManager{
 		//check if insert has failed
 		if($nbTupleInsert < 1)
 			return false;
-		return true;
+		else
+			return true;
 	}
 
 	/**
@@ -116,7 +120,35 @@ class AgendaManager{
 
 		if($nbTupleObt < 1)
 			return false;
-		return $infosReturn;
+		else
+			return $infosReturn;
+	}
+
+	/**
+	*	Check if the categorie specified already exist or not
+	*	@param : the name of the categorie
+	*	@return : false if we don't find a categorie / the categorieId if it exist
+	*/
+	public function checkCategorieExist($nomCategorie){
+		//Add quote on nomCategorie to do request
+		$cat = '\'';
+		$cat .= $nomCategorie;
+		$cat .= '\'';
+
+		$infos = array();
+
+		$req = $this->_db->query('SELECT * FROM categorie WHERE nomCategorie = '.$cat.' ');
+		while ($donnees = $req->fetch(PDO::FETCH_ASSOC)){
+			$infos = $donnees;
+		}
+
+		$nbTupleObt = $req->rowCount();
+		$req->closeCursor();
+
+		if($nbTupleObt < 1)
+			return false;
+		else
+			return $infos['idCategorie'];
 	}
 
 }
