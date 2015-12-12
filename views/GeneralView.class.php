@@ -619,8 +619,7 @@ class GeneralView{
         return $html;
     }
 
-    public function displayAgenda($agenda) {
-        require_once("models/Agenda.class.php");
+    public function displayAgendaList($agenda) {
 
         $html = '<table>';
         foreach ($agenda as $ag)
@@ -633,14 +632,58 @@ class GeneralView{
                <td>'. $ag->getLastEdition() .'</td>
                <td>'. $ag->getIsSuperposable() .'</td>
                <td>'. $ag->getOwnerId() .'</td>
-               <td><a href="modifier.php?nom='.$ag->getId().'"><img src="http://www.cesbio.ups-tlse.fr/data_all/images/16x16/edit.png" alt="Bouton edit"/>Edit</td>
-               <td><a href="supprimer.php?nom='.$ag->getId().'"><img src="http://www.sportrelax-vicemil.cz/en/css/DeleteIcon.gif" alt="Bouton delete"/>Delete</td>
+               <td><a href="modifierAgenda.php?nom='.$ag->getId().'"><img src="http://www.cesbio.ups-tlse.fr/data_all/images/16x16/edit.png" alt="Bouton edit"/>Edit</td>
+               <td><a href="supprimerAgenda.php?nom='.$ag->getId().'"><img src="http://www.sportrelax-vicemil.cz/en/css/DeleteIcon.gif" alt="Bouton delete"/>Delete</td>
             </tr>
             ';
         }
         $html .= '</table>';
         echo $html;
         
+    }
+
+    public function displayUserList($users){
+         $html = '<table>';
+         foreach ($users as $us)
+        {
+            $html .= '
+            <tr>
+               <td>'. $us->getIdUtilisateur() .'</td>
+               <td>'. $us->getLogin() .'</td>
+               <td>'. $us->getPwd() .'</td>
+               <td>'. $us->getNom() .'</td>
+               <td>'. $us->getPrenom() .'</td>
+               <td>'. $us->getAdresse() .'</td>
+               <td><a href="modifierUser.php?nom='.$us->getIdUtilisateur().'"><img src="http://www.cesbio.ups-tlse.fr/data_all/images/16x16/edit.png" alt="Bouton edit"/>Edit</td>
+               <td><a href="supprimerUser.php?nom='.$us->getIdUtilisateur().'"><img src="http://www.sportrelax-vicemil.cz/en/css/DeleteIcon.gif" alt="Bouton delete"/>Delete</td>
+            </tr>
+            ';
+        }
+        $html .= '</table>';
+        echo $html;
+    }
+
+    public function displayCommentList($comments){
+         $html = '<table>';
+         foreach ($agenda as $ag)
+        {
+            $html .= '
+            <tr>
+               <td>'. $ag->getIdCommentaire() .'</td>
+               <td>'. $ag->getCommentaire() .'</td>
+               <td>'. $ag->getPriorite() .'</td>
+               <td>'. $ag->getDateCommentaire() .'</td>
+               <td>'. $ag->getHeureCommentaire() .'</td>
+               <td>'. $ag->getIdCommentaireParent() .'</td>
+               <td>'. $ag->getIdUtilisateur() .'</td>
+               <td>'. $ag->getIdActivite() .'</td>
+               <td><a href="modifierComment.php?nom='.$ag->getIdCommentaire().'"><img src="http://www.cesbio.ups-tlse.fr/data_all/images/16x16/edit.png" alt="Bouton edit"/>Edit</td>
+               <td><a href="supprimerComment.php?nom='.$ag->getIdCommentaire().'"><img src="http://www.sportrelax-vicemil.cz/en/css/DeleteIcon.gif" alt="Bouton delete"/>Delete</td>
+            </tr>
+            ';
+        }
+        $html .= '</table>';
+        echo $html;
     }
 
     public function generateAdminPanel()
@@ -666,6 +709,7 @@ class GeneralView{
                                     <div role="tabpanel" class="tab-pane active" id="adminUser">
                                         <div class="row">
                                             <div class="col-md-2">
+
                                             </div>
 
                                             <div class="col-md-8">
@@ -678,12 +722,7 @@ class GeneralView{
                                     <div role="tabpanel" class="tab-pane" id="adminAgenda">
                                         <div class="row">
 
-                                            <div class="col-md-12">';
-                                            require_once("models/AgendaManager.class.php");
-                                            require_once("private/config.php");
-                                            $manager = new AgendaManager($db);
-                                            $html.=$this->displayAgenda($manager->getAllAllAgenda());
-                                            $html.='
+                                            <div class="col-md-12">
                                             </div>
 
                                         </div>

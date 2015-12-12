@@ -128,10 +128,54 @@ class AgendaManager{
 			return $infosReturn;
 	}
 
+
+	public function getAgenda($id){
+
+		$agenda;
+		$req = $this->_db->query('SELECT *
+								FROM agenda WHERE idAgenda = \''.$id.'\' ');
+		while ($donnees = $req->fetch(PDO::FETCH_ASSOC)){
+			$agenda = new Agenda($donnees);
+		}
+		$nbTupleObt = $req->rowCount();	
+		$req->closeCursor();
+
+		if($nbTupleObt < 1)
+			return false;
+		return $agenda;
+
+	}
+
+	//Get all agenda of all time 
+	public function getAllAllAgenda(){
+		$agenda = array();
+		$return = array();
+		$req = $this->_db->query('SELECT * FROM agenda');
+		while ($donnees = $req->fetch(PDO::FETCH_ASSOC)){
+			$agenda['id'] = $donnees['idAgenda'];
+			$agenda['nom'] = $donnees['nom'];
+			$agenda['priorite'] = $donnees['priorite'];
+			$agenda['lastEdition'] = $donnees['lastEdition'];
+			$agenda['estSuperposable'] = $donnees['estSuperposable'];
+			$agenda['idUtilisateur'] = $donnees['idUtilisateur'];
+			$return[] = $agenda;
+		}
+		$nbTupleObt = $req->rowCount();
+		$req->closeCursor();
+
+		if($nbTupleObt < 1)
+			return false;
+		else
+			return $return;
+
+	}
+
+=======
 	/**
 	*	Remove an Agenda
 	*	@param : Agenda we want to remove
 	*/
+>>>>>>> f6220e15f2c79155e1eea42160ef0c1624f5045a
 	public function remove(Agenda $agenda){
 		$idAgenda = $agenda->getId();
 		$sql = "DELETE FROM agenda WHERE idAgenda = :idAgenda ";
