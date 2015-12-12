@@ -26,7 +26,6 @@ class ActivityManager{
 	*/
 	public function add(Activity $activite){
 
-		var_dump($activite);
 		$title = $activite->getTitle();
 		$descr = $activite->getDescription();
 		$pos = $activite->getGeoPos();
@@ -73,14 +72,19 @@ class ActivityManager{
 
 	//Delete  l'activité donnée en paramètre
 	public function remove(Activity $activite){
+		$idActivite = $activite->getIdActivity();
 		$sql = "DELETE FROM activite WHERE idActivite = :idActivite ";
 		$req = $this->_db->prepare($sql);
-		$req->bindParam(':idActivite', $activite->getIdActivity(), PDO::PARAM_INT);
+		$req->bindParam(':idActivite', $idActivite, PDO::PARAM_INT);
 		$req->execute();
 		$req->closeCursor();
 	}
 
-	//récupérer une activité en fonction de son ID
+	/**
+	*	Get an activity with his ID
+	*	@param : id : id of the  activity we want to get
+	*	@return : false if we have no result / else return an activity object
+	*/
 	public function getActivity($id){
 		$activity;
 		$req = $this->_db->query('SELECT titre, description, type, dateDebut, dateFin, positionGeographique 
@@ -88,26 +92,40 @@ class ActivityManager{
 		while ($donnees = $req->fetch(PDO::FETCH_ASSOC)){
 			$activity = new Activity($donnees);
 		}
+		$nbTupleObt = $req->rowCount();	
 		$req->closeCursor();
+
+		if($nbTupleObt < 1)
+			return false;
 		return $activity;
 
 	}
 
-	//Lister toutes les activités
+	/**
+	*	List all activities
+	*	@return : false if the insert failed / else return an array of activity object
+	*/
 	public function getAllActivities(){
 		$activity = array();
-		$query = $this->_db->query('SELECT idActivite, titre, description, type, dateDebut, dateFin, positionGeographique 
+		$query = $this->_db->query('SELECT *
 									FROM activity GROUP BY idAgenda');
 		while ($donnees = $query->fetch(PDO::FETCH_ASSOC)) {
 			$activity[] = new Activity($donnees);
 		}
 
-		$query->closeCursor();
+		$nbTupleObt = $req->rowCount();	
+		$req->closeCursor();
 
+		if($nbTupleObt < 1)
+			return false;
 		return $activity;
 	}
 
-	//modifie une activité
+	/**
+	*	Update activity in database
+	*	@param : Activity object
+	*	@return : false if the update failed / else true
+	*/
 	public function modify(Activity $activity){
 		$sql = "UPDATE activite
 			SET titre = :titre,
@@ -136,7 +154,12 @@ class ActivityManager{
 		$req->bindParam(':estPublic', $activity->getIsPublic(), PDO::PARAM_STR);
 		$req->execute();
 
+		$nbTupleObt = $req->rowCount();	
 		$req->closeCursor();
+
+		if($nbTupleObt < 1)
+			return false;
+		return $true;
 	}
 
 
