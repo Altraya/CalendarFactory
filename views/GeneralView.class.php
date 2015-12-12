@@ -621,7 +621,18 @@ class GeneralView{
 
     public function displayAgendaList($agendas) {
 
-        $html = '<table>';
+        $html = '<table class="table table-striped">
+         <tr>
+                   <td>Id</td>
+                   <td>Nom</td>
+                   <td>Priorité</td>
+                   <td>Dernière activité</td>
+                   <td>Est superposable</td>
+                   <td>Id Propriétaire</td>
+                   <td>Edit</td>
+                   <td>Delete</td>
+                </tr>
+        ';
         if($agendas != '')
         {
             foreach ($agendas as $ag)
@@ -634,8 +645,8 @@ class GeneralView{
                    <td>'. $ag->getLastEdition() .'</td>
                    <td>'. $ag->getIsSuperposable() .'</td>
                    <td>'. $ag->getOwnerId() .'</td>
-                   <td><a href="modifierAgenda.php?nom='.$ag->getId().'"><img src="http://www.cesbio.ups-tlse.fr/data_all/images/16x16/edit.png" alt="Bouton edit"/>Edit</td>
-                   <td><a href="supprimerAgenda.php?nom='.$ag->getId().'"><img src="http://www.sportrelax-vicemil.cz/en/css/DeleteIcon.gif" alt="Bouton delete"/>Delete</td>
+                   <td><a href="modifierAgenda.php?idAgenda='.$ag->getId().'"><img src="http://www.cesbio.ups-tlse.fr/data_all/images/16x16/edit.png" alt="Bouton edit"/>Edit</td>
+                   <td><a href="supprimerAgenda.php?idAgenda='.$ag->getId().'"><img src="http://www.sportrelax-vicemil.cz/en/css/DeleteIcon.gif" alt="Bouton delete"/>Delete</td>
                 </tr>
                 ';
             }
@@ -646,7 +657,18 @@ class GeneralView{
     }
 
     public function displayUserList($users){
-        $html = '<table>';
+        $html = '<table class="table table-striped">
+        <tr>
+                   <td>Id</td>
+                   <td>Login</td>
+                   <td>Mot de passe</td>
+                   <td>Nom</td>
+                   <td>Prénom</td>
+                   <td>Adresse</td>
+                   <td>Edit</td>
+                   <td>Delete</td>
+                </tr>
+        ';
         if($users != '')
         {
             foreach ($users as $us)
