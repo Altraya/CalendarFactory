@@ -129,6 +129,11 @@ class AgendaManager{
 	}
 
 
+	/**
+	*	Get one agenda with his id
+	* 	@param : $id : agenda's id
+	*	@return : Agenda object
+	*/
 	public function getAgenda($id){
 
 		$agenda;
@@ -143,30 +148,6 @@ class AgendaManager{
 		if($nbTupleObt < 1)
 			return false;
 		return $agenda;
-
-	}
-
-	//Get all agenda of all time 
-	public function getAllAllAgenda(){
-		$agenda = array();
-		$return = array();
-		$req = $this->_db->query('SELECT * FROM agenda');
-		while ($donnees = $req->fetch(PDO::FETCH_ASSOC)){
-			$agenda['id'] = $donnees['idAgenda'];
-			$agenda['nom'] = $donnees['nom'];
-			$agenda['priorite'] = $donnees['priorite'];
-			$agenda['lastEdition'] = $donnees['lastEdition'];
-			$agenda['estSuperposable'] = $donnees['estSuperposable'];
-			$agenda['idUtilisateur'] = $donnees['idUtilisateur'];
-			$return[] = $agenda;
-		}
-		$nbTupleObt = $req->rowCount();
-		$req->closeCursor();
-
-		if($nbTupleObt < 1)
-			return false;
-		else
-			return $return;
 
 	}
 
