@@ -10,6 +10,7 @@ function generateCalendar(dateDebut){
 	$('#calendar').html(" \
 		<div id='calendar' class='table-responsive'>\
 			<div class='table'>\
+			<table>\
 				<thead>\
 					<tr>\
 						<th>Lundi</th>\
@@ -31,6 +32,7 @@ function generateCalendar(dateDebut){
 						<td>USA</td>\
 					</tr>\
 				</tbody>\
+	</table>\
 			</div>\
 		</div>\
 	");
