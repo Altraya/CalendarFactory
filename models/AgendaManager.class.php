@@ -124,6 +124,62 @@ class AgendaManager{
 			return $infosReturn;
 	}
 
+	//Get all agenda of all time 
+	public function getAllAllAgenda(){
+		$agenda = array();
+		$return = array();
+		$req = $this->_db->query('SELECT * FROM agenda');
+		while ($donnees = $req->fetch(PDO::FETCH_ASSOC)){
+			$agenda['id'] = $donnees['idAgenda'];
+			$agenda['nom'] = $donnees['nom'];
+			$agenda['priorite'] = $donnees['priorite'];
+			$agenda['lastEdition'] = $donnees['lastEdition'];
+			$agenda['estSuperposable'] = $donnees['estSuperposable'];
+			$agenda['idUtilisateur'] = $donnees['idUtilisateur'];
+			$return[] = $agenda;
+		}
+		$nbTupleObt = $req->rowCount();
+		$req->closeCursor();
+
+		if($nbTupleObt < 1)
+			return false;
+		else
+			return $return;
+
+	}
+
+	public function remove(Agenda $agenda){
+		$idAgenda = $agenda->getId();
+		$sql = "DELETE FROM agenda WHERE idAgenda = :idAgenda ";
+		$req = $this->_db->prepare($sql);
+		$req->bindParam(':idAgenda', $idAgenda, PDO::PARAM_INT);
+		$req->execute();
+		$req->closeCursor();
+	}
+
+	public function modify(Agenda $agenda){
+		$sql = "UPDATE activite
+			SET nom = :nom,
+			priorite = :priorite,
+			lastEdition = :lastEdition,
+			estSuperposable = :estSuperposable,
+			WHERE idAgenda = :idAgenda";
+		$req = $this->_db->prepare($sql);
+		$req->bindParam(':idAgenda', $agenda->getId(), PDO::PARAM_STR);
+		$req->bindParam(':nom', $agenda->getNom(), PDO::PARAM_STR);
+		$req->bindParam(':priorite', $agenda->getPriorite(), PDO::PARAM_STR);
+		$req->bindParam(':lastEdition', $agenda->getLastEdition(), PDO::PARAM_STR);
+		$req->bindParam(':estSuperposable', $agenda->getIsSuperposable(), PDO::PARAM_STR);
+		$req->execute();
+
+		$nbTupleObt = $req->rowCount();	
+		$req->closeCursor();
+
+		if($nbTupleObt < 1)
+			return false;
+		return true;
+	}
+
 	/**
 	*	Check if the categorie specified already exist or not
 	*	@param : the name of the categorie
