@@ -619,23 +619,26 @@ class GeneralView{
         return $html;
     }
 
-    public function displayAgendaList($agenda) {
+    public function displayAgendaList($agendas) {
 
         $html = '<table>';
-        foreach ($agendas as $ag)
+        if($agendas != '')
         {
-            $html .= '
-            <tr>
-               <td>'. $ag->getId() .'</td>
-               <td>'. $ag->getNom() .'</td>
-               <td>'. $ag->getPriorite() .'</td>
-               <td>'. $ag->getLastEdition() .'</td>
-               <td>'. $ag->getIsSuperposable() .'</td>
-               <td>'. $ag->getOwnerId() .'</td>
-               <td><a href="modifierAgenda.php?nom='.$ag->getId().'"><img src="http://www.cesbio.ups-tlse.fr/data_all/images/16x16/edit.png" alt="Bouton edit"/>Edit</td>
-               <td><a href="supprimerAgenda.php?nom='.$ag->getId().'"><img src="http://www.sportrelax-vicemil.cz/en/css/DeleteIcon.gif" alt="Bouton delete"/>Delete</td>
-            </tr>
-            ';
+            foreach ($agendas as $ag)
+            {
+                $html.='
+                <tr>
+                   <td>'. $ag->getId() .'</td>
+                   <td>'. $ag->getNom() .'</td>
+                   <td>'. $ag->getPriorite() .'</td>
+                   <td>'. $ag->getLastEdition() .'</td>
+                   <td>'. $ag->getIsSuperposable() .'</td>
+                   <td>'. $ag->getOwnerId() .'</td>
+                   <td><a href="modifierAgenda.php?nom='.$ag->getId().'"><img src="http://www.cesbio.ups-tlse.fr/data_all/images/16x16/edit.png" alt="Bouton edit"/>Edit</td>
+                   <td><a href="supprimerAgenda.php?nom='.$ag->getId().'"><img src="http://www.sportrelax-vicemil.cz/en/css/DeleteIcon.gif" alt="Bouton delete"/>Delete</td>
+                </tr>
+                ';
+            }
         }
         $html .= '</table>';
         return $html;
@@ -643,46 +646,51 @@ class GeneralView{
     }
 
     public function displayUserList($users){
-         $html = '<table>';
-         foreach ($users as $us)
+        $html = '<table>';
+        if($users != '')
         {
-            $html .= '
-            <tr>
-               <td>'. $us->getIdUtilisateur() .'</td>
-               <td>'. $us->getLogin() .'</td>
-               <td>'. $us->getPwd() .'</td>
-               <td>'. $us->getNom() .'</td>
-               <td>'. $us->getPrenom() .'</td>
-               <td>'. $us->getAdresse() .'</td>
-               <td><a href="modifierUser.php?nom='.$us->getIdUtilisateur().'"><img src="http://www.cesbio.ups-tlse.fr/data_all/images/16x16/edit.png" alt="Bouton edit"/>Edit</td>
-               <td><a href="supprimerUser.php?nom='.$us->getIdUtilisateur().'"><img src="http://www.sportrelax-vicemil.cz/en/css/DeleteIcon.gif" alt="Bouton delete"/>Delete</td>
-            </tr>
-            ';
+            foreach ($users as $us)
+            {
+                $html .= '
+                <tr>
+                   <td>'. $us->getIdUtilisateur() .'</td>
+                   <td>'. $us->getLogin() .'</td>
+                   <td>'. $us->getPwd() .'</td>
+                   <td>'. $us->getNom() .'</td>
+                   <td>'. $us->getPrenom() .'</td>
+                   <td>'. $us->getAdresse() .'</td>
+                   <td><a href="modifierUser.php?nom='.$us->getIdUtilisateur().'"><img src="http://www.cesbio.ups-tlse.fr/data_all/images/16x16/edit.png" alt="Bouton edit"/>Edit</td>
+                   <td><a href="supprimerUser.php?nom='.$us->getIdUtilisateur().'"><img src="http://www.sportrelax-vicemil.cz/en/css/DeleteIcon.gif" alt="Bouton delete"/>Delete</td>
+                </tr>
+                ';
+            }
         }
         $html .= '</table>';
         return $html;
     }
 
     public function displayCommentList($comments){
-         $html = '<table>';
-         foreach ($agenda as $ag)
-        {
-            $html .= '
-            <tr>
-               <td>'. $ag->getIdCommentaire() .'</td>
-               <td>'. $ag->getCommentaire() .'</td>
-               <td>'. $ag->getPriorite() .'</td>
-               <td>'. $ag->getDateCommentaire() .'</td>
-               <td>'. $ag->getHeureCommentaire() .'</td>
-               <td>'. $ag->getIdCommentaireParent() .'</td>
-               <td>'. $ag->getIdUtilisateur() .'</td>
-               <td>'. $ag->getIdActivite() .'</td>
-               <td><a href="modifierComment.php?nom='.$ag->getIdCommentaire().'"><img src="http://www.cesbio.ups-tlse.fr/data_all/images/16x16/edit.png" alt="Bouton edit"/>Edit</td>
-               <td><a href="supprimerComment.php?nom='.$ag->getIdCommentaire().'"><img src="http://www.sportrelax-vicemil.cz/en/css/DeleteIcon.gif" alt="Bouton delete"/>Delete</td>
-            </tr>
-            ';
+        $html = '<table>';
+        if($comments != ''){
+            foreach ($comments as $com)
+            {
+                $html .='
+                <tr>
+                   <td>'. $com->getIdCommentaire() .'</td>
+                   <td>'. $com->getCommentaire() .'</td>
+                   <td>'. $com->getPriorite() .'</td>
+                   <td>'. $com->getDateCommentaire() .'</td>
+                   <td>'. $com->getHeureCommentaire() .'</td>
+                   <td>'. $com->getIdCommentaireParent() .'</td>
+                   <td>'. $com->getIdUtilisateur() .'</td>
+                   <td>'. $com->getIdActivite() .'</td>
+                   <td><a href="modifierComment.php?nom='.$com->getIdCommentaire().'"><img src="http://www.cesbio.ups-tlse.fr/data_all/images/16x16/edit.png" alt="Bouton edit"/>Edit</td>
+                   <td><a href="supprimerComment.php?nom='.$com->getIdCommentaire().'"><img src="http://www.sportrelax-vicemil.cz/en/css/DeleteIcon.gif" alt="Bouton delete"/>Delete</td>
+                </tr>
+                ';
+            }
         }
-        $html .= '</table>';
+        $html.='</table>';
         return $html;
     }
 
