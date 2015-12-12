@@ -128,6 +128,10 @@ class AgendaManager{
 			return $infosReturn;
 	}
 
+	/**
+	*	Remove an Agenda
+	*	@param : Agenda we want to remove
+	*/
 	public function remove(Agenda $agenda){
 		$idAgenda = $agenda->getId();
 		$sql = "DELETE FROM agenda WHERE idAgenda = :idAgenda ";
@@ -137,6 +141,11 @@ class AgendaManager{
 		$req->closeCursor();
 	}
 
+	/**
+	*	Update an Agenda
+	*	@param : Agenda we want to update
+	*	@return : Return true if the update is a success / else false
+	*/
 	public function modify(Agenda $agenda){
 		$sql = "UPDATE activite
 			SET nom = :nom,
