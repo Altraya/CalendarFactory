@@ -69,7 +69,6 @@
 			}
 			//we want to create an activity / event
 		}elseif (isset($_POST['createActivity'])) {
-
 			$dataActivity["idAgenda"] = htmlspecialchars($_POST['idAgenda']);
 			//if we don't have already create an agenda, we can't add any activity
 			if($dataActivity["idAgenda"] == ""){
@@ -93,6 +92,11 @@
 					$dataActivity["nbOccur"] = htmlspecialchars($_POST['occurence']);
 					$dataActivity['isInBreak'] = false;
 
+					//if endHour == "" is that mean that the event is on all the day -> so we fix the last hour to add in DB
+					if($dataActivity["endHour"] == ""){
+						$dataActivity["endHour"] = '23:59:59';
+					}
+
 					if (isset($_POST['isPossibleToSubscribe'])) {
 						if(htmlspecialchars($_POST['isPossibleToSubscribe']) == "isPossibleToSubscribe"){
 							$dataActivity['isPossibleToSubscribe'] = true;
@@ -114,7 +118,7 @@
 						$errorView->errorNeedToCompleteForm();
 					}else{
 						//if we dont have a starting date + a ending date or a startDate + a periodicity or a number of occurence > error
-						if($dataActivity["endDate"] !== "" || $dataActivity["periodic"] !== "" || $dataActivity["nbOccur"] !== ""){
+						if($dataActivity["endDate"] == "" && $dataActivity["periodic"] == "" && $dataActivity["nbOccur"] == ""){
 							$errorView->errorNeedToCompleteForm();
 						}else{
 							//start to add in database us activity
