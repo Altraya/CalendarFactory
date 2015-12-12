@@ -13,13 +13,12 @@
 	$viewG->header("Modification d'agenda");
 	$viewG->navBar("Modification d'agenda");
 	if(isset($_SESSION['login'])) {
-
 		$agenda = $agendaManager->getAgenda(htmlspecialchars($_GET['idAgenda']));
 	}
 	?>
 	<p>Modification de l'agenda, changez les champs incorrects :
 			<br/><br/>
-			<form action="modifierAgenda.php" method="post">
+			<form action="agendaModified.php" method="post">
 				<input type="hidden" name="idAgenda" value="<?php echo($agenda->getId()) ?>"/>
 				Nom : <input type="text" name="nom" value="<?php echo($agenda->getNom()) ?>"/>
 				<br/><br/>
@@ -36,13 +35,6 @@
 		</p>
 	<?php
 		
-		if (isset($_POST['nom'])&& $_POST['priorite'] && $_POST['lastEdition'] && $_POST['estSuperposable'] && $_POST['EnvoyerModifAgenda']=="Envoyer")
-		{
-			$agenda = new Agenda($_POST);
-			$agendaManager->modify($agenda);
-			echo('La modification de votre agenda a bien été prise en compte.<br/>');
 		
-			
-		}
 		$viewG->footer();
 	?>
