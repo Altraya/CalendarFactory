@@ -130,6 +130,34 @@ class AgendaManager{
 
 
 	/**
+	*	Get all agenda of all users
+	*	@return : false if we don't get any agenda, or an array of Agenda Object
+	*/
+	public function getAllAllAgenda(){
+		$agenda = array();
+		$return = array();
+		$req = $this->_db->query('SELECT * FROM agenda');
+		while ($donnees = $req->fetch(PDO::FETCH_ASSOC)){
+			$agenda['id'] = $donnees['idAgenda'];
+			$agenda['nom'] = $donnees['nom'];
+			$agenda['priorite'] = $donnees['priorite'];
+			$agenda['lastEdition'] = $donnees['lastEdition'];
+			$agenda['estSuperposable'] = $donnees['estSuperposable'];
+			$agenda['idUtilisateur'] = $donnees['idUtilisateur'];
+			$return[] = new Agenda($agenda);
+		}
+		$nbTupleObt = $req->rowCount();
+		$req->closeCursor();
+
+		if($nbTupleObt < 1)
+			return false;
+		else
+			return $return;
+
+	}
+
+
+	/**
 	*	Get one agenda with his id
 	* 	@param : $id : agenda's id
 	*	@return : Agenda object
