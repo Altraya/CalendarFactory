@@ -444,7 +444,7 @@ class GeneralView{
                 <div class="row center">
                     <div class="checkbox">
                         <label>
-                            <input type="checkbox" value="estSuperposable">
+                            <input type="checkbox" name="isSuperposable" value="isSuperposable">
                             Superposition possible <br/>
                             <small>Indiquez si vous pouvez superposer plusieurs activités dans le même créneau pour votre agenda.</small>
                         </label>

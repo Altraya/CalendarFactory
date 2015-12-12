@@ -21,15 +21,15 @@
 			if($nomAgenda == '' && $priorite == ''){
 				$errorView->errorNeedToCompleteForm();
 			}else{
-
 				//check is la valeur de isSuperposable
-					$isSuperposable = 1;
-				$isSuperposable = 0;
+				if(htmlspecialchars($_POST['isSuperposable']) == "isSuperposable")
+					$data['isSuperposable'] = true;
+				else
+					$data['isSuperposable'] = false;
 				$data['id'] = null;
 				$data['nom'] = $nomAgenda;
 				$data['priorite'] = $prioriteAgenda;
 				$data['lastEdition'] = null;
-				$data['isSuperposable'] = $isSuperposable;
 				$data['ownerId'] = $_SESSION['idUser'];
 				$agenda = new Agenda($data);
 				if($idAgenda = $agendaManager->add($agenda)){
@@ -49,8 +49,8 @@
 						if($agendaManager->addCategorieAgenda($idAgenda, $idCategorie)){
 							//all work -> success message
 							$errorView->successAgendaCreated();
-							$errorView->redirection(1);
-							header('Refresh: 1; url=createCalendar.php');
+							//$errorView->redirection(1);
+							//header('Refresh: 1; url=createCalendar.php');
 						}else{
 							//link between categorie and agenda failed
 							$errorView->errorGeneral();
