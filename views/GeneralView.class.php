@@ -112,7 +112,7 @@ class GeneralView{
                         <div class="panel-body">
                             <div class="row">
                                 <div class="col-md-6">
-                                    <h1 class="smallerTitle red gras noMargin">VULPUTATE ADIPISCING</h1>
+                                    <h1 class="smallerTitle noMargin">Options</h1>
                                     <p>Ici recherche et tri pour les agendas</p>
                                 </div>
 
@@ -131,7 +131,7 @@ class GeneralView{
         <div class="row">
             <div class="col-md-8">
             ';
-        //$html.= $this->calendar();
+        $html.= $this->calendar();
         $html.='
             </div>
             <div class="col-md-4">
