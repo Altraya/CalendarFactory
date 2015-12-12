@@ -622,5 +622,67 @@ class GeneralView{
         ';
         return $html;
     }
+
+    public function generateAdminPanel()
+    {
+        $html = "";
+        $html.='
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h1>Panel Admin</h1>
+                            <div>
+
+                                <!-- Nav tabs -->
+                                <ul class="nav nav-tabs" role="tablist">
+                                    <li role="presentation" class="active"><a href="#adminUser" aria-controls="adminUser" role="tab" data-toggle="tab">Utilisateur</a></li>
+                                    <li role="presentation"><a href="#adminAgenda" aria-controls="adminAgenda" role="tab" data-toggle="tab">Agenda</a></li>
+                                    <li role="presentation"><a href="#adminCommentaire" aria-controls="adminCommentaire" role="tab" data-toggle="tab">Commentaires</a></li>
+                                </ul>
+
+
+                                <!-- Tab panes -->
+                                <div class="tab-content">
+                                    <div role="tabpanel" class="tab-pane active" id="adminUser">
+                                        <div class="row">
+                                            <div class="col-md-2">
+                                            </div>
+
+                                            <div class="col-md-8">
+
+                                            </div>
+                                            <div class="col-md-2">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div role="tabpanel" class="tab-pane" id="adminAgenda">
+                                        <div class="row">
+
+                                            <div class="col-md-12">
+
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    <div role="tabpanel" class="tab-pane" id="adminCommentaire">
+                                        <div class="row">
+
+                                            <div class="col-md-12">
+
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </body>
+        </html>
+        ';
+        echo($html);
+    }
 }
 ?>

@@ -13,7 +13,7 @@
 	if(isset($_SESSION['pseudo'])){
 		$errorView->alreadyConnected();
 	}else{
-		//the user have not click on the connexion button => redirect and display error
+		//the user has not click on the connexion button => redirect and display error
 		if(!isset($_POST['connexion'])){
 			$errorView->errorButtonNotClicked();
 			$errorView->redirection(1);

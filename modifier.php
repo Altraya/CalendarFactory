@@ -15,9 +15,8 @@
 	$viewG->header("Modification d'activité");
 	$viewG->navBar("Modification d'activité");
 	$viewAct->displayActivities($manager->getAllActivities());
-	if(isset($_SESSION['login'])){
-		if(isset(($_POST['supprActivity']) && $_POST['idActivity']))
-		{
+	if(isset($_SESSION['login'])) {
+		if (isset($_POST['supprActivity']) && isset($_POST['idActivity'])) {
 			require_once('config.php');
 
 			require_once('Activity.class.php');
@@ -26,6 +25,7 @@
 		}
 
 		$activite = $manager->getActivity(htmlspecialchars($_GET['idActivite']));
+	}
 	?>
 	<p>Modification de l'activité, changez les champs incorrects :
 			<br/><br/>
@@ -64,7 +64,8 @@
 		</p>
 	<?php
 		
-		if (isset($_POST['Envoyer2'])&& $_POST['Envoyer2'] == 'Envoyer') {
+		if (isset($_POST['Envoyer2'])&& $_POST['Envoyer2'] == 'Envoyer')
+		{
 			$activite = new Activity($_POST);
 			$manager->modify($activite);
 			echo('La modification de votre activité a bien été prise en compte.<br/>');
