@@ -16,6 +16,8 @@
 		$agenda = $agendaManager->getAgenda(htmlspecialchars($_GET['idAgenda']));
 		var_dump($agenda);
 	}
+	var_dump($agenda);
+	var_dump($_GET['idAgenda']);
 	?>
 	<p>Modification de l'agenda, changez les champs incorrects :
 			<br/><br/>

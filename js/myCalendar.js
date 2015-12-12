@@ -23,12 +23,12 @@ function generateCalendar(dateDebut){
 				</thead>\
 				<tbody>\
 					<tr>\
-						<td>1</td>\
-						<td>Anna</td>\
-						<td>Pitt</td>\
-						<td>35</td>\
-						<td>New York</td>\
-						<td>USA</td>\
+						<td class='case unused'>1</td>\
+						<td class='case normal'>Anna</td>\
+						<td class='case day'>Pitt</td>\
+						<td class='case normal'>35</td>\
+						<td class='case normal'>New York</td>\
+						<td class='case normal'>USA</td>\
 					</tr>\
 				</tbody>\
 			</table>\

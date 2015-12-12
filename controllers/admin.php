@@ -23,7 +23,6 @@
 	$dataTabAgenda = $manager->getAllAllAgenda();
 	$dataTabUser = $userMan->getAllUsers();
 	$dataTabComm = $commentMan->getAllComments();
-//	var_dump($dataTabAgenda);
 	$viewG->generateAdminPanel($dataTabUser, $dataTabAgenda, $dataTabComm);
 	$viewG->footer();
 ?>

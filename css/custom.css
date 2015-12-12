@@ -155,3 +155,25 @@ footer{
 /**
 		Others
 */
+
+.table>thead>tr>th{
+	vertical-align: middle;
+	height: 100px;
+}
+
+.case{
+	vertical-align: middle;
+	height: 100px;
+}
+
+.unused{
+	background-color: gray;
+}
+
+.day{
+	background-color: blue;
+}
+
+.normal{
+	background-color: white;
+}
