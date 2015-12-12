@@ -80,26 +80,38 @@
 					var_dump($_POST);
 					$dataActivity["description"] = htmlspecialchars($_POST['description']);
 					$dataActivity["geoPos"] = htmlspecialchars($_POST['localisation']);
+					$dataActivity["priority"] = htmlspecialchars($_POST['prioriteActivity']);
 					$dataActivity["startDate"] = htmlspecialchars($_POST['dateDebut']);
 					$dataActivity["endDate"] = htmlspecialchars($_POST['dateFin']);
 					$dataActivity["startHour"] = htmlspecialchars($_POST['heureDebut']);
 					$dataActivity["endHour"] = htmlspecialchars($_POST['heureFin']);
 					$dataActivity['type'] = htmlspecialchars($_POST['type']);
-					$dataActivity["periodicity"] = htmlspecialchars($_POST['periodicite']);
+					$dataActivity["periodic"] = htmlspecialchars($_POST['periodicite']);
 					$dataActivity["nbOccur"] = htmlspecialchars($_POST['occurence']);
+					$dataActivity['isInBreak'] = false;
+					if(htmlspecialchars($_POST['isPossibleToSubscribe']) == "isPossibleToSubscribe")
+						$dataActivity['isPossibleToSubscribe'] = true;
+					else
+						$dataActivity['isPossibleToSubscribe'] = false;
+
+					if(htmlspecialchars($_POST['isPublic']) == "isPublic")
+						$dataActivity['isPublic'] = true;
+					else
+						$dataActivity['isPublic'] = false;
 
 					//in all case if we dont have a starting date > error
 					if($dataActivity["startDate"] == ""){
 						$errorView->errorNeedToCompleteForm();
 					}else{
 						//if we dont have a starting date + a ending date or a startDate + a periodicity or a number of occurence > error
-						if($dataActivity["endDate"] == "" || $dataActivity["periodicity"] == "" || $dataActivity["nbOccur"] == ""){
+						if($dataActivity["endDate"] == "" || $dataActivity["periodic"] == "" || $dataActivity["nbOccur"] == ""){
 							$errorView->errorNeedToCompleteForm();
 						}else{
 							//start to add in database us activity
 							require_once("models/Activity.class.php");
 							require_once("models/ActivityManager.class.php");
 							$activityManager = new ActivityManager($db);
+							var_dump($dataActivity);
 							$activity = new Activity($dataActivity);
 							if($activityManager->add($activity)){
 								$errorView->successActivityCreated();

@@ -535,7 +535,7 @@ class GeneralView{
                             </div>
                             <div class="col-md-6">
                                 <label for="priorite">Priorité :</label>
-                                <input type="text" class="form-control" name="priorite" id="priorite" placeholder="Ex : 3 (0 < 1 < 2)">
+                                <input type="text" class="form-control" name="prioriteActivity" id="priorite" placeholder="Ex : 3 (0 < 1 < 2)">
                             </div>
                         </div>
 
@@ -583,7 +583,7 @@ class GeneralView{
                             <div class="col-md-6">
                                 <div class="checkbox">
                                     <label>
-                                        <input type="checkbox" value="inscriptionPossible">
+                                        <input type="checkbox" name="isPossibleToSubscribe" value="isPossibleToSubscribe">
                                         Inscription possible <br/>
                                         <small>(tout le monde pourra s\'inscrire à votre evenement)</small>
                                     </label>
@@ -592,7 +592,7 @@ class GeneralView{
                             <div class="col-md-6">
                                 <div class="checkbox">
                                     <label>
-                                        <input type="checkbox" value="eventPublic">
+                                        <input type="checkbox" name="isPublic" value="isPublic">
                                         Evenement public <br/> 
                                         <small>(tout le monde pourra voir votre evenement)</small>
                                     </label>
