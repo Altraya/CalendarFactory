@@ -57,15 +57,23 @@ class UserManager{
 			pwd = :pwd,
 			nom = :nom,
 			prenom = :prenom,
-			adresse = :adresse,
+			adresse = :adresse
 			WHERE idUtilisateur = :idUtilisateur";
+
+		$id = $user->getIdUtilisateur();
+		$log = $user->getLogin();
+		$password = $user->getPwd();
+		$name = $user->getNom();
+		$surname =  $user->getPrenom();
+		$adress = $user->getAdresse();
+
 		$req = $this->_db->prepare($sql);
-		$req->bindParam(':idUtilisateur', $user->getIdUtilisateur(), PDO::PARAM_STR);
-		$req->bindParam(':login', $user->getLogin(), PDO::PARAM_STR);
-		$req->bindParam(':pwd', $user->getPwd(), PDO::PARAM_STR);
-		$req->bindParam(':nom', $user->getNom(), PDO::PARAM_STR);
-		$req->bindParam(':prenom', $user->getPrenom(), PDO::PARAM_STR);
-		$req->bindParam(':adresse', $user->getAdresse(), PDO::PARAM_STR);
+		$req->bindParam(':idUtilisateur',$id , PDO::PARAM_STR);
+		$req->bindParam(':login',$log , PDO::PARAM_STR);
+		$req->bindParam(':pwd', $password, PDO::PARAM_STR);
+		$req->bindParam(':nom',$name , PDO::PARAM_STR);
+		$req->bindParam(':prenom',$surname, PDO::PARAM_STR);
+		$req->bindParam(':adresse',$adress , PDO::PARAM_STR);
 		$req->execute();
 
 		$nbTupleObt = $req->rowCount();	
@@ -79,10 +87,17 @@ class UserManager{
 	//retourne un tableau avec tout les utilisateurs
 	public function getAllUsers(){
 		$user = array();
+		$return = array();
 		$req = $this->_db->query('SELECT *
 									FROM utilisateur');
 		while ($donnees = $req->fetch(PDO::FETCH_ASSOC)) {
-			$user[] = new User($donnees);
+			$user['idUtilisateur'] = $donnees['idUtilisateur'];
+			$user['pwd'] = $donnees['pwd'];
+			$user['login'] = $donnees['login'];
+			$user['nom'] = $donnees['nom'];
+			$user['prenom'] = $donnees['prenom'];
+			$user['adresse'] = $donnees['adresse'];
+			$return[] = new User($user);
 		}
 
 		$nbTupleObt = $req->rowCount();	
@@ -90,7 +105,7 @@ class UserManager{
 
 		if($nbTupleObt < 1)
 			return false;
-		return $user;
+		return $return;
 	}
 
 	//renvoie l'utilisateur associé à l'ID en argument

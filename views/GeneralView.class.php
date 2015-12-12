@@ -681,8 +681,8 @@ class GeneralView{
                    <td>'. $us->getNom() .'</td>
                    <td>'. $us->getPrenom() .'</td>
                    <td>'. $us->getAdresse() .'</td>
-                   <td><a href="modifierUser.php?nom='.$us->getIdUtilisateur().'"><img src="http://www.cesbio.ups-tlse.fr/data_all/images/16x16/edit.png" alt="Bouton edit"/>Edit</td>
-                   <td><a href="supprimerUser.php?nom='.$us->getIdUtilisateur().'"><img src="http://www.sportrelax-vicemil.cz/en/css/DeleteIcon.gif" alt="Bouton delete"/>Delete</td>
+                   <td><a href="modifierUser.php?idUser='.$us->getIdUtilisateur().'"><img src="http://www.cesbio.ups-tlse.fr/data_all/images/16x16/edit.png" alt="Bouton edit"/>Edit</td>
+                   <td><a href="supprimerUser.php?idUser='.$us->getIdUtilisateur().'"><img src="http://www.sportrelax-vicemil.cz/en/css/DeleteIcon.gif" alt="Bouton delete"/>Delete</td>
                 </tr>
                 ';
             }
