@@ -1,3 +1,3 @@
 <?php
-	require_once("controllers/modifierAgenda");
+	require_once("controllers/modifierAgenda.php");
 ?>

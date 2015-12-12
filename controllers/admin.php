@@ -16,6 +16,7 @@
 	$viewG->header("CalendarFactory");
 	$viewG->navBar("Admin");
 	$dataTabAgenda = $manager->getAllAllAgenda();
+	var_dump($dataTabAgenda);
 	$viewG->generateAdminPanel("", $dataTabAgenda, "");
 	$viewG->footer();
 ?>

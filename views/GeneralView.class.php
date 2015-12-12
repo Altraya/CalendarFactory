@@ -718,7 +718,7 @@ class GeneralView{
                                         <div class="row">
                                             <div class="col-md-12">
                                             ';
-                                            $this->displayUserList($dataTabUser);
+                                                $html.= $this->displayUserList($dataTabUser);
                                     $html.='
                                             </div>
                                         </div>
@@ -728,7 +728,7 @@ class GeneralView{
 
                                             <div class="col-md-12">
                                             ';
-                                                $this->displayAgendaList($dataTabAgenda);
+                                                $html.= $this->displayAgendaList($dataTabAgenda);
                                     $html.='
                                             </div>
 
@@ -739,7 +739,7 @@ class GeneralView{
 
                                             <div class="col-md-12">
                                             ';
-                                                $this->displayCommentList($dataTabComment);
+                                                $html.= $this->displayCommentList($dataTabComment);
                                     $html.='
                                             </div>
 
