@@ -129,6 +129,31 @@ class AgendaManager{
 			return $infosReturn;
 	}
 
+	/**
+	*	Get all agenda id for a specific user
+	*	@param userId : user's id
+	*	@return : false if the user don't have any agenda, or an array of agendaId
+	*/
+	public function getAllAgendaIdOfUser($userId){
+		$infos = array();
+		$infosReturn = array();
+		$i = 0;
+
+		$req = $this->_db->query('SELECT idAgenda FROM agenda WHERE idUtilisateur = '.$userId.' ');
+		while ($donnees = $req->fetch(PDO::FETCH_ASSOC)){
+			$infos["id_$i"] = $donnees['idAgenda'];
+			$i++;
+		}
+
+		$nbTupleObt = $req->rowCount();
+		$req->closeCursor();
+
+		if($nbTupleObt < 1)
+			return false;
+		else
+			return $infos;
+	}
+
 
 	/**
 	*	Get all agenda of all users
@@ -268,7 +293,7 @@ class AgendaManager{
 			$infos['idActivity'] = $donnees['idActivite'];
 			$infos['title'] = $donnees['titre'];
 			$infos['description'] = $donnees['description'];
-			$infos['$geoPos'] = $donnees['positionGeographique'];
+			$infos['geoPos'] = $donnees['positionGeographique'];
 			$infos['type'] = $donnees['type'];
 			$infos['priority'] = $donnees['priorite'];
 			$infos['startDate'] = $donnees['dateDebut'];
@@ -280,6 +305,52 @@ class AgendaManager{
 			$infos['isInBreak'] = $donnees['estEnPause'];
 			$infos['isPossibleToSubscribe'] = $donnees['estPossibleDeSinscrire'];
 			$infos['isPublic'] = $donnees['estPublic'];
+			$infos['idAgenda'] = $donnees['idAgenda'];
+			$infosReturn[] = new Activity($infos);
+		}
+	$nbTupleObt = $req->rowCount();
+		$req->closeCursor();
+
+		if($nbTupleObt < 1)
+			return false;
+		else
+			return $infosReturn;
+	}
+
+	//activities from an agenda from a date
+	public function getAllActivitiesByDate(Array $agendaId, $date){
+		$infos = array();
+		$infosReturn = array();
+		$suiteSQL="";
+
+		$sql = "SELECT * FROM activite WHERE idAgenda IN (";
+		$sql.=$agendaId[0];
+
+		for ($i=1; $i < count($agendaId); $i++) { 
+			$suiteSQL .= ', '.$agendaId[$i];
+		}
+		$suiteSQL.=')';
+		$sql.=$suiteSQL;
+
+		//example of request : SELECT * FROM activite WHERE idAgenda IN (60, 61, 62);
+		$req = $this->_db->query($sql);
+		while ($donnees = $req->fetch(PDO::FETCH_ASSOC)){
+			$infos['idActivity'] = $donnees['idActivite'];
+			$infos['title'] = $donnees['titre'];
+			$infos['description'] = $donnees['description'];
+			$infos['geoPos'] = $donnees['positionGeographique'];
+			$infos['type'] = $donnees['type'];
+			$infos['priority'] = $donnees['priorite'];
+			$infos['startDate'] = $donnees['dateDebut'];
+			$infos['endDate'] = $donnees['dateFin'];
+			$infos['startHour'] = $donnees['heureDebut'];
+			$infos['endHour'] = $donnees['heureFin'];
+			$infos['periodic'] = $donnees['periodicite'];
+			$infos['nbOccur'] = $donnees['nbOccurence'];
+			$infos['isInBreak'] = $donnees['estEnPause'];
+			$infos['isPossibleToSubscribe'] = $donnees['estPossibleDeSinscrire'];
+			$infos['isPublic'] = $donnees['estPublic'];
+			$infos['idAgenda'] = $donnees['idAgenda'];
 			$infosReturn[] = new Activity($infos);
 		}
 	$nbTupleObt = $req->rowCount();

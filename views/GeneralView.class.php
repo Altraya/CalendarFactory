@@ -70,7 +70,7 @@ class GeneralView{
                                                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                                                     <ul class="nav navbar-nav navbar-right">
                                                         <li><a href="calendar.php">Mes agendas</a></li>
-                                                        <li><a href="account.php">Mon compte</a></li>
+                                                        <li><a href="search.php">Rechercher</a></li>
                                                         <li><a href="createCalendar.php">Creer un agenda / une activité</a></li>
                                                         <li><a href="admin.php">Admin</a></li>
                                                     ';
@@ -93,7 +93,8 @@ class GeneralView{
     }
 
 
-    public function body(){
+    public function body($tabIdAgenda){
+        var_dump($tabIdAgenda);
         $html = "";
         $html.='
         <div class="row">
@@ -132,7 +133,7 @@ class GeneralView{
         <div class="row">
             <div class="col-md-12">
             ';
-        $html.= $this->calendar();
+        $html.= $this->calendar($tabIdAgenda);
         $html.='
             </div>
             
@@ -184,18 +185,96 @@ class GeneralView{
     */
 
     //return string to show calendar
-    public function calendar(){
+    public function calendar(Array $tabIdAgenda){
         $html="";
         $html.='
 
             <script src="js/metro.js"></script>
+            <script src="js/myCalendar.js"></script>
                 <div class="darcula" data-role="calendar" data-week-start="1" data-locale="fr" data-day-click="day_click"></div>
+                ';
+            $html.= $this->modal();
+            $html.='
                 <script>
                     function day_click(short, full) {
+                        $(\'#myModalLabel\').html("Activités de vos agendas du "+short);
+                        $(\'#myModalBody\').html(function(){
+
+                        $.ajax({
+                            url: \'script/getInfosShowAgenda.php?'.http_build_query($tabIdAgenda).'&date=short\', 
+                            type: \'GET\',
+                            success: function(msg){
+                                $(\'#myModalBody\').html(msg);
+                            }
+                        })
+                            
+                        });
+                        $(\'#myModal\').modal(\'show\');
                         alert("You click on day!\nShort: "+short+"\nFull: " + full);
-                        console.log("hey");
+                        console.log("hey Short: "+short+"\nFull: " + full);
                     }
                 </script>
+        ';
+        echo(http_build_query($tabIdAgenda));
+        return $html;
+    }
+
+    public function dayCalendar($data){
+        
+        $html="";
+        $html.='
+            <table class="table table-striped">
+                <tbody>
+            ';
+                for ($i=0; $i < 24; $i++) {
+            $html.='
+                        <tr>
+                            <td id='.$i.'>'.$i.'</td>
+                    ';
+                            $timeI = date('H:i:s', mktime($i, 0, 0, 0,0,0)); //Borne inf
+                            $timeAfterI =  date('H:i:s', mktime($i+1, 0, 0, 0,0,0)); //Borne supp
+
+                            foreach ($data as $key => $act) {
+                                //if we have an event in this creneau
+                                if($act->getStartHour() <= $timeI && $act->getEndHour() >= $timeAfterI){
+                                    $html.='<td>'.$act->getIdActivity() .' - '.$act->getTitle().' - '.$act->getDescription().'</td>';
+                                }
+                            }
+            $html.='
+
+                        </tr>
+                    ';
+                }
+            $html.='
+                </tbody>
+            </table>
+        ';
+        echo($html);
+    }
+
+    //show a modal 
+    public function modal(){
+        $html="";
+        $html.='
+
+        <!-- Modal -->
+        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="myModalLabel"></h4>
+                    </div>
+                    <div class="modal-body" id="myModalBody">
+                        ...
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary">Save changes</button>
+                    </div>
+                </div>
+            </div>
+        </div>
         ';
         return $html;
     }

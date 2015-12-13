@@ -1,18 +1,22 @@
 <?php
 
 	require_once("views/GeneralView.class.php");
+	require_once("views/ErrorOrSuccessView.class.php");
+	require_once("private/config.php");
+	require_once("models/AgendaManager.class.php");
 
 	$viewG = new GeneralView();
-
-	require_once("views/ErrorOrSuccessView.class.php");
-
 	$errorView = new ErrorOrSuccessView();
+	$agendaManager = new AgendaManager($db);
 
 	$viewG->header("CalendarFactory");
 	$viewG->navBar("Mes agendas");
 
 	if(isset($_SESSION['login'])){
-		$viewG->body();
+		$tabInfoAgenda = $agendaManager->getAllAgendaIdOfUser($_SESSION['idUser']);
+		echo("calendar.php");
+		var_dump($tabInfoAgenda);
+		$viewG->body($tabInfoAgenda);
 	}else{
 		$errorView->errorNotConnected();
 	}
