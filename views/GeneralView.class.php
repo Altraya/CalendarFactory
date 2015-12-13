@@ -19,6 +19,7 @@ class GeneralView{
 
                 <title>'.$pageTitle.'</title>
 
+                <link href="css/metro.css" rel="stylesheet">
                 <!-- Bootstrap -->
                 <link href="css/bootstrap.min.css" rel="stylesheet">
                 <link href="css/custom.css" rel="stylesheet">
@@ -129,14 +130,12 @@ class GeneralView{
             </div>
         </div>
         <div class="row">
-            <div class="col-md-8">
+            <div class="col-md-12">
             ';
         $html.= $this->calendar();
         $html.='
             </div>
-            <div class="col-md-4">
-                Ecrire ici une petite div pour pouvoir commenter / sabonner a lagenda selectionné / evaluer / liker et la description
-            </div>
+            
         </div>
           
         ';
@@ -189,15 +188,14 @@ class GeneralView{
         $html="";
         $html.='
 
-            <div id="calendar"></div>
-
-            <script src="js/myCalendar.js"></script>
-            <script>
-                $(document).ready(function() {
-                    generateCalendar();
-                });
-            </script>
-
+            <script src="js/metro.js"></script>
+                <div class="darcula" data-role="calendar" data-week-start="1" data-locale="fr" data-day-click="day_click"></div>
+                <script>
+                    function day_click(short, full) {
+                        alert("You click on day!\nShort: "+short+"\nFull: " + full);
+                        console.log("hey");
+                    }
+                </script>
         ';
         return $html;
     }
