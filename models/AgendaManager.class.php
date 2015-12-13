@@ -6,6 +6,7 @@
 *	Author : Karakayn
 */
 require_once('Agenda.class.php');
+require_once("Activity.class.php");
 
 class AgendaManager{
 	
@@ -120,6 +121,38 @@ class AgendaManager{
 		}
 
 		$nbTupleObt = $req->rowCount();
+		$req->closeCursor();
+
+		if($nbTupleObt < 1)
+			return false;
+		else
+			return $infosReturn;
+	}
+
+	//get all activities from an agenda
+	public function getAllActivities($agendaId){
+		$infos = array();
+		$infosReturn = array();
+		$req = $this->_db->query('SELECT * FROM activite WHERE idAgenda = '.$agendaId.' ');
+		while ($donnees = $req->fetch(PDO::FETCH_ASSOC)){
+			$infos['idActivity'] = $donnees['idActivite'];
+			$infos['title'] = $donnees['titre'];
+			$infos['description'] = $donnees['description'];
+			$infos['$geoPos'] = $donnees['positionGeographique'];
+			$infos['type'] = $donnees['type'];
+			$infos['priority'] = $donnees['priorite'];
+			$infos['startDate'] = $donnees['dateDebut'];
+			$infos['endDate'] = $donnees['dateFin'];
+			$infos['startHour'] = $donnees['heureDebut'];
+			$infos['endHour'] = $donnees['heureFin'];
+			$infos['periodic'] = $donnees['periodicite'];
+			$infos['nbOccur'] = $donnees['nbOccurence'];
+			$infos['isInBreak'] = $donnees['estEnPause'];
+			$infos['isPossibleToSubscribe'] = $donnees['estPossibleDeSinscrire'];
+			$infos['isPublic'] = $donnees['estPublic'];
+			$infosReturn[] = new Activity($infos);
+		}
+	$nbTupleObt = $req->rowCount();
 		$req->closeCursor();
 
 		if($nbTupleObt < 1)

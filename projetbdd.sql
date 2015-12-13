@@ -94,7 +94,7 @@ CREATE TABLE IF NOT EXISTS `agenda` (
   `estSuperposable` tinyint(1) NOT NULL COMMENT 'Permet de savoir si on peut superposer cet agenda avec un autre agenda qui est defini comme superposable',
   `idUtilisateur` int(11) DEFAULT NULL COMMENT 'Id de l utilisateur qui a cree l agenda',
   PRIMARY KEY (`idAgenda`),
-  KEY `fk_AGENDA_utilisateur` (`idUtilisateur`)
+  KEY `fk_AGENDA_utilisateur` (`idUtilisateur`) 
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=19 ;
 
 --
