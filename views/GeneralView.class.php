@@ -92,38 +92,72 @@ class GeneralView{
         echo($html);
     }
 
+    public function agendaList($tabAgendaUserAndFollow){
+        $html="";
+        $html.='
+            Agendas actuellement affichés : <br/>
 
-    public function body($tabIdAgenda){
+            <table class="table table-striped">
+                <thead>
+
+                </thead>
+                    <th>id</th>
+                    <th>Nom</th>
+                    <th>Priorite</th>
+                    <th>Dernière édition</th>
+                <tbody>
+        ';
+            foreach ($tabAgendaUserAndFollow as $k => $agenda) {
+
+                $html.= '<td>'.$agenda->getId().'</td>';
+                $html.= '<td>'.$agenda->getNom().'</td>';
+                $html.='<td>'.$agenda->getPriorite().'</td>';
+                if($agenda->getLastEdition() === "0000-00-00"){
+                    $html.='<td> Jamais </td>';
+                }else{
+                    $html.='<td>'.$agenda->getLastEdition().'</td>
+                    ';
+                }
+
+                $html.='</tr>';
+            }
+
+        $html.='
+                </tbody>
+            </table>
+        ';
+        return $html;
+    }
+
+    public function body($tabIdAgenda, $tabAgendaUserAndFollow){
 
         $html = "";
         $html.='
         <div class="row">
-            <div class="col-md-3">
+            <div class="col-md-4">
                 <div class="panel panel-default notRound noMargin">
                     <div class="panel-body">
                         <div class="row">
-                            Calendar?
+                            <div class="col-md-12 center">
+                    ';
+                $html.= $this->agendaList($tabAgendaUserAndFollow);
+                $html.='
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div class="col-md-9">
+            <div class="col-md-8">
                 <div class="row">
                     <div class="panel panel-default notRound noMargin">
                         <div class="panel-body">
                             <div class="row">
-                                <div class="col-md-6">
+                                <div class="col-md-12">
                                     <h1 class="smallerTitle noMargin">Options</h1>
                                     <p>Ici recherche et tri pour les agendas</p>
                                 </div>
 
-                                <div class="col-md-6">
-                                    <div class="floatRight">
-                                        Hide Option
-                                        <span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span>
-                                    </div>
-                                </div>
                             </div>
                         </div>
                     </div>
@@ -331,7 +365,6 @@ class GeneralView{
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary">Save changes</button>
                     </div>
                 </div>
             </div>
@@ -680,6 +713,7 @@ class GeneralView{
                                     <option>Quotidien</option>
                                     <option>Hebdomadaire</option>
                                     <option>Trimestrielle</option>
+                                    <option>Annuel</option>
                                 </select>
                             </div>
                             <div class="col-md-6">
