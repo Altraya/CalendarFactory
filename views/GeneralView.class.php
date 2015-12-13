@@ -679,8 +679,8 @@ class GeneralView{
                    <td>'. $us->getNom() .'</td>
                    <td>'. $us->getPrenom() .'</td>
                    <td>'. $us->getAdresse() .'</td>
-                   <td><a href="modifierUser.php?nom='.$us->getIdUtilisateur().'"><img src="http://www.cesbio.ups-tlse.fr/data_all/images/16x16/edit.png" alt="Bouton edit"/>Edit</td>
-                   <td><a href="supprimerUser.php?nom='.$us->getIdUtilisateur().'"><img src="http://www.sportrelax-vicemil.cz/en/css/DeleteIcon.gif" alt="Bouton delete"/>Delete</td>
+                   <td><a href="modifierUser.php?idUser='.$us->getIdUtilisateur().'"><img src="http://www.cesbio.ups-tlse.fr/data_all/images/16x16/edit.png" alt="Bouton edit"/>Edit</td>
+                   <td><a href="supprimerUser.php?idUser='.$us->getIdUtilisateur().'"><img src="http://www.sportrelax-vicemil.cz/en/css/DeleteIcon.gif" alt="Bouton delete"/>Delete</td>
                 </tr>
                 ';
             }
@@ -690,7 +690,19 @@ class GeneralView{
     }
 
     public function displayCommentList($comments){
-        $html = '<table>';
+        $html = '<table class="table table-striped">
+        <tr>
+            <td>Id</td>
+           <td>Commentaire</td>
+           <td>Date d\'écriture</td>
+           <td>Heure d\'écriture</td>
+           <td>Id commentaire parent</td>
+           <td>Id auteur</td>
+           <td>Id activité associée</td>
+           <td>Edit</td>
+           <td>Delete</td>
+        </tr>
+          ';
         if($comments != ''){
             foreach ($comments as $com)
             {
@@ -698,14 +710,13 @@ class GeneralView{
                 <tr>
                    <td>'. $com->getIdCommentaire() .'</td>
                    <td>'. $com->getCommentaire() .'</td>
-                   <td>'. $com->getPriorite() .'</td>
                    <td>'. $com->getDateCommentaire() .'</td>
                    <td>'. $com->getHeureCommentaire() .'</td>
                    <td>'. $com->getIdCommentaireParent() .'</td>
                    <td>'. $com->getIdUtilisateur() .'</td>
                    <td>'. $com->getIdActivite() .'</td>
-                   <td><a href="modifierComment.php?nom='.$com->getIdCommentaire().'"><img src="http://www.cesbio.ups-tlse.fr/data_all/images/16x16/edit.png" alt="Bouton edit"/>Edit</td>
-                   <td><a href="supprimerComment.php?nom='.$com->getIdCommentaire().'"><img src="http://www.sportrelax-vicemil.cz/en/css/DeleteIcon.gif" alt="Bouton delete"/>Delete</td>
+                   <td><a href="modifierComment.php?idCom='.$com->getIdCommentaire().'"><img src="http://www.cesbio.ups-tlse.fr/data_all/images/16x16/edit.png" alt="Bouton edit"/>Edit</td>
+                   <td><a href="supprimerComment.php?idCom='.$com->getIdCommentaire().'"><img src="http://www.sportrelax-vicemil.cz/en/css/DeleteIcon.gif" alt="Bouton delete"/>Delete</td>
                 </tr>
                 ';
             }

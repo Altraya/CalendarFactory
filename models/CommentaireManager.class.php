@@ -87,10 +87,18 @@ class CommentaireManager{
 	*/
 	public function getAllComments(){
 		$comment = array();
+		$return = array();
 		$req = $this->_db->query('SELECT *
-									FROM commentaire GROUP BY idActivite');
+									FROM commentaire ');
 		while ($donnees = $req->fetch(PDO::FETCH_ASSOC)) {
-			$comment[] = new Commentaire($donnees);
+			$comment['idCommentaire'] = $donnees['idCommentaire'];
+			$comment['idCommentaireParent'] = $donnees['idCommentaireParent'];
+			$comment['commentaire'] = $donnees['commentaire'];
+			$comment['dateCommentaire'] = $donnees['dateCommentaire'];
+			$comment['heureCommentaire'] = $donnees['heureCommentaire'];
+			$comment['idUtilisateur'] = $donnees['idUtilisateur'];
+			$comment['idActivite'] = $donnees['idActivite'];
+			$return[] = new Commentaire($comment);
 		}
 
 		$nbTupleObt = $req->rowCount();	
@@ -98,7 +106,7 @@ class CommentaireManager{
 
 		if($nbTupleObt < 1)
 			return false;
-		return $comment;
+		return $return;
 	}
 
 	/**
@@ -111,18 +119,24 @@ class CommentaireManager{
 			SET commentaire = :commentaire,
 			dateCommentaire = :dateCommentaire,
 			heureCommentaire = :heureCommentaire,
-			idCommentaireParent = :idCommentaireParent,
 			idUtilisateur = :idUtilisateur,
 			idActivite = :idActivite
 			WHERE idCommentaire = :idCommentaire";
+
+		$comm = $commentaire->getCommentaire();
+		$dateCom = $commentaire->getDateCommentaire();
+		$heure = $commentaire->getHeureCommentaire();
+		$util = $commentaire->getIdUtilisateur();
+		$act = $commentaire->getIdActivite();
+		$idComm = $commentaire->getIdCommentaire();
+
 		$req = $this->_db->prepare($sql);
-		$req->bindParam(':commentaire', $commentaire->getCommentaire(), PDO::PARAM_STR);
-		$req->bindParam(':dateCommentaire', $commentaire->getDateCommentaire(), PDO::PARAM_STR);
-		$req->bindParam(':heureCommentaire', $commentaire->getHeureCommentaire(), PDO::PARAM_STR);
-		$req->bindParam(':idCommentaireParent', $commentaire->getIdCommentaireParent(), PDO::PARAM_STR);
-		$req->bindParam(':idUtilisateur', $commentaire->getIdUtilisateur(), PDO::PARAM_STR);
-		$req->bindParam(':idActivite', $commentaire->getIdActivite(), PDO::PARAM_STR);
-		$req->bindParam(':idCommentaire', $commentaire->getIdCommentaire(), PDO::PARAM_STR);
+		$req->bindParam(':commentaire',$comm , PDO::PARAM_STR);
+		$req->bindParam(':dateCommentaire',$dateCom , PDO::PARAM_STR);
+		$req->bindParam(':heureCommentaire',$heure , PDO::PARAM_STR);
+		$req->bindParam(':idUtilisateur',$util , PDO::PARAM_STR);
+		$req->bindParam(':idActivite', $act, PDO::PARAM_STR);
+		$req->bindParam(':idCommentaire', $idComm, PDO::PARAM_STR);
 		$req->execute();
 
 		$nbTupleObt = $req->rowCount();	

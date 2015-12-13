@@ -12,10 +12,14 @@
 
 	$viewG->header("Modification d'agenda");
 	$viewG->navBar("Modification d'agenda");
-if (isset($_POST['nom'])&& $_POST['priorite'] && $_POST['lastEdition']  && $_POST['EnvoyerModifAgenda']=="Envoyer")
+if (isset($_POST['nom'])&& isset($_POST['priorite']) && isset($_POST['lastEdition'])  && $_POST['EnvoyerModifAgenda']=="Envoyer")
 		{
+
 			$agenda = new Agenda($_POST);
+
 			$agendaManager->modify($agenda);
+
+
 			echo('La modification de votre agenda a bien été prise en compte.<br/>');
 		
 			
