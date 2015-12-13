@@ -3,8 +3,7 @@
 *	@param dateDebut : the date where the calendar start (show on screen)
 */
 function generateCalendar(dateDebut){
-	alert("coucou");
-	console.log("coucou");
+
 	dateFinSemaine = new Date();
 
 	$('#calendar').html(" \

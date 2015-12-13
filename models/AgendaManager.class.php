@@ -319,6 +319,7 @@ class AgendaManager{
 
 	//activities from an agenda from a date
 	public function getAllActivitiesByDate(Array $agendaId, $date){
+
 		$infos = array();
 		$infosReturn = array();
 		$suiteSQL="";
@@ -329,10 +330,10 @@ class AgendaManager{
 		for ($i=1; $i < count($agendaId); $i++) { 
 			$suiteSQL .= ', '.$agendaId[$i];
 		}
-		$suiteSQL.=')';
+		$dateSQL = '\''.$date.'\'';
+		$suiteSQL.=') AND dateDebut = '.$dateSQL;
 		$sql.=$suiteSQL;
-
-		//example of request : SELECT * FROM activite WHERE idAgenda IN (60, 61, 62);
+		//example of request : SELECT * FROM activite WHERE idAgenda IN (60, 61, 62) AND dateDebut = '2015-12-24';
 		$req = $this->_db->query($sql);
 		while ($donnees = $req->fetch(PDO::FETCH_ASSOC)){
 			$infos['idActivity'] = $donnees['idActivite'];

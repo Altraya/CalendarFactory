@@ -202,7 +202,7 @@ class GeneralView{
                         $(\'#myModalBody\').html(function(){
 
                         $.ajax({
-                            url: \'script/getInfosShowAgenda.php?'.http_build_query($tabIdAgenda).'&date=short\', 
+                            url: \'script/getInfosShowAgenda.php?'.http_build_query($tabIdAgenda).'&date=\'+short, 
                             type: \'GET\',
                             success: function(msg){
                                 $(\'#myModalBody\').html(msg);
@@ -233,39 +233,84 @@ class GeneralView{
     }
 
     public function dayCalendar($data){
+        $lastIdActivite = 0;
+        $lastColor = "hotpink";
+        $tab = array(); //contain color for a same event
+        $couple = array(); //couple id - color
 
         $html="";
-        $html.='
-            <table class="table table-striped">
-                <thead>
-
-                </thead>
-                <tbody>
-            ';
-                for ($i=0; $i < 24; $i++) {
+        if($data){
             $html.='
-                        <tr>
-                            <td id='.$i.'>'.$i.':00</td>
-                    ';
-                            $timeI = date('H:i:s', mktime($i, 0, 0, 0,0,0)); //Borne inf
-                            $timeAfterI =  date('H:i:s', mktime($i+1, 0, 0, 0,0,0)); //Borne supp
+                <table class="table table-striped table-condensed table-responsive">
+                    <thead>
 
-                            foreach ($data as $key => $act) {
-                                //if we have an event in this creneau
-                                if($act->getStartHour() <= $timeI && $act->getEndHour() >= $timeAfterI){
-                                    $html.='<td>'.$act->getIdActivity() .' - '.$act->getTitle().' - '.$act->getDescription().'</td>';
+                    </thead>
+                    <tbody>
+                ';
+                
+                    for ($i=0; $i < 24; $i++) {
+                    $html.='
+                            <tr>
+                                <td id='.$i.'>'.$i.':00</td>
+                        ';
+                                $timeI = date('H:i:s', mktime($i, 0, 0, 0,0,0)); //Borne inf
+                                $timeAfterI =  date('H:i:s', mktime($i+1, 0, 0, 0,0,0)); //Borne supp
+
+                                foreach ($data as $key => $act) {
+                                    //if we have an event in this creneau
+                                    if($act->getStartHour() <= $timeI && $act->getEndHour() >= $timeAfterI){
+                                        //don't touch color if we have the same activity > one activity is with the same color
+
+                                        if(!in_array($act->getIdActivity(), $couple)){
+                                            $lastColor = $this->generateColor();
+                                            $couple[] = $act->getIdActivity();
+                                            $couple[] = $lastColor;
+                                        }else{
+                                            //search the key where the id of us activity is
+                                            $keyTab = array_search($act->getIdActivity(), $couple);
+                                            //the next key in the array will have the good color
+                                            $keyColor = $keyTab + 1;
+                                            $lastColor = $couple[$keyColor];
+                                        }
+                                            $html.='<td style=background-color:'.$lastColor.'>'.$act->getIdActivity() .' - '.$act->getTitle().' - '.$act->getDescription().'</td>';
+                                            $lastIdActivite = $act->getIdActivity();
+                                    }else{
+                                        $html.='<td></td>';
+                                    }
                                 }
-                            }
-            $html.='
+                    $html.='
 
-                        </tr>
-                    ';
-                }
-            $html.='
-                </tbody>
-            </table>
-        ';
+                            </tr>
+                        ';
+                    }
+                    $html.='
+                    </tbody>
+                </table>
+            ';
+        }else{
+            $html.='<div class="center"> Vous ne disposez d\'aucun agenda qui possède une activité à cette date.</div>';
+        }
         echo($html);
+    }
+
+    public function generateColor(){
+        $autorizedColor = array(
+            0 => "hotpink",
+            1 => "#F7BE81",
+            2 => "#A9D0F5",
+            3 => "#FA5858",
+            4 => "#9FF781",
+            5 => "#BE81F7",
+            6 => "#FA5882",
+            7 => "#F3F781"
+        );
+
+        $result = rand(0, 7);
+        
+        $color = $autorizedColor[$result];
+
+        return $color;
+
     }
 
     //show a modal 
