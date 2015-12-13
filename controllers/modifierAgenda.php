@@ -14,23 +14,21 @@
 	$viewG->navBar("Modification d'agenda");
 	if(isset($_SESSION['login'])) {
 		$agenda = $agendaManager->getAgenda(htmlspecialchars($_GET['idAgenda']));
-		var_dump($agenda);
 	}
-	var_dump($agenda);
-	var_dump($_GET['idAgenda']);
+
 	?>
 	<p>Modification de l'agenda, changez les champs incorrects :
 			<br/><br/>
 			<form action="agendaModified.php" method="post">
-				<input type="text" name="id" value="<?php echo($agenda->getId()) ?>"/>
-				<input type="text" name="lastEdition" value="<?php echo($agenda->getLastEdition()) ?>"/>
-				<input type="text" name="ownerId" value="<?php echo($agenda->getOwnerId()) ?>"/>
+				<input type="hidden" name="id" value="<?php echo($agenda->getId()) ?>"/>
+				<input type="hidden" name="lastEdition" value="<?php echo($agenda->getLastEdition()) ?>"/>
+				<input type="hidden" name="ownerId" value="<?php echo($agenda->getOwnerId()) ?>"/>
 
 				Nom : <input type="text" name="nom" value="<?php echo($agenda->getNom()) ?>"/>
 				<br/><br/>
 				Priorité : <input type="int" name="priorite" value="<?php echo($agenda->getPriorite()) ?>"/>
 				<br/><br/>
-				Est superposable : <input type="int" name="isSuperposable" value="<?php echo($agenda->getIsSuperposable()) ?>"/>
+				Est superposable : <input type="checkbox" name="isSuperposable" value="1"/>
 				<br/><br/>
 
 				

@@ -216,7 +216,6 @@ class AgendaManager{
 			lastEdition = :lastEdition,
 			estSuperposable = :estSuperposable
 			WHERE idAgenda = :idAgenda";
-		var_dump($sql);
 		$req = $this->_db->prepare($sql);
 		$req->bindParam(':idAgenda', $id, PDO::PARAM_STR);
 		$req->bindParam(':nom', $nom , PDO::PARAM_STR);

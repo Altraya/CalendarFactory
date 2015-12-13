@@ -81,6 +81,32 @@ class CommentaireManager{
 
 	}
 
+	//get comments with commentaireParent's Id.
+	public function getSonComment($id){
+		$infos = array();
+		$infosReturn = array();
+		$req = $this->_db->query('SELECT * 
+								FROM commentaire WHERE idCommentaireParent = \''.$id.'\' ');
+		while ($donnees = $req->fetch(PDO::FETCH_ASSOC)){
+			$infos['idCommentaire'] = $donnees['idCommentaire'];
+			$infos['idCommentaireParent'] = $donnees['idCommentaireParent'];
+			$infos['commentaire'] = $donnees['commentaire'];
+			$infos['dateCommentaire'] = $donnees['dateCommentaire'];
+			$infos['heureCommentaire'] = $donnees['heureCommentaire'];
+			$infos['idUtilisateur'] = $donnees['idUtilisateur'];
+			$infos['idActivite'] = $donnees['idActivite'];
+			$infosReturn[] = new Commentaire($infos);
+
+		}
+		$nbTupleObt = $req->rowCount();	
+		$req->closeCursor();
+
+		if($nbTupleObt < 1)
+			return false;
+		return $infosReturn;
+
+	}
+
 	/**
 	*	List all comments
 	*	@return : false if the insert failed / else return an array of comment object
