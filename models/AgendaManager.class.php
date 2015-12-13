@@ -6,7 +6,7 @@
 *	Author : Karakayn
 */
 require_once('Agenda.class.php');
-require_once("Activity.class.php");
+require_once('Activity.class.php');
 
 class AgendaManager{
 	
@@ -102,18 +102,22 @@ class AgendaManager{
 	/**
 	*	Get all agenda for a specific user
 	*	@param userId : user's id
-	*	@return : false if the user don't have any agenda, or a table with id and name of the agenda.
+	*	@return : false if the user don't have any agenda, or an array of Agenda Object
 	*/
 	public function getAllAgenda($userId){
 
 		$infos = array();
 		$infosReturn = array();
 
-		$req = $this->_db->query('SELECT idAgenda, nom FROM agenda NATURAL JOIN utilisateur WHERE idUtilisateur = '.$userId.' ');
+		$req = $this->_db->query('SELECT * FROM agenda WHERE idUtilisateur = '.$userId.' ');
 		while ($donnees = $req->fetch(PDO::FETCH_ASSOC)){
 			$infos['id'] = $donnees['idAgenda'];
 			$infos['nom'] = $donnees['nom'];
-			$infosReturn[] = $infos;
+			$infos['priorite'] = $donnees['priorite'];
+			$infos['lastEdition'] = $donnees['lastEdition'];
+			$infos['isSuperposable'] = $donnees['estSuperposable'];
+			$infos['ownerId'] = $donnees['idUtilisateur'];
+			$infosReturn[] = new Agenda($infos);
 		}
 
 		$nbTupleObt = $req->rowCount();
@@ -125,59 +129,11 @@ class AgendaManager{
 			return $infosReturn;
 	}
 
-<<<<<<< HEAD
-	//get all activities from an agenda
-	public function getAllActivities($agendaId){
-		$infos = array();
-		$infosReturn = array();
-		$req = $this->_db->query('SELECT * FROM activite WHERE idAgenda = '.$agendaId.' ');
-		while ($donnees = $req->fetch(PDO::FETCH_ASSOC)){
-			$infos['idActivity'] = $donnees['idActivite'];
-			$infos['title'] = $donnees['titre'];
-			$infos['description'] = $donnees['description'];
-			$infos['$geoPos'] = $donnees['positionGeographique'];
-			$infos['type'] = $donnees['type'];
-			$infos['priority'] = $donnees['priorite'];
-			$infos['startDate'] = $donnees['dateDebut'];
-			$infos['endDate'] = $donnees['dateFin'];
-			$infos['startHour'] = $donnees['heureDebut'];
-			$infos['endHour'] = $donnees['heureFin'];
-			$infos['periodic'] = $donnees['periodicite'];
-			$infos['nbOccur'] = $donnees['nbOccurence'];
-			$infos['isInBreak'] = $donnees['estEnPause'];
-			$infos['isPossibleToSubscribe'] = $donnees['estPossibleDeSinscrire'];
-			$infos['isPublic'] = $donnees['estPublic'];
-			$infosReturn[] = new Activity($infos);
-		}
-	$nbTupleObt = $req->rowCount();
-		$req->closeCursor();
 
-		if($nbTupleObt < 1)
-			return false;
-		else
-			return $infosReturn;
-	}
-
-=======
-	public function getAgenda($id){
->>>>>>> 5d2af6e238bfcae22914a51b038efb2c353c83aa
-
-		$agenda;
-		$req = $this->_db->query('SELECT *
-								FROM agenda WHERE idAgenda = \''.$id.'\' ');
-		while ($donnees = $req->fetch(PDO::FETCH_ASSOC)){
-			$agenda = new Agenda($donnees);
-		}
-		$nbTupleObt = $req->rowCount();	
-		$req->closeCursor();
-
-		if($nbTupleObt < 1)
-			return false;
-		return $agenda;
-
-	}
-
-	//Get all agenda of all time 
+	/**
+	*	Get all agenda of all users
+	*	@return : false if we don't get any agenda, or an array of Agenda Object
+	*/
 	public function getAllAllAgenda(){
 		$agenda = array();
 		$return = array();
@@ -189,7 +145,7 @@ class AgendaManager{
 			$agenda['lastEdition'] = $donnees['lastEdition'];
 			$agenda['isSuperposable'] = $donnees['estSuperposable'];
 			$agenda['ownerId'] = $donnees['idUtilisateur'];
-			$return[] = $agenda;
+			$return[] = new Agenda($agenda);
 		}
 		$nbTupleObt = $req->rowCount();
 		$req->closeCursor();
@@ -242,6 +198,11 @@ class AgendaManager{
 		$req->closeCursor();
 	}
 
+	/**
+	*	Update an Agenda
+	*	@param : Agenda we want to update
+	*	@return : Return true if the update is a success / else
+	*/
 	public function modify(Agenda $agenda){
 		$id = $agenda->getId();
 		$nom = $agenda->getNom();
@@ -297,6 +258,38 @@ class AgendaManager{
 			return false;
 		else
 			return $infos['idCategorie'];
+	}
+
+	//activities from an agenda
+	public function getAllActivities($agendaId){
+		$infos = array();
+		$infosReturn = array();
+		$req = $this->_db->query('SELECT * FROM activite WHERE idAgenda = '.$agendaId.' ');
+		while ($donnees = $req->fetch(PDO::FETCH_ASSOC)){
+			$infos['idActivity'] = $donnees['idActivite'];
+			$infos['title'] = $donnees['titre'];
+			$infos['description'] = $donnees['description'];
+			$infos['$geoPos'] = $donnees['positionGeographique'];
+			$infos['type'] = $donnees['type'];
+			$infos['priority'] = $donnees['priorite'];
+			$infos['startDate'] = $donnees['dateDebut'];
+			$infos['endDate'] = $donnees['dateFin'];
+			$infos['startHour'] = $donnees['heureDebut'];
+			$infos['endHour'] = $donnees['heureFin'];
+			$infos['periodic'] = $donnees['periodicite'];
+			$infos['nbOccur'] = $donnees['nbOccurence'];
+			$infos['isInBreak'] = $donnees['estEnPause'];
+			$infos['isPossibleToSubscribe'] = $donnees['estPossibleDeSinscrire'];
+			$infos['isPublic'] = $donnees['estPublic'];
+			$infosReturn[] = new Activity($infos);
+		}
+	$nbTupleObt = $req->rowCount();
+		$req->closeCursor();
+
+		if($nbTupleObt < 1)
+			return false;
+		else
+			return $infosReturn;
 	}
 
 }
