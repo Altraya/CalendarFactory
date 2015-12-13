@@ -30,9 +30,7 @@
 					<label for="commentaire">Commentaire : </label></br>
 					<input type="text" class="form-control" id="commentaire" name="commentaire" value="<?php echo($com->getCommentaire()) ?>"/>
 				</div>
-				<button type="submit" name="EnvoyerModifCom" value="Envoyer" class="btn btn-default">Envoyer</button>
-
-				
+				<button type="submit" name="EnvoyerModifCom" value="Envoyer" class="btn btn-default">Envoyer</button>				
 			</form>
 			
 		</p>
