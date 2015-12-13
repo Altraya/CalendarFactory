@@ -94,7 +94,7 @@ class GeneralView{
 
 
     public function body($tabIdAgenda){
-        var_dump($tabIdAgenda);
+
         $html = "";
         $html.='
         <div class="row">
@@ -189,11 +189,12 @@ class GeneralView{
         $html="";
         $html.='
 
-            <script src="js/metro.js"></script>
-            <script src="js/myCalendar.js"></script>
-                <div class="darcula" data-role="calendar" data-week-start="1" data-locale="fr" data-day-click="day_click"></div>
-                ';
-            $html.= $this->modal();
+        <script src="js/metro.js"></script>
+        <script src="js/myCalendar.js"></script>
+            <div class="darcula" data-role="calendar" data-week-start="1" data-locale="fr" data-day-click="day_click"></div>
+            ';
+        $html.= $this->modal();
+        if($tabIdAgenda){
             $html.='
                 <script>
                     function day_click(short, full) {
@@ -210,26 +211,41 @@ class GeneralView{
                             
                         });
                         $(\'#myModal\').modal(\'show\');
-                        alert("You click on day!\nShort: "+short+"\nFull: " + full);
                         console.log("hey Short: "+short+"\nFull: " + full);
                     }
                 </script>
-        ';
-        echo(http_build_query($tabIdAgenda));
+            ';
+        }else{
+            $html.='
+                <script>
+                    function day_click(short, full) {
+                        $(\'#myModalLabel\').html("Activités de vos agendas du "+short);
+                        $(\'#myModalBody\').html(function(){
+                            Vous n\'avez pas d\'activité à cette date.
+                        });
+                        $(\'#myModal\').modal(\'show\');
+                        console.log("hey Short: "+short+"\nFull: " + full);
+                    }
+                </script>
+            ';
+        }
         return $html;
     }
 
     public function dayCalendar($data){
-        
+
         $html="";
         $html.='
             <table class="table table-striped">
+                <thead>
+
+                </thead>
                 <tbody>
             ';
                 for ($i=0; $i < 24; $i++) {
             $html.='
                         <tr>
-                            <td id='.$i.'>'.$i.'</td>
+                            <td id='.$i.'>'.$i.':00</td>
                     ';
                             $timeI = date('H:i:s', mktime($i, 0, 0, 0,0,0)); //Borne inf
                             $timeAfterI =  date('H:i:s', mktime($i+1, 0, 0, 0,0,0)); //Borne supp
@@ -259,7 +275,7 @@ class GeneralView{
 
         <!-- Modal -->
         <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-            <div class="modal-dialog" role="document">
+            <div class="modal-dialog modal-lg" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>

@@ -14,8 +14,6 @@
 
 	if(isset($_SESSION['login'])){
 		$tabInfoAgenda = $agendaManager->getAllAgendaIdOfUser($_SESSION['idUser']);
-		echo("calendar.php");
-		var_dump($tabInfoAgenda);
 		$viewG->body($tabInfoAgenda);
 	}else{
 		$errorView->errorNotConnected();
