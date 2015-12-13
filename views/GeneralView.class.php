@@ -278,12 +278,7 @@ class GeneralView{
                                         $html.='<td></td>';
                                     }
                                 }
-                                else
-                                {
-                                    $html.='<td></td>';
-                                }
-                            }
-            $html.='
+                    $html.='
 
                             </tr>
                         ';
