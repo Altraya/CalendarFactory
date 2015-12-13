@@ -60,22 +60,5 @@
 		</p>
 		
 	<?php
-		
-		if (isset($_POST['login'])&& isset($_POST['nom']) && isset($_POST['prenom']) && isset($_POST['adresse'])&&$_POST['EnvoyerModifUser'] == 'Envoyer')
-		{
-			$user = new User($_POST);
-			if($_POST['newpwd'] != $_POST['confpwd']){
-				echo('Mauvaise confirmation du mot de passe.');
-			}
-			else{
-				$pass = htmlspecialchars($_POST['newpwd']);
-				$nouveauPwd = sha1($pass);
-				$user->setPwd($nouveauPwd);
-			}
-			$manager->modify($user);
-			echo('La modification de votre agenda a bien été prise en compte.<br/>');
-		
-			
-		}
 		$viewG->footer();
 	?>
