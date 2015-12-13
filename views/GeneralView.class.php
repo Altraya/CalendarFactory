@@ -255,6 +255,10 @@ class GeneralView{
                                 if($act->getStartHour() <= $timeI && $act->getEndHour() >= $timeAfterI){
                                     $html.='<td>'.$act->getIdActivity() .' - '.$act->getTitle().' - '.$act->getDescription().'</td>';
                                 }
+                                else
+                                {
+                                    $html.='<td></td>';
+                                }
                             }
             $html.='
 
