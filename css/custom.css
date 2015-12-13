@@ -156,24 +156,21 @@ footer{
 		Others
 */
 
-.table>thead>tr>th{
-	vertical-align: middle;
+.other-day, .day, .calendar .month a, .calendar .year a{
+	height: 100px;
+	font-size: 15px;
+}
+
+.calendar .day a {
 	height: 100px;
 }
 
-.case{
+
+.calendar .calendar-header a{
 	vertical-align: middle;
-	height: 100px;
+
+  	line-height:50px;
+	height: 50px;
+	font-size: 15px;
 }
 
-.unused{
-	background-color: gray;
-}
-
-.day{
-	background-color: blue;
-}
-
-.normal{
-	background-color: white;
-}

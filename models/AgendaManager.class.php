@@ -102,22 +102,18 @@ class AgendaManager{
 	/**
 	*	Get all agenda for a specific user
 	*	@param userId : user's id
-	*	@return : false if the user don't have any agenda, or an array of Agenda Object
+	*	@return : false if the user don't have any agenda, or a table with id and name of the agenda.
 	*/
 	public function getAllAgenda($userId){
 
 		$infos = array();
 		$infosReturn = array();
 
-		$req = $this->_db->query('SELECT * FROM agenda WHERE idUtilisateur = '.$userId.' ');
+		$req = $this->_db->query('SELECT idAgenda, nom FROM agenda NATURAL JOIN utilisateur WHERE idUtilisateur = '.$userId.' ');
 		while ($donnees = $req->fetch(PDO::FETCH_ASSOC)){
 			$infos['id'] = $donnees['idAgenda'];
 			$infos['nom'] = $donnees['nom'];
-			$infos['priorite'] = $donnees['priorite'];
-			$infos['lastEdition'] = $donnees['lastEdition'];
-			$infos['isSuperposable'] = $donnees['estSuperposable'];
-			$infos['ownerId'] = $donnees['idUtilisateur'];
-			$infosReturn[] = new Agenda($infos);
+			$infosReturn[] = $infos;
 		}
 
 		$nbTupleObt = $req->rowCount();
@@ -129,6 +125,7 @@ class AgendaManager{
 			return $infosReturn;
 	}
 
+<<<<<<< HEAD
 	//get all activities from an agenda
 	public function getAllActivities($agendaId){
 		$infos = array();
@@ -161,11 +158,26 @@ class AgendaManager{
 			return $infosReturn;
 	}
 
+=======
+	public function getAgenda($id){
+>>>>>>> 5d2af6e238bfcae22914a51b038efb2c353c83aa
 
-	/**
-	*	Get all agenda of all users
-	*	@return : false if we don't get any agenda, or an array of Agenda Object
-	*/
+		$agenda;
+		$req = $this->_db->query('SELECT *
+								FROM agenda WHERE idAgenda = \''.$id.'\' ');
+		while ($donnees = $req->fetch(PDO::FETCH_ASSOC)){
+			$agenda = new Agenda($donnees);
+		}
+		$nbTupleObt = $req->rowCount();	
+		$req->closeCursor();
+
+		if($nbTupleObt < 1)
+			return false;
+		return $agenda;
+
+	}
+
+	//Get all agenda of all time 
 	public function getAllAllAgenda(){
 		$agenda = array();
 		$return = array();
@@ -177,7 +189,7 @@ class AgendaManager{
 			$agenda['lastEdition'] = $donnees['lastEdition'];
 			$agenda['isSuperposable'] = $donnees['estSuperposable'];
 			$agenda['ownerId'] = $donnees['idUtilisateur'];
-			$return[] = new Agenda($agenda);
+			$return[] = $agenda;
 		}
 		$nbTupleObt = $req->rowCount();
 		$req->closeCursor();
@@ -230,11 +242,6 @@ class AgendaManager{
 		$req->closeCursor();
 	}
 
-	/**
-	*	Update an Agenda
-	*	@param : Agenda we want to update
-	*	@return : Return true if the update is a success / else
-	*/
 	public function modify(Agenda $agenda){
 		$id = $agenda->getId();
 		$nom = $agenda->getNom();
