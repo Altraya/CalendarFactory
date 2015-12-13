@@ -19,14 +19,10 @@
 	if(isset($_SESSION['login'])){
 		$agenda = $agendaManager->getAgenda(htmlspecialchars($_GET['idAgenda']));
 		$activities = $agendaManager->getAllActivities(htmlspecialchars($_GET['idAgenda']));
-		var_dump($agenda);
-		var_dump($activities);
+
 	}
-	var_dump($agenda);
-	var_dump($_GET['idAgenda']);
-?>
-<p> Suppression de l'agenda</p>
-<?php
+
+
 	if(isset($_GET['idAgenda'])){
 		if(($activities)!=false){
 			foreach ($activities as $act) {
