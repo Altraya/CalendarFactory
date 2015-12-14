@@ -378,7 +378,7 @@ class GeneralView{
                         <div class="panel panel-default noMargin">
                             <div class="panel-body">
                                 
-                                <p class="center">&#169; CalendarFactory - 2015 - Karakayn</p>
+                                <p class="center">&#169; CalendarFactory - 2015 - Karakayn & EliseAIUS</p>
                                     
                             </div>
                         </div>
