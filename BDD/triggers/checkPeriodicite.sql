@@ -23,3 +23,4 @@ begin
     	CALL raise_application_error(3001, 'no update');
     end if;
 end
+
