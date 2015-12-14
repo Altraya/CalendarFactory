@@ -105,6 +105,7 @@ class GeneralView{
                     <th>Nom</th>
                     <th>Priorite</th>
                     <th>Dernière édition</th>
+                    <th>Affichage</th>
                 <tbody>
         ';
             foreach ($tabAgendaUserAndFollow as $k => $agenda) {
@@ -119,7 +120,14 @@ class GeneralView{
                     ';
                 }
 
-                $html.='</tr>';
+                $html.='
+                    <td> 
+                        <div class="checkbox noMargin">
+                            <label><input class=\'checkBoxShowAgenda\' data-id='.$agenda->getId().' name="show'.$agenda->getId().'" type="checkbox"></label>
+                        </div>
+                    </td>
+                </tr>
+                ';
             }
 
         $html.='
@@ -133,6 +141,7 @@ class GeneralView{
 
         $html = "";
         $html.='
+        <script src="js/myCalendar.js"></script>
         <div class="row">
             <div class="col-md-4">
                 <div class="panel panel-default notRound noMargin">
@@ -155,7 +164,23 @@ class GeneralView{
                             <div class="row">
                                 <div class="col-md-12">
                                     <h1 class="smallerTitle noMargin">Options</h1>
-                                    <p>Ici recherche et tri pour les agendas</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-8">
+                                    
+                                </div>
+                                <div class="col-md-4">
+                                    
+                                    <div class="notationDiv">
+                                        <p>Notation : </p>
+                                        <script src="js/ListeEtoile.js"></script>
+                                        <div id="notation"> 
+                                            <script type="text/javascript"> 
+                                                CreateListeEtoile(\'notation\',5); 
+                                            </script> 
+                                        </div> 
+                                    </div>
                                 </div>
 
                             </div>
@@ -170,10 +195,73 @@ class GeneralView{
         $html.= $this->calendar($tabIdAgenda);
         $html.='
             </div>
-            
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <h1>Commentaires</h1>
+                <hr/>
+                <div id="showComment">
+                </div>
+                <div id="partieCom">
+            ';
+        $html.= $this->formComment();
+        $html.='
+                </div>
+            </div>
         </div>
           
         ';
+        echo($html);
+    }
+
+    public function formComment(){
+        $html="";
+
+        $html.='
+
+            <form role="commentForm" action="comment.php" method="post">
+                <div class="form-group">
+                    <label for="commentUser">Commentaire : </label>
+                    <textarea class="form-control" name="comment" id="commentUser" rows="3"></textarea>
+                </div>
+           
+
+                <div class="center"> 
+                    <button type="submit" name="commenter" class="btn btn-default">Commenter</button>
+                </div>
+            </form>
+        ';
+
+        return $html;
+    }
+
+    public function showComments($dataParent, $dataSon, $userManager){
+        //don't know how to do that in other way ... so...!
+
+        $html="";
+        if ($dataParent) {
+            foreach ($dataParent as $key => $comParent) {
+                $html.='
+                    <div class="parentCom">
+                        <div class="well well-lg">
+                            <div class="titleComParent">
+                                <h2>
+                                Commentaire de 
+                ';
+                                $user = $userManager->getUser($comParent->getIdUtilisateur());
+                                $html.=$user->getNom();
+                                $html.=' le '.$comParent->getDateCommentaire().' à '.$comParent->getHeureCommentaire().'
+                                </h2>
+                            </div>
+                        
+                ';
+                            $html.=$comParent->getCommentaire();
+                $html.='
+                        </div>
+                    </div>
+                ';
+            }
+        }
         echo($html);
     }
 
@@ -224,7 +312,7 @@ class GeneralView{
         $html.='
 
         <script src="js/metro.js"></script>
-        <script src="js/myCalendar.js"></script>
+        
             <div class="darcula" data-role="calendar" data-week-start="1" data-locale="fr" data-day-click="day_click"></div>
             ';
         $html.= $this->modal();
@@ -261,8 +349,13 @@ class GeneralView{
                         console.log("hey Short: "+short+"\nFull: " + full);
                     }
                 </script>
+
             ';
         }
+
+        $html.='
+            <script src="js/myCalendar.js"></script>
+        ';
         return $html;
     }
 
@@ -306,7 +399,7 @@ class GeneralView{
                                             $keyColor = $keyTab + 1;
                                             $lastColor = $couple[$keyColor];
                                         }
-                                            $html.='<td style=background-color:'.$lastColor.'>'.$act->getIdActivity() .' - '.$act->getTitle().' - '.$act->getDescription().'</td>';
+                                            $html.='<td class="activite" data-id=\''.$act->getIdActivity().'\' style=background-color:'.$lastColor.'>'.$act->getIdActivity() .' - '.$act->getTitle().' - '.$act->getDescription().'</td>';
                                             $lastIdActivite = $act->getIdActivity();
                                     }else{
                                         $html.='<td></td>';

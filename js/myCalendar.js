@@ -44,3 +44,23 @@ function isValideDate(date){
 	];
 
 }
+
+$("body").on("click", ".activite", function() { 
+	console.log("That work !");
+
+});
+
+$("body").on("click", ".checkBoxShowAgenda", function() {
+	if($(".checkBoxShowAgenda" ).prop( "checked" )){
+		console.log("Hey click on agenda : "+$(this).attr('data-id'));
+		$.ajax({
+	        url: "script/getAgendaComments.php?idAgenda="+$(this).attr('data-id'), 
+	        type: 'GET',
+	        success: function(msg){
+	            $('#showComment').html(msg);
+	        }
+	    })
+
+	}
+	
+});
