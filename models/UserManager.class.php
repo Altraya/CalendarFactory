@@ -50,6 +50,23 @@ class UserManager{
 		$req->closeCursor();
 	}
 
+	//subscription for a user
+	public function subscribe($idActivity, $idUtilisateur){
+		$sql = "INSERT INTO inscription (idUtilisateur, idActivite)
+			VALUES (:idUtilisateur, :idActivite)";
+		$req = $this->_db->prepare($sql);           
+		$req->bindParam(':idUtilisateur', $idUtilisateur, PDO::PARAM_INT);
+		$req->bindParam(':idActivite', $idActivite, PDO::PARAM_INT);
+		$req->execute();
+		$nbTupleInsere = $req->rowCount();
+		$req->closeCursor();
+
+		//check if insert has failed
+		if($nbTupleInsere < 1)
+			return false;
+		return true;
+	}
+
 	//modifier un utilisateur
 	public function modify(User $user){
 		$sql = "UPDATE utilisateur

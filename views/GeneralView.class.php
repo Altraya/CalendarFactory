@@ -166,24 +166,7 @@ class GeneralView{
                                     <h1 class="smallerTitle noMargin">Options</h1>
                                 </div>
                             </div>
-                            <div class="row">
-                                <div class="col-md-8">
-                                    
-                                </div>
-                                <div class="col-md-4">
-                                    
-                                    <div class="notationDiv">
-                                        <p>Notation : </p>
-                                        <script src="js/ListeEtoile.js"></script>
-                                        <div id="notation"> 
-                                            <script type="text/javascript"> 
-                                                CreateListeEtoile(\'notation\',5); 
-                                            </script> 
-                                        </div> 
-                                    </div>
-                                </div>
-
-                            </div>
+                            
                         </div>
                     </div>
                 </div>
@@ -198,15 +181,11 @@ class GeneralView{
         </div>
         <div class="row">
             <div class="col-md-12">
-                <h1>Commentaires</h1>
+                <h1>Commentaires pour l\'agenda :</h1>
                 <hr/>
                 <div id="showComment">
                 </div>
-                <div id="partieCom">
-            ';
-        $html.= $this->formComment();
-        $html.='
-                </div>
+
             </div>
         </div>
           
@@ -235,14 +214,98 @@ class GeneralView{
         return $html;
     }
 
+    public function showActivity(Activity $act, $idUser){
+        $html="";
+
+        $html.='
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="alert alert-info center" role="alert"> 
+                        <div class="row">
+                            <div class="col-md-6">
+                                Priorité : '.$act->getPriority().'
+                            </div>
+                            <div class="col-md-6">
+                            ';
+
+                                if($act->getIsPublic()){
+                                    $html.='Activité publique';
+                                }else{
+                                    $html.='Activité privée';
+                                }
+
+                $html.='
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-8">
+                    <h1>'.$act->getIdActivity().' - '.$act->getTitle().' à '.$act->getGeoPos().'</h1>
+                </div>
+                
+                <div class="col-md-4">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="notationDiv">
+                                <p>Notation : </p>
+                                <script src="js/ListeEtoile.js"></script>
+                                <div id="notation"> 
+                                    <script type="text/javascript"> 
+                                        CreateListeEtoile(\'notation\',5); 
+                                    </script> 
+                                </div> 
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12 center">
+                        ';
+                         //if the event is private the button is disabled
+                        if($act->getIsPossibleToSubscribe()){
+                            $html.='<button type="button" id="buttonInscriptionAct" data-idAct='.$act->getIdActivity().' data-idUser='.$idUser.' class="btn btn-default">S\'inscrire</button>';
+                        }else{
+                            $html.='<button type="button" class="btn btn-default" disabled="disabled">S\'inscrire</button>';
+                        }
+                    $html.='
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    Du : '.$act->getStartDate().' au '.$act->getEndDate().' <br/>
+                    De : '.$act->getStartHour().' à '.$act->getEndHour().' <br/>
+                    <br/>
+                    <h3>Description : </h3>
+                    '.$act->getDescription().'
+
+
+                </div>
+
+            </div>
+            
+        ';
+        echo($html);
+    }
+
     public function showComments($dataParent, $dataSon, $userManager){
         //don't know how to do that in other way ... so...!
 
         $html="";
+
+        $html.='
+
+            <div class="alert alert-info center" role="alert"> 
+                Pour commenter l\'agenda, commentez ces activités !
+            </div>
+        ';
+
         if ($dataParent) {
             foreach ($dataParent as $key => $comParent) {
                 $html.='
-                <div class="panel panel-info">
+                <div class="panel panel-default">
                     <div class="panel-body">
                     
                             <div class="titleComParent">
@@ -285,7 +348,6 @@ class GeneralView{
                         <hr/>
                     </div>
                 </div>
-
                     
                 ';
             }

@@ -188,5 +188,15 @@ class ErrorOrSuccessView{
         echo($html);
     }
 
+    public function successSubscribe(){
+        $html="";
+        $html.='
+            <div class="alert alert-success center">
+                <strong>Félicitations :</strong> Vous vous êtes bien inscrit à cette activité !
+            </div>
+        ';
+        echo($html);
+    }
+
 }
 ?>

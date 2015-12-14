@@ -133,6 +133,32 @@ class CommentaireManager{
 		return $infosReturn;
 	}
 
+	public function getParentCommentOfActivity($idActivite){
+				$infos = array();
+		$infosReturn = array();
+		$sql = 'SELECT * FROM commentaire WHERE idActivite = '.$idActivite.' AND idCommentaireParent IS NULL ';
+		$req = $this->_db->query($sql);
+
+		//Querry seems like that : SELECT * FROM commentaire WHERE idActivite IN ( (SELECT idActivite FROM activite WHERE idAgenda=60)) AND idCommentaireParent IS NULL
+		while ($donnees = $req->fetch(PDO::FETCH_ASSOC)){
+			$infos['idCommentaire'] = $donnees['idCommentaire'];
+			$infos['idCommentaireParent'] = $donnees['idCommentaireParent'];
+			$infos['commentaire'] = $donnees['commentaire'];
+			$infos['dateCommentaire'] = $donnees['dateCommentaire'];
+			$infos['heureCommentaire'] = $donnees['heureCommentaire'];
+			$infos['idUtilisateur'] = $donnees['idUtilisateur'];
+			$infos['idActivite'] = $donnees['idActivite'];
+			$infosReturn[] = new Commentaire($infos);
+
+		}
+		$nbTupleObt = $req->rowCount();	
+		$req->closeCursor();
+
+		if($nbTupleObt < 1)
+			return false;
+		return $infosReturn;
+	}
+
 	/**
 	*	List all comments
 	*	@return : false if the insert failed / else return an array of comment object
