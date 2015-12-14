@@ -183,6 +183,11 @@ class GeneralView{
             <div class="col-md-12">
                 <h1>Commentaires pour l\'agenda :</h1>
                 <hr/>
+
+                <div class="alert alert-info center" role="alert"> 
+                    Pour commenter l\'agenda, commentez ces activités !
+                </div>
+        
                 <div id="showComment">
                 </div>
 
@@ -220,6 +225,8 @@ class GeneralView{
         $html.='
             <div class="row">
                 <div class="col-md-12">
+                    <div class="center" id="successSub">
+                    </div>
                     <div class="alert alert-info center" role="alert"> 
                         <div class="row">
                             <div class="col-md-6">
@@ -273,7 +280,7 @@ class GeneralView{
                     </div>
                 </div>
             </div>
-            <div class="row">
+            <div class="row marginBot">
                 <div class="col-md-12">
                     Du : '.$act->getStartDate().' au '.$act->getEndDate().' <br/>
                     De : '.$act->getStartHour().' à '.$act->getEndHour().' <br/>
@@ -285,6 +292,13 @@ class GeneralView{
                 </div>
 
             </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div id="showComment2">
+                    </div>
+                </div>
+            </div>
             
         ';
         echo($html);
@@ -295,12 +309,7 @@ class GeneralView{
 
         $html="";
 
-        $html.='
 
-            <div class="alert alert-info center" role="alert"> 
-                Pour commenter l\'agenda, commentez ces activités !
-            </div>
-        ';
 
         if ($dataParent) {
             foreach ($dataParent as $key => $comParent) {
@@ -414,7 +423,7 @@ class GeneralView{
                         $(\'#myModalBody\').html(function(){
 
                         $.ajax({
-                            url: \'script/getInfosShowAgenda.php?'.http_build_query($tabIdAgenda).'&date=\'+short, 
+                            url: \'script/getInfosShowAgenda.php?'.http_build_query($tabIdAgenda).'&date=\'+short+\'&idUtilisateur='.$_SESSION["idUser"].'\', 
                             type: \'GET\',
                             success: function(msg){
                                 $(\'#myModalBody\').html(msg);
@@ -449,7 +458,7 @@ class GeneralView{
         return $html;
     }
 
-    public function dayCalendar($data){
+    public function dayCalendar($data, $idUser){
         $lastIdActivite = 0;
         $lastColor = "hotpink";
         $tab = array(); //contain color for a same event
@@ -489,7 +498,7 @@ class GeneralView{
                                             $keyColor = $keyTab + 1;
                                             $lastColor = $couple[$keyColor];
                                         }
-                                            $html.='<td class="activite" data-id=\''.$act->getIdActivity().'\' style=background-color:'.$lastColor.'>'.$act->getIdActivity() .' - '.$act->getTitle().' - '.$act->getDescription().'</td>';
+                                            $html.='<td class="activite" data-idUser=\''.$idUser.'\' data-id=\''.$act->getIdActivity().'\' style=background-color:'.$lastColor.'>'.$act->getIdActivity() .' - '.$act->getTitle().' - '.$act->getDescription().'</td>';
                                             $lastIdActivite = $act->getIdActivity();
                                     }else{
                                         $html.='<td></td>';

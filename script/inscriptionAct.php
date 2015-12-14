@@ -9,12 +9,17 @@
 	$userManager = new UserManager($db);
 	$infView = new ErrorOrSuccessView();
 
+	$ok = true;
 	
 	$idActivity = htmlspecialchars($_GET['idActivity']);
 	$idUtilisateur = htmlspecialchars($_GET['idUtilisateur']);
-	$ok = $userManager->subscribe($idActivity, $idUtilisateur);
+	if(!$userManager->subscribeExist($idActivity, $idUtilisateur)){
+		$ok = $userManager->subscribe($idActivity, $idUtilisateur);
+	}
 	//show activity
-	$infView->successSubscribe();
+	if($ok){
+		$infView->successSubscribe();
+	}
 
 
 

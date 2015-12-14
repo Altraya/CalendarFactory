@@ -22,4 +22,8 @@ begin
     if(i <> nbOcc_v) then
     	CALL raise_application_error(3001, 'no update');
     end if;
+<<<<<<< HEAD
 end
+=======
+end
+>>>>>>> 076be44cb00418c17cba84bb4e041683072af086

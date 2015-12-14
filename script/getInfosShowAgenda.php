@@ -11,7 +11,8 @@
 	//get all URL params
 	$params = urldecode(http_build_query($_GET, '', '&'));
 	//get just ids params > last param is for date
-	$idPart = explode('&', $params, -1);
+	$idPart = explode('&', $params, -2);
+	$idUser = htmlspecialchars($_GET['idUtilisateur']);
 
 	/*
 		generate an array who have the same key without value
@@ -48,7 +49,7 @@
 
 	$infos = $agendaManager->getAllActivitiesByDate($agendasId, $date);
 
-	$gView->dayCalendar($infos);
+	$gView->dayCalendar($infos, $idUser);
 
 	//Generate an array because we want to do diff with the other
 	function generateArrayIdNum($length){
