@@ -220,6 +220,8 @@ class GeneralView{
         $html.='
             <div class="row">
                 <div class="col-md-12">
+                    <div class="alert alert-success center" id="successSub" role="alert">
+                    </div>
                     <div class="alert alert-info center" role="alert"> 
                         <div class="row">
                             <div class="col-md-6">
@@ -414,7 +416,7 @@ class GeneralView{
                         $(\'#myModalBody\').html(function(){
 
                         $.ajax({
-                            url: \'script/getInfosShowAgenda.php?'.http_build_query($tabIdAgenda).'&date=\'+short, 
+                            url: \'script/getInfosShowAgenda.php?'.http_build_query($tabIdAgenda).'&date=\'+short+\'&idUtilisateur='.$_SESSION["idUser"].'\', 
                             type: \'GET\',
                             success: function(msg){
                                 $(\'#myModalBody\').html(msg);
@@ -449,7 +451,7 @@ class GeneralView{
         return $html;
     }
 
-    public function dayCalendar($data){
+    public function dayCalendar($data, $idUser){
         $lastIdActivite = 0;
         $lastColor = "hotpink";
         $tab = array(); //contain color for a same event
@@ -489,7 +491,7 @@ class GeneralView{
                                             $keyColor = $keyTab + 1;
                                             $lastColor = $couple[$keyColor];
                                         }
-                                            $html.='<td class="activite" data-id=\''.$act->getIdActivity().'\' style=background-color:'.$lastColor.'>'.$act->getIdActivity() .' - '.$act->getTitle().' - '.$act->getDescription().'</td>';
+                                            $html.='<td class="activite" data-idUser=\''.$idUser.'\' data-id=\''.$act->getIdActivity().'\' style=background-color:'.$lastColor.'>'.$act->getIdActivity() .' - '.$act->getTitle().' - '.$act->getDescription().'</td>';
                                             $lastIdActivite = $act->getIdActivity();
                                     }else{
                                         $html.='<td></td>';

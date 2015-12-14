@@ -14,7 +14,8 @@
 	$idUtilisateur = htmlspecialchars($_GET['idUtilisateur']);
 	$ok = $userManager->subscribe($idActivity, $idUtilisateur);
 	//show activity
-	$infView->successSubscribe();
+	if($ok)
+		$infView->successSubscribe();
 
 
 

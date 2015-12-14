@@ -50,7 +50,7 @@ $("body").on("click", ".activite", function() {
 	
 	//save this id here or we have an undefined context
 	var idAct = $(this).attr('data-id');
-	var idUtilisateur = $(this).attr('data-id-utilisateur');
+	var idUtilisateur = $(this).attr('data-idUser');
 
 	console.log("idUtilisateur = "+idUtilisateur)
 
@@ -73,7 +73,7 @@ $("body").on("click", ".activite", function() {
             url: "script/getActivityComment.php?idActivity="+idAct,
             type: 'GET',
             success: function(msg){
-                $('#showComment').html(msg);
+                $('#showComment2').html(msg);
             }
         })
         
@@ -102,7 +102,7 @@ $("body").on("click", "#buttonInscriptionAct", function() {
         url: "script/inscriptionAct.php?idActivity="+$(this).attr('data-idAct')+"&idUtilisateur="+$(this).attr('data-idUser'), 
         type: 'GET',
         success: function(msg){
-            $('#showComment').html(msg);
+            $('#successSub').html(msg);
         }
     })
 });
