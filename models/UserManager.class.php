@@ -52,11 +52,12 @@ class UserManager{
 
 	//subscription for a user
 	public function subscribe($idActivity, $idUtilisateur){
+
 		$sql = "INSERT INTO inscription (idUtilisateur, idActivite)
 			VALUES (:idUtilisateur, :idActivite)";
 		$req = $this->_db->prepare($sql);           
 		$req->bindParam(':idUtilisateur', $idUtilisateur, PDO::PARAM_INT);
-		$req->bindParam(':idActivite', $idActivite, PDO::PARAM_INT);
+		$req->bindParam(':idActivite', $idActivity, PDO::PARAM_INT);
 		$req->execute();
 		$nbTupleInsere = $req->rowCount();
 		$req->closeCursor();
@@ -65,6 +66,22 @@ class UserManager{
 		if($nbTupleInsere < 1)
 			return false;
 		return true;
+	}
+
+	//return true if subscribeExist / else false
+	public function subscribeExist($idActivity, $idUtilisateur){
+		$req = $this->_db->query('SELECT * FROM inscription WHERE idUtilisateur = '.$idUtilisateur.' AND idActivite = '.$idActivity);
+		while ($donnees = $req->fetch(PDO::FETCH_ASSOC)) {
+			$user = $donnees;
+		}
+		$nbTupleObt = $req->rowCount();	
+		$req->closeCursor();
+
+		if($nbTupleObt < 1){
+			return false;
+		}else{
+			return true;
+		}
 	}
 
 	//modifier un utilisateur

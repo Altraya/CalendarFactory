@@ -183,6 +183,11 @@ class GeneralView{
             <div class="col-md-12">
                 <h1>Commentaires pour l\'agenda :</h1>
                 <hr/>
+
+                <div class="alert alert-info center" role="alert"> 
+                    Pour commenter l\'agenda, commentez ces activités !
+                </div>
+        
                 <div id="showComment">
                 </div>
 
@@ -220,7 +225,7 @@ class GeneralView{
         $html.='
             <div class="row">
                 <div class="col-md-12">
-                    <div class="alert alert-success center" id="successSub" role="alert">
+                    <div class="center" id="successSub">
                     </div>
                     <div class="alert alert-info center" role="alert"> 
                         <div class="row">
@@ -287,6 +292,13 @@ class GeneralView{
                 </div>
 
             </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div id="showComment2">
+                    </div>
+                </div>
+            </div>
             
         ';
         echo($html);
@@ -297,12 +309,7 @@ class GeneralView{
 
         $html="";
 
-        $html.='
 
-            <div class="alert alert-info center" role="alert"> 
-                Pour commenter l\'agenda, commentez ces activités !
-            </div>
-        ';
 
         if ($dataParent) {
             foreach ($dataParent as $key => $comParent) {
