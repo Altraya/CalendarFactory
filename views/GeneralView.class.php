@@ -190,7 +190,6 @@ class GeneralView{
         
                 <div id="showComment">
                 </div>
-
             </div>
         </div>
           
@@ -361,6 +360,7 @@ class GeneralView{
                 ';
             }
         }
+        $html.=$this->formComment();
         echo($html);
     }
 

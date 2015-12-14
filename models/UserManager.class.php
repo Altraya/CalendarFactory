@@ -84,6 +84,24 @@ class UserManager{
 		}
 	}
 
+	//notation for an activity
+	public function addNotation($idUtilisateur, $idActivite, $note){
+		$sql = "INSERT INTO notation (idUtilisateur, idActivite, note)
+			VALUES (:idUtilisateur, :idActivite, :note)";
+		$req = $this->_db->prepare($sql);           
+		$req->bindParam(':idUtilisateur', $idUtilisateur, PDO::PARAM_INT);
+		$req->bindParam(':idActivite', $idActivity, PDO::PARAM_INT);
+		$req->bindParam(':note', $note, PDO::PARAM_INT);
+		$req->execute();
+		$nbTupleInsere = $req->rowCount();
+		$req->closeCursor();
+
+		//check if insert has failed
+		if($nbTupleInsere < 1)
+			return false;
+		return true;
+	}
+
 	//modifier un utilisateur
 	public function modify(User $user){
 		$sql = "UPDATE utilisateur

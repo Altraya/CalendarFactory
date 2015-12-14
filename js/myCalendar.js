@@ -106,3 +106,31 @@ $("body").on("click", "#buttonInscriptionAct", function() {
         }
     })
 });
+
+$("body").on("click", ".listeEtoile", function(){
+	note = document.getElementById("score-notation").value;
+	console.log(note);
+	test = $('#score-notation').innerHTML;
+	console.log("test "+test);
+	buttonUser = document.getElementById("buttonInscriptionAct");
+	idAct = $(buttonUser).attr('data-idAct');
+	idUser = $(buttonUser).attr('data-idUser');
+	console.log(idUser);
+	console.log(idAct);
+	var recherche = "";
+		recherche = "idUtilisateur=";
+		recherche += idUser;
+		recherche += "&idActivite=";
+		recherche += idAct;
+		recherche += "&note=";
+		recherche += note;
+		console.log(recherche);
+
+	$.ajax({
+	    url: 'script/notation.php?'+recherche,
+	    type: 'GET',
+	    success: function(msg){
+	        $('#note').html(msg);
+	    }
+	})
+});
