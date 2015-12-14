@@ -280,7 +280,7 @@ class GeneralView{
                     </div>
                 </div>
             </div>
-            <div class="row">
+            <div class="row marginBot">
                 <div class="col-md-12">
                     Du : '.$act->getStartDate().' au '.$act->getEndDate().' <br/>
                     De : '.$act->getStartHour().' à '.$act->getEndHour().' <br/>
