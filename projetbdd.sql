@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Client :  127.0.0.1
--- Généré le :  Ven 11 Décembre 2015 à 12:09
+-- Généré le :  Lun 14 Décembre 2015 à 09:37
 -- Version du serveur :  5.6.17
 -- Version de PHP :  5.5.12
 
@@ -17,7 +17,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8 */;
 
 --
--- Base de données :  `projetbdd`
+-- Base de données :  `calendarfactory`
 --
 
 -- --------------------------------------------------------
@@ -33,26 +33,92 @@ CREATE TABLE IF NOT EXISTS `activite` (
   `positionGeographique` varchar(45) DEFAULT NULL,
   `type` varchar(45) DEFAULT NULL,
   `priorite` varchar(45) DEFAULT '0' COMMENT 'Priorité sous forme dINT 0 correspondant a la priorite la plus faible',
-  `dateDebut` date NOT NULL COMMENT 'Date de debut de l activite. Soit dateDebut - dateFin et periodicite sont remplis soit dateDebut et nbOccurence',
+  `dateDebut` date NOT NULL COMMENT 'Date de debut de lactivite. Soit dateDebut - dateFin et periodicite sont remplis soit dateDebut et nbOccurence',
   `dateFin` date DEFAULT NULL,
-  `heureDebut` time DEFAULT NULL COMMENT 'Si aucun horaire de début ni de fin n est specifie levenement aura lieu sur toute la journee',
-  `heureFin` time DEFAULT NULL COMMENT 'Si aucun horaire de début ni de fin n est specifie l evenement aura lieu sur toute la journee',
+  `heureDebut` time DEFAULT NULL COMMENT 'Si aucun horraire de début ni de fin n est specifie levenement aura lieu sur toute la journee',
+  `heureFin` time DEFAULT NULL COMMENT 'Si aucun horraire de début ni de fin n est specifie levenement aura lieu sur toute la journee',
   `periodicite` varchar(45) DEFAULT NULL COMMENT 'Exemple : 2 semaines',
   `nbOccurence` int(11) DEFAULT NULL,
-  `estEnPause` tinyint(1) DEFAULT '0' COMMENT 'Permet de savoir si l activite est en pause c est a dire qu en cas de periodicite on ne va pas compter les occurences / DEFAUT FALSE',
-  `estPossibleDeSinscrire` tinyint(1) DEFAULT '0' COMMENT 'Permet de savoir si on autorise les utilisateurs a s incrire pour cette activite / Par defaut FALSE',
+  `estEnPause` tinyint(1) DEFAULT '0' COMMENT 'Permet de savoir si lactivite est en pause cest a dire quen cas de periodicite on ne va pas compter les occurences / DEFAUT FALSE',
+  `estPossibleDeSinscrire` tinyint(1) DEFAULT '0' COMMENT 'Permet de savoir si on autorise les utilisateurs a sincrire pour cette activite / Defaut FALSE',
   `estPublic` tinyint(1) DEFAULT '0' COMMENT 'Permet de savoir si l activite autorise les commentaires pour tous les utilisateurs ou seulement pour les utilisateurs inscrits a cette activite. FALSE represente prive / TRUE public / Par defaut en prive',
   `idAgenda` int(11) DEFAULT NULL COMMENT 'id de l agenda auquel l activite appartient',
   PRIMARY KEY (`idActivite`),
   KEY `fk_ACTIVITE_agenda` (`idAgenda`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=5 ;
 
 --
--- Contenu de la table `activite`
+-- Déclencheurs `activite`
 --
-
-INSERT INTO `activite` (`idActivite`, `titre`, `description`, `positionGeographique`, `type`, `priorite`, `dateDebut`, `dateFin`, `heureDebut`, `heureFin`, `periodicite`, `nbOccurence`, `estEnPause`, `estPossibleDeSinscrire`, `estPublic`, `idAgenda`) VALUES
-(1, 'testact', 'aezgehrt', 'Lyon', 'typique o/', NULL, '2015-12-11', '2015-12-12', '03:00:00', '04:00:00', NULL, 5, NULL, NULL, NULL, 9);
+DROP TRIGGER IF EXISTS `archive_activite`;
+DELIMITER //
+CREATE TRIGGER `archive_activite` BEFORE DELETE ON `activite`
+ FOR EACH ROW begin
+	insert into activite_archive
+		(
+			idActiviteArchive,
+            titre,
+            description,
+            positionGeographique,
+            type,
+            priorite,
+            dateDebut,
+            dateFin,
+            heureDebut,
+            heureFin,
+            periodicite,
+            nbOccurence,
+            estEnPause,
+            estPossibleDeSinscrire,
+            estPublic,
+            idAgendaArchive) 
+		values
+		(
+			old.idActivite,
+            old.titre,
+            old.description,
+            old.positionGeographique,
+            old.type,
+            old.priorite,
+            old.dateDebut,
+            old.dateFin,
+            old.heureDebut,
+            old.heureFin,
+            old.periodicite,
+            old.nbOccurence,
+            old.estEnPause,
+            old.estPossibleDeSinscrire,
+            old.estPublic,
+            old.idAgenda
+			);
+end
+//
+DELIMITER ;
+DROP TRIGGER IF EXISTS `lessThan50`;
+DELIMITER //
+CREATE TRIGGER `lessThan50` BEFORE INSERT ON `activite`
+ FOR EACH ROW BEGIN
+	declare i integer;
+    declare c_v integer;
+    declare c cursor for 
+    select idActivite from activite
+    where new.idAgenda = idAgenda 
+    and DateDebut between new.DateDebut and new.DateDebut+ interval 7 day; 
+	
+    open c;
+    set i = 0;
+    get_activite : loop
+	fetch c into c_v;
+    set i=i+1;
+    end loop get_activite;
+    
+    if(i>50) then 
+    	CALL raise_application_error(3001, 'no update');
+    end if;
+   
+END
+//
+DELIMITER ;
 
 -- --------------------------------------------------------
 
@@ -78,7 +144,15 @@ CREATE TABLE IF NOT EXISTS `activite_archive` (
   `estPublic` tinyint(1) DEFAULT '0' COMMENT 'Permet de savoir si l activite autorise les commentaires pour tous les utilisateurs ou seulement pour les utilisateurs inscrits a cette activite. FALSE represente prive / TRUE public / Par defaut en prive',
   `idAgendaArchive` int(11) DEFAULT NULL COMMENT 'id de l agenda auquel l activite appartient',
   PRIMARY KEY (`idActiviteArchive`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
+
+--
+-- Contenu de la table `activite_archive`
+--
+
+INSERT INTO `activite_archive` (`idActiviteArchive`, `titre`, `description`, `positionGeographique`, `type`, `priorite`, `dateDebut`, `dateFin`, `heureDebut`, `heureFin`, `periodicite`, `nbOccurence`, `estEnPause`, `estPossibleDeSinscrire`, `estPublic`, `idAgendaArchive`) VALUES
+(1, 'testact', 'aezgehrt', 'Lyon', 'typique o/', NULL, '2015-12-11', '2015-12-12', '03:00:00', '04:00:00', NULL, 5, NULL, NULL, NULL, 9),
+(2, 'Projet BDD', NULL, 'Strasbourg', 'Travail', '9000', '2015-12-12', '2015-12-14', '00:00:00', '00:00:00', NULL, 1, 0, 0, 0, 1);
 
 -- --------------------------------------------------------
 
@@ -94,32 +168,36 @@ CREATE TABLE IF NOT EXISTS `agenda` (
   `estSuperposable` tinyint(1) NOT NULL COMMENT 'Permet de savoir si on peut superposer cet agenda avec un autre agenda qui est defini comme superposable',
   `idUtilisateur` int(11) DEFAULT NULL COMMENT 'Id de l utilisateur qui a cree l agenda',
   PRIMARY KEY (`idAgenda`),
-  KEY `fk_AGENDA_utilisateur` (`idUtilisateur`) 
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=19 ;
+  KEY `fk_AGENDA_utilisateur` (`idUtilisateur`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=30 ;
 
 --
--- Contenu de la table `agenda`
+-- Déclencheurs `agenda`
 --
-
-INSERT INTO `agenda` (`idAgenda`, `nom`, `priorite`, `lastEdition`, `estSuperposable`, `idUtilisateur`) VALUES
-(1, 'Mes cours', 0, '0000-00-00', 0, 1),
-(2, 'trfyvnlm;', 1, '0000-00-00', 0, 1),
-(3, 'test', 2, '0000-00-00', 0, 1),
-(4, 'test', 2, '0000-00-00', 0, 1),
-(5, 'test', 2, '0000-00-00', 0, 1),
-(6, 'test', 2, '0000-00-00', 0, 1),
-(7, 'test', 2, '0000-00-00', 0, 1),
-(8, 'test', 2, '0000-00-00', 0, 1),
-(9, 'test', 2, '0000-00-00', 0, 1),
-(10, 'lol', 4, '0000-00-00', 0, 1),
-(11, 'lol', 4, '0000-00-00', 0, 1),
-(12, 'lol', 4, '0000-00-00', 0, 1),
-(13, 'lol', 4, '0000-00-00', 0, 1),
-(14, 'lol', 4, '0000-00-00', 0, 1),
-(15, 'lol', 4, '0000-00-00', 0, 1),
-(16, 'Mes cours', 1, '0000-00-00', 0, 1),
-(17, 'Mes cours', 1, '0000-00-00', 0, 1),
-(18, 'Poney', 5, '0000-00-00', 0, 1);
+DROP TRIGGER IF EXISTS `archive_agenda`;
+DELIMITER //
+CREATE TRIGGER `archive_agenda` BEFORE DELETE ON `agenda`
+ FOR EACH ROW begin
+	insert into agenda_archive
+		(
+			idAgendaArchive,
+            nom,
+            priorite,
+            lastEdition,
+            estSuperposable,
+            idUtilisateur) 
+		values
+		(
+			old.idAgenda,
+			old.nom,
+			old.priorite,
+			old.lastEdition,
+            old.estSuperposable,
+            old.idUtilisateur
+			);
+end
+//
+DELIMITER ;
 
 -- --------------------------------------------------------
 
@@ -136,7 +214,35 @@ CREATE TABLE IF NOT EXISTS `agenda_archive` (
   `idUtilisateur` int(11) DEFAULT NULL COMMENT 'Id de l utilisateur qui a cree l agenda',
   PRIMARY KEY (`idAgendaArchive`),
   KEY `fk_AGENDA_ARCHIVE_utilisateur` (`idUtilisateur`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=25 ;
+
+--
+-- Contenu de la table `agenda_archive`
+--
+
+INSERT INTO `agenda_archive` (`idAgendaArchive`, `nom`, `priorite`, `lastEdition`, `estSuperposable`, `idUtilisateur`) VALUES
+(1, 'Mes cours', 42, '0000-00-00', 1, 1),
+(3, 'test', 2, '0000-00-00', 0, 1),
+(4, 'test', 2, '0000-00-00', 0, 1),
+(5, 'test', 2, '0000-00-00', 0, 1),
+(6, 'test', 2, '0000-00-00', 0, 1),
+(7, 'test', 2, '0000-00-00', 0, 1),
+(8, 'test', 2, '0000-00-00', 0, 1),
+(9, 'test', 2, '0000-00-00', 0, 1),
+(10, 'lol', 4, '0000-00-00', 0, 1),
+(11, 'lol', 4, '0000-00-00', 0, 1),
+(12, 'lol', 4, '0000-00-00', 0, 1),
+(13, 'lol', 4, '0000-00-00', 0, 1),
+(14, 'lol', 4, '0000-00-00', 0, 1),
+(15, 'lol', 4, '0000-00-00', 0, 1),
+(16, 'Mes cours', 1, '0000-00-00', 0, 1),
+(17, 'Mes cours', 1, '0000-00-00', 0, 1),
+(18, 'Poney', 5, '0000-00-00', 0, 1),
+(19, 'coucou', 1, '0000-00-00', 0, 2),
+(20, 'coucou', 5, '0000-00-00', 0, 2),
+(21, 'coucou', 5, '0000-00-00', 0, 2),
+(22, 'Mes cours', 1, '0000-00-00', 0, 2),
+(24, 'Mon agenda', 5, NULL, 1, NULL);
 
 -- --------------------------------------------------------
 
@@ -151,14 +257,6 @@ CREATE TABLE IF NOT EXISTS `agenda_possede_par_utilisateur` (
   KEY `fk_AGENDA_POSSEDE_PAR_UTILISATEUR_utilisateur` (`idUtilisateur`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
---
--- Contenu de la table `agenda_possede_par_utilisateur`
---
-
-INSERT INTO `agenda_possede_par_utilisateur` (`idAgenda`, `idUtilisateur`) VALUES
-(1, 1),
-(5, 1);
-
 -- --------------------------------------------------------
 
 --
@@ -169,15 +267,7 @@ CREATE TABLE IF NOT EXISTS `categorie` (
   `idCategorie` int(11) NOT NULL AUTO_INCREMENT,
   `nomCategorie` varchar(45) NOT NULL,
   PRIMARY KEY (`idCategorie`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
-
---
--- Contenu de la table `categorie`
---
-
-INSERT INTO `categorie` (`idCategorie`, `nomCategorie`) VALUES
-(1, 'Sport'),
-(2, 'Cours');
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=7 ;
 
 -- --------------------------------------------------------
 
@@ -191,17 +281,6 @@ CREATE TABLE IF NOT EXISTS `categorie_agenda` (
   PRIMARY KEY (`idAgenda`,`idCategorie`),
   KEY `fk_CATEGORIE_AGENDA_categorie` (`idCategorie`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
--- Contenu de la table `categorie_agenda`
---
-
-INSERT INTO `categorie_agenda` (`idAgenda`, `idCategorie`) VALUES
-(1, 1),
-(5, 1),
-(12, 1),
-(2, 2),
-(11, 2);
 
 -- --------------------------------------------------------
 
@@ -221,7 +300,7 @@ CREATE TABLE IF NOT EXISTS `commentaire` (
   KEY `fk_COMMENTAIRE_commentaireParent` (`idCommentaireParent`),
   KEY `fk_COMMENTAIRE_utilisateur` (`idUtilisateur`),
   KEY `fk_COMMENTAIRE_activite` (`idActivite`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=7 ;
 
 -- --------------------------------------------------------
 
@@ -305,14 +384,15 @@ CREATE TABLE IF NOT EXISTS `utilisateur` (
   `prenom` varchar(45) NOT NULL,
   `adresse` varchar(45) NOT NULL,
   PRIMARY KEY (`idUtilisateur`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=8 ;
 
 --
 -- Contenu de la table `utilisateur`
 --
 
 INSERT INTO `utilisateur` (`idUtilisateur`, `login`, `pwd`, `nom`, `prenom`, `adresse`) VALUES
-(1, 'LaTueuseDeDragon', 'a0d3e0799432fe1898df11e5f9dbd086635306f5', 'test', 'test', 'test');
+(1, 'LaTueuseDeDragon', 'a0d3e0799432fe1898df11e5f9dbd086635306f5', 'salut', 'test', 'test'),
+(2, 'Elise', '9cf95dacd226dcf43da376cdb6cbba7035218921', 'Elise', 'Moebs', '6 rue de Rome 67000 Strasbourg');
 
 --
 -- Contraintes pour les tables exportées
@@ -322,13 +402,13 @@ INSERT INTO `utilisateur` (`idUtilisateur`, `login`, `pwd`, `nom`, `prenom`, `ad
 -- Contraintes pour la table `activite`
 --
 ALTER TABLE `activite`
-  ADD CONSTRAINT `fk_ACTIVITE_agenda` FOREIGN KEY (`idAgenda`) REFERENCES `agenda` (`idAgenda`);
+  ADD CONSTRAINT `fk_ACTIVITE_agenda` FOREIGN KEY (`idAgenda`) REFERENCES `agenda` (`idAgenda`) ON DELETE CASCADE;
 
 --
 -- Contraintes pour la table `agenda`
 --
 ALTER TABLE `agenda`
-  ADD CONSTRAINT `fk_AGENDA_utilisateur` FOREIGN KEY (`idUtilisateur`) REFERENCES `utilisateur` (`idUtilisateur`);
+  ADD CONSTRAINT `fk_AGENDA_utilisateur` FOREIGN KEY (`idUtilisateur`) REFERENCES `utilisateur` (`idUtilisateur`) ON DELETE CASCADE;
 
 --
 -- Contraintes pour la table `agenda_archive`
@@ -340,59 +420,59 @@ ALTER TABLE `agenda_archive`
 -- Contraintes pour la table `agenda_possede_par_utilisateur`
 --
 ALTER TABLE `agenda_possede_par_utilisateur`
-  ADD CONSTRAINT `fk_AGENDA_POSSEDE_PAR_UTILISATEUR_agenda` FOREIGN KEY (`idAgenda`) REFERENCES `agenda` (`idAgenda`),
-  ADD CONSTRAINT `fk_AGENDA_POSSEDE_PAR_UTILISATEUR_utilisateur` FOREIGN KEY (`idUtilisateur`) REFERENCES `utilisateur` (`idUtilisateur`);
+  ADD CONSTRAINT `fk_AGENDA_POSSEDE_PAR_UTILISATEUR_utilisateur` FOREIGN KEY (`idUtilisateur`) REFERENCES `utilisateur` (`idUtilisateur`) ON DELETE CASCADE,
+  ADD CONSTRAINT `fk_AGENDA_POSSEDE_PAR_UTILISATEUR_agenda` FOREIGN KEY (`idAgenda`) REFERENCES `agenda` (`idAgenda`) ON DELETE CASCADE;
 
 --
 -- Contraintes pour la table `categorie_agenda`
 --
 ALTER TABLE `categorie_agenda`
-  ADD CONSTRAINT `fk_CATEGORIE_AGENDA_agenda` FOREIGN KEY (`idAgenda`) REFERENCES `agenda` (`idAgenda`),
-  ADD CONSTRAINT `fk_CATEGORIE_AGENDA_categorie` FOREIGN KEY (`idCategorie`) REFERENCES `categorie` (`idCategorie`);
+  ADD CONSTRAINT `fk_CATEGORIE_AGENDA_categorie` FOREIGN KEY (`idCategorie`) REFERENCES `categorie` (`idCategorie`) ON DELETE CASCADE,
+  ADD CONSTRAINT `fk_CATEGORIE_AGENDA_agenda` FOREIGN KEY (`idAgenda`) REFERENCES `agenda` (`idAgenda`) ON DELETE CASCADE;
 
 --
 -- Contraintes pour la table `commentaire`
 --
 ALTER TABLE `commentaire`
-  ADD CONSTRAINT `fk_COMMENTAIRE_activite` FOREIGN KEY (`idActivite`) REFERENCES `activite` (`idActivite`),
-  ADD CONSTRAINT `fk_COMMENTAIRE_commentaireParent` FOREIGN KEY (`idCommentaireParent`) REFERENCES `commentaire` (`idCommentaire`),
-  ADD CONSTRAINT `fk_COMMENTAIRE_utilisateur` FOREIGN KEY (`idUtilisateur`) REFERENCES `utilisateur` (`idUtilisateur`);
+  ADD CONSTRAINT `fk_COMMENTAIRE_activite` FOREIGN KEY (`idActivite`) REFERENCES `activite` (`idActivite`) ON DELETE CASCADE,
+  ADD CONSTRAINT `fk_COMMENTAIRE_commentaireParent` FOREIGN KEY (`idCommentaireParent`) REFERENCES `commentaire` (`idCommentaire`) ON DELETE CASCADE,
+  ADD CONSTRAINT `fk_COMMENTAIRE_utilisateur` FOREIGN KEY (`idUtilisateur`) REFERENCES `utilisateur` (`idUtilisateur`) ON DELETE CASCADE;
 
 --
 -- Contraintes pour la table `inscription`
 --
 ALTER TABLE `inscription`
-  ADD CONSTRAINT `fk_INSCRIPTION_activite` FOREIGN KEY (`idActivite`) REFERENCES `activite` (`idActivite`),
-  ADD CONSTRAINT `fk_INSCRIPTION_utilisateur` FOREIGN KEY (`idUtilisateur`) REFERENCES `utilisateur` (`idUtilisateur`);
+  ADD CONSTRAINT `fk_INSCRIPTION_activite` FOREIGN KEY (`idActivite`) REFERENCES `activite` (`idActivite`) ON DELETE CASCADE,
+  ADD CONSTRAINT `fk_INSCRIPTION_utilisateur` FOREIGN KEY (`idUtilisateur`) REFERENCES `utilisateur` (`idUtilisateur`) ON DELETE CASCADE;
 
 --
 -- Contraintes pour la table `invitation_activite`
 --
 ALTER TABLE `invitation_activite`
-  ADD CONSTRAINT `fk_INVITATION_ACTIVITE_activite` FOREIGN KEY (`idActivite`) REFERENCES `activite` (`idActivite`),
-  ADD CONSTRAINT `fk_INVITATION_ACTIVITE_hote` FOREIGN KEY (`idUtilisateurHote`) REFERENCES `utilisateur` (`idUtilisateur`),
-  ADD CONSTRAINT `fk_INVITATION_ACTIVITE_invite` FOREIGN KEY (`idUtilisateurInvite`) REFERENCES `utilisateur` (`idUtilisateur`);
+  ADD CONSTRAINT `fk_INVITATION_ACTIVITE_invite` FOREIGN KEY (`idUtilisateurInvite`) REFERENCES `utilisateur` (`idUtilisateur`) ON DELETE CASCADE,
+  ADD CONSTRAINT `fk_INVITATION_ACTIVITE_activite` FOREIGN KEY (`idActivite`) REFERENCES `activite` (`idActivite`) ON DELETE CASCADE,
+  ADD CONSTRAINT `fk_INVITATION_ACTIVITE_hote` FOREIGN KEY (`idUtilisateurHote`) REFERENCES `utilisateur` (`idUtilisateur`) ON DELETE CASCADE;
 
 --
 -- Contraintes pour la table `liker`
 --
 ALTER TABLE `liker`
-  ADD CONSTRAINT `fk_LIKER_commentaire` FOREIGN KEY (`idCommentaire`) REFERENCES `commentaire` (`idCommentaire`),
-  ADD CONSTRAINT `fk_LIKER_utilisateur` FOREIGN KEY (`idUtilisateur`) REFERENCES `utilisateur` (`idUtilisateur`);
+  ADD CONSTRAINT `fk_LIKER_commentaire` FOREIGN KEY (`idCommentaire`) REFERENCES `commentaire` (`idCommentaire`) ON DELETE CASCADE,
+  ADD CONSTRAINT `fk_LIKER_utilisateur` FOREIGN KEY (`idUtilisateur`) REFERENCES `utilisateur` (`idUtilisateur`) ON DELETE CASCADE;
 
 --
 -- Contraintes pour la table `notation`
 --
 ALTER TABLE `notation`
-  ADD CONSTRAINT `fk_NOTATION_activite` FOREIGN KEY (`idActivite`) REFERENCES `activite` (`idActivite`),
-  ADD CONSTRAINT `fk_NOTATION_utilisateur` FOREIGN KEY (`idUtilisateur`) REFERENCES `utilisateur` (`idUtilisateur`);
+  ADD CONSTRAINT `fk_NOTATION_activite` FOREIGN KEY (`idActivite`) REFERENCES `activite` (`idActivite`) ON DELETE CASCADE,
+  ADD CONSTRAINT `fk_NOTATION_utilisateur` FOREIGN KEY (`idUtilisateur`) REFERENCES `utilisateur` (`idUtilisateur`) ON DELETE CASCADE;
 
 --
 -- Contraintes pour la table `sabonner`
 --
 ALTER TABLE `sabonner`
-  ADD CONSTRAINT `fk_SABONNER_agenda` FOREIGN KEY (`idAgenda`) REFERENCES `agenda` (`idAgenda`),
-  ADD CONSTRAINT `fk_SABONNER_utilisateur` FOREIGN KEY (`idUtilisateur`) REFERENCES `utilisateur` (`idUtilisateur`);
+  ADD CONSTRAINT `fk_SABONNER_agenda` FOREIGN KEY (`idAgenda`) REFERENCES `agenda` (`idAgenda`) ON DELETE CASCADE,
+  ADD CONSTRAINT `fk_SABONNER_utilisateur` FOREIGN KEY (`idUtilisateur`) REFERENCES `utilisateur` (`idUtilisateur`) ON DELETE CASCADE;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
