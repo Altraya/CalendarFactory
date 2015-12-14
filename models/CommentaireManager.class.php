@@ -22,7 +22,6 @@ class CommentaireManager{
 
 	public function add(Commentaire $commentaire){
 
-		$idCommentaire = $commentaire->getIdCommentaire();
 		$comment = $commentaire->getCommentaire();
 		$dateCommentaire = $commentaire->getDateCommentaire();
 		$heureCommentaire = $commentaire->getHeureCommentaire();
@@ -30,10 +29,9 @@ class CommentaireManager{
 		$idUtilisateur = $commentaire->getIdUtilisateur();
 		$idActivite = $commentaire->getIdActivite();
 
-		$sql = "INSERT INTO commentaire (idCommentaire, commentaire, dateCommentaire, heureCommentaire, idCommentaireParent, idUtilisateur, idActivite)
-			VALUES (:idCommentaire, :commentaire, :dateCommentaire, :heureCommentaire, :idCommentaireParent, :idUtilisateur, :idActivite)";
-		$req = $this->_db->prepare($sql);           
-		$req->bindParam(':idCommentaire', $idCommentaire, PDO::PARAM_STR);
+		$sql = "INSERT INTO commentaire (commentaire, dateCommentaire, heureCommentaire, idCommentaireParent, idUtilisateur, idActivite)
+			VALUES (:commentaire, :dateCommentaire, :heureCommentaire, :idCommentaireParent, :idUtilisateur, :idActivite)";
+		$req = $this->_db->prepare($sql);
 		$req->bindParam(':commentaire', $comment, PDO::PARAM_STR);
 		$req->bindParam(':dateCommentaire', $dateCommentaire, PDO::PARAM_STR);
 		$req->bindParam(':heureCommentaire', $heureCommentaire, PDO::PARAM_STR);

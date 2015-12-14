@@ -198,5 +198,15 @@ class ErrorOrSuccessView{
         echo($html);
     }
 
+    public function successCreateComment(){
+        $html="";
+        $html.='
+            <div class="alert alert-success center">
+                <strong>Félicitations :</strong> Votre commentaire a bien été crée ! :)
+            </div>
+        ';
+        echo($html);
+    }
+
 }
 ?>

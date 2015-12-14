@@ -198,6 +198,8 @@ class GeneralView{
     }
 
     public function formComment(){
+        //sorry :( - we have no time
+
         $html="";
 
         $html.='
@@ -205,12 +207,12 @@ class GeneralView{
             <form role="commentForm" action="comment.php" method="post">
                 <div class="form-group">
                     <label for="commentUser">Commentaire : </label>
-                    <textarea class="form-control" name="comment" id="commentUser" rows="3"></textarea>
+                    <textarea class="form-control" name="commentUser" id="commentUser" rows="3"></textarea>
                 </div>
-           
+                
 
                 <div class="center"> 
-                    <button type="submit" name="commenter" class="btn btn-default">Commenter</button>
+                    <button type="submit" id="commenter" name="commenter" class="btn btn-default">Commenter</button>
                 </div>
             </form>
         ';

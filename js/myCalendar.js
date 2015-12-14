@@ -110,7 +110,7 @@ $("body").on("click", "#buttonInscriptionAct", function() {
 $("body").on("click", ".listeEtoile", function(){
 	note = document.getElementById("score-notation").value;
 	console.log(note);
-	test = $('#score-notation').innerHTML;
+	test = $('.notat').textContent;
 	console.log("test "+test);
 	buttonUser = document.getElementById("buttonInscriptionAct");
 	idAct = $(buttonUser).attr('data-idAct');
