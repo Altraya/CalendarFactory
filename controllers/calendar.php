@@ -14,7 +14,8 @@
 
 	if(isset($_SESSION['login'])){
 		$tabInfoAgenda = $agendaManager->getAllAgendaIdOfUser($_SESSION['idUser']);
-		$viewG->body($tabInfoAgenda);
+		$tabAgendaAndFollow = $agendaManager->getAllAgenda($_SESSION['idUser']);
+		$viewG->body($tabInfoAgenda, $tabAgendaAndFollow);
 	}else{
 		$errorView->errorNotConnected();
 	}

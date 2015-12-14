@@ -44,3 +44,65 @@ function isValideDate(date){
 	];
 
 }
+
+$("body").on("click", ".activite", function() { 
+	console.log("That work !");
+	
+	//save this id here or we have an undefined context
+	var idAct = $(this).attr('data-id');
+	var idUtilisateur = $(this).attr('data-id-utilisateur');
+
+	console.log("idUtilisateur = "+idUtilisateur)
+
+	$('#myModalLabel').html("Informations de l\'activité");
+    $('#myModalBody').html(function(){
+
+        $.ajax({
+            url: "script/getInfosActivity.php?idActivity="+idAct+"&idUtilisateur="+idUtilisateur,
+            type: 'GET',
+            success: function(msg){
+                $('#myModalBody').html(msg);
+            }
+        })
+        
+    });
+
+    $('#myModalBody').html(function(){
+
+        $.ajax({
+            url: "script/getActivityComment.php?idActivity="+idAct,
+            type: 'GET',
+            success: function(msg){
+                $('#showComment').html(msg);
+            }
+        })
+        
+    });
+
+        
+
+});
+
+$("body").on("click", ".checkBoxShowAgenda", function() {
+	if($(".checkBoxShowAgenda" ).prop( "checked" )){
+		console.log("Hey click on agenda : "+$(this).attr('data-id'));
+		$.ajax({
+	        url: "script/getAgendaComments.php?idAgenda="+$(this).attr('data-id'), 
+	        type: 'GET',
+	        success: function(msg){
+	            $('#showComment').html(msg);
+	        }
+	    })
+	}
+	
+});
+
+$("body").on("click", "#buttonInscriptionAct", function() {
+	$.ajax({
+        url: "script/inscriptionAct.php?idActivity="+$(this).attr('data-idAct')+"&idUtilisateur="+$(this).attr('data-idUser'), 
+        type: 'GET',
+        success: function(msg){
+            $('#showComment').html(msg);
+        }
+    })
+});

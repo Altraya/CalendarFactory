@@ -92,39 +92,81 @@ class GeneralView{
         echo($html);
     }
 
+    public function agendaList($tabAgendaUserAndFollow){
+        $html="";
+        $html.='
+            Agendas actuellement affichés : <br/>
 
-    public function body($tabIdAgenda){
+            <table class="table table-striped">
+                <thead>
+
+                </thead>
+                    <th>id</th>
+                    <th>Nom</th>
+                    <th>Priorite</th>
+                    <th>Dernière édition</th>
+                    <th>Affichage</th>
+                <tbody>
+        ';
+            foreach ($tabAgendaUserAndFollow as $k => $agenda) {
+
+                $html.= '<td>'.$agenda->getId().'</td>';
+                $html.= '<td>'.$agenda->getNom().'</td>';
+                $html.='<td>'.$agenda->getPriorite().'</td>';
+                if($agenda->getLastEdition() === "0000-00-00"){
+                    $html.='<td> Jamais </td>';
+                }else{
+                    $html.='<td>'.$agenda->getLastEdition().'</td>
+                    ';
+                }
+
+                $html.='
+                    <td> 
+                        <div class="checkbox noMargin">
+                            <label><input class=\'checkBoxShowAgenda\' data-id='.$agenda->getId().' name="show'.$agenda->getId().'" type="checkbox"></label>
+                        </div>
+                    </td>
+                </tr>
+                ';
+            }
+
+        $html.='
+                </tbody>
+            </table>
+        ';
+        return $html;
+    }
+
+    public function body($tabIdAgenda, $tabAgendaUserAndFollow){
 
         $html = "";
         $html.='
+        <script src="js/myCalendar.js"></script>
         <div class="row">
-            <div class="col-md-3">
+            <div class="col-md-4">
                 <div class="panel panel-default notRound noMargin">
                     <div class="panel-body">
                         <div class="row">
-                            Calendar?
+                            <div class="col-md-12 center">
+                    ';
+                $html.= $this->agendaList($tabAgendaUserAndFollow);
+                $html.='
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div class="col-md-9">
+            <div class="col-md-8">
                 <div class="row">
                     <div class="panel panel-default notRound noMargin">
                         <div class="panel-body">
                             <div class="row">
-                                <div class="col-md-6">
+                                <div class="col-md-12">
                                     <h1 class="smallerTitle noMargin">Options</h1>
-                                    <p>Ici recherche et tri pour les agendas</p>
-                                </div>
-
-                                <div class="col-md-6">
-                                    <div class="floatRight">
-                                        Hide Option
-                                        <span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span>
-                                    </div>
                                 </div>
                             </div>
+                            
                         </div>
                     </div>
                 </div>
@@ -136,10 +178,180 @@ class GeneralView{
         $html.= $this->calendar($tabIdAgenda);
         $html.='
             </div>
-            
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <h1>Commentaires pour l\'agenda :</h1>
+                <hr/>
+                <div id="showComment">
+                </div>
+
+            </div>
         </div>
           
         ';
+        echo($html);
+    }
+
+    public function formComment(){
+        $html="";
+
+        $html.='
+
+            <form role="commentForm" action="comment.php" method="post">
+                <div class="form-group">
+                    <label for="commentUser">Commentaire : </label>
+                    <textarea class="form-control" name="comment" id="commentUser" rows="3"></textarea>
+                </div>
+           
+
+                <div class="center"> 
+                    <button type="submit" name="commenter" class="btn btn-default">Commenter</button>
+                </div>
+            </form>
+        ';
+
+        return $html;
+    }
+
+    public function showActivity(Activity $act, $idUser){
+        $html="";
+
+        $html.='
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="alert alert-info center" role="alert"> 
+                        <div class="row">
+                            <div class="col-md-6">
+                                Priorité : '.$act->getPriority().'
+                            </div>
+                            <div class="col-md-6">
+                            ';
+
+                                if($act->getIsPublic()){
+                                    $html.='Activité publique';
+                                }else{
+                                    $html.='Activité privée';
+                                }
+
+                $html.='
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-8">
+                    <h1>'.$act->getIdActivity().' - '.$act->getTitle().' à '.$act->getGeoPos().'</h1>
+                </div>
+                
+                <div class="col-md-4">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="notationDiv">
+                                <p>Notation : </p>
+                                <script src="js/ListeEtoile.js"></script>
+                                <div id="notation"> 
+                                    <script type="text/javascript"> 
+                                        CreateListeEtoile(\'notation\',5); 
+                                    </script> 
+                                </div> 
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12 center">
+                        ';
+                         //if the event is private the button is disabled
+                        if($act->getIsPossibleToSubscribe()){
+                            $html.='<button type="button" id="buttonInscriptionAct" data-idAct='.$act->getIdActivity().' data-idUser='.$idUser.' class="btn btn-default">S\'inscrire</button>';
+                        }else{
+                            $html.='<button type="button" class="btn btn-default" disabled="disabled">S\'inscrire</button>';
+                        }
+                    $html.='
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    Du : '.$act->getStartDate().' au '.$act->getEndDate().' <br/>
+                    De : '.$act->getStartHour().' à '.$act->getEndHour().' <br/>
+                    <br/>
+                    <h3>Description : </h3>
+                    '.$act->getDescription().'
+
+
+                </div>
+
+            </div>
+            
+        ';
+        echo($html);
+    }
+
+    public function showComments($dataParent, $dataSon, $userManager){
+        //don't know how to do that in other way ... so...!
+
+        $html="";
+
+        $html.='
+
+            <div class="alert alert-info center" role="alert"> 
+                Pour commenter l\'agenda, commentez ces activités !
+            </div>
+        ';
+
+        if ($dataParent) {
+            foreach ($dataParent as $key => $comParent) {
+                $html.='
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                    
+                            <div class="titleComParent">
+                                <h2>
+                                Commentaire de 
+                                ';
+                                $user = $userManager->getUser($comParent->getIdUtilisateur());
+                                $html.=$user->getNom();
+                                $html.=' le '.$comParent->getDateCommentaire().' à '.$comParent->getHeureCommentaire().'
+                                </h2>
+                            </div>
+                
+                            ';
+                            $html.=$comParent->getCommentaire();
+                $html.='
+                    </div>
+
+                    <div class="panel-footer">
+                        Réponses :
+                    ';
+
+                foreach ($dataSon as $key => $dataS) {
+                    foreach ($dataS as $key2 => $comSon) {
+                        $html.='
+                            <div class="titleComFils">
+                                <h3>
+                                    Commentaire de 
+                                    ';
+                                    $user = $userManager->getUser($comSon->getIdUtilisateur());
+                                    $html.=$user->getNom();
+                                    $html.=' le '.$comSon->getDateCommentaire().' à '.$comSon->getHeureCommentaire().'
+                                </h3>
+                            </div>
+                        ';
+                         $html.=$comSon->getCommentaire();
+                    }
+                   
+                }
+                $html.='
+                        <hr/>
+                    </div>
+                </div>
+                    
+                ';
+            }
+        }
         echo($html);
     }
 
@@ -190,7 +402,7 @@ class GeneralView{
         $html.='
 
         <script src="js/metro.js"></script>
-        <script src="js/myCalendar.js"></script>
+        
             <div class="darcula" data-role="calendar" data-week-start="1" data-locale="fr" data-day-click="day_click"></div>
             ';
         $html.= $this->modal();
@@ -227,8 +439,13 @@ class GeneralView{
                         console.log("hey Short: "+short+"\nFull: " + full);
                     }
                 </script>
+
             ';
         }
+
+        $html.='
+            <script src="js/myCalendar.js"></script>
+        ';
         return $html;
     }
 
@@ -272,7 +489,7 @@ class GeneralView{
                                             $keyColor = $keyTab + 1;
                                             $lastColor = $couple[$keyColor];
                                         }
-                                            $html.='<td style=background-color:'.$lastColor.'>'.$act->getIdActivity() .' - '.$act->getTitle().' - '.$act->getDescription().'</td>';
+                                            $html.='<td class="activite" data-id=\''.$act->getIdActivity().'\' style=background-color:'.$lastColor.'>'.$act->getIdActivity() .' - '.$act->getTitle().' - '.$act->getDescription().'</td>';
                                             $lastIdActivite = $act->getIdActivity();
                                     }else{
                                         $html.='<td></td>';
@@ -331,7 +548,6 @@ class GeneralView{
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary">Save changes</button>
                     </div>
                 </div>
             </div>
@@ -680,6 +896,7 @@ class GeneralView{
                                     <option>Quotidien</option>
                                     <option>Hebdomadaire</option>
                                     <option>Trimestrielle</option>
+                                    <option>Annuel</option>
                                 </select>
                             </div>
                             <div class="col-md-6">
