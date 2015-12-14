@@ -242,23 +242,51 @@ class GeneralView{
         if ($dataParent) {
             foreach ($dataParent as $key => $comParent) {
                 $html.='
-                    <div class="parentCom">
-                        <div class="well well-lg">
+                <div class="panel panel-info">
+                    <div class="panel-body">
+                    
                             <div class="titleComParent">
                                 <h2>
                                 Commentaire de 
-                ';
+                                ';
                                 $user = $userManager->getUser($comParent->getIdUtilisateur());
                                 $html.=$user->getNom();
                                 $html.=' le '.$comParent->getDateCommentaire().' à '.$comParent->getHeureCommentaire().'
                                 </h2>
                             </div>
-                        
-                ';
+                
+                            ';
                             $html.=$comParent->getCommentaire();
                 $html.='
-                        </div>
                     </div>
+
+                    <div class="panel-footer">
+                        Réponses :
+                    ';
+
+                foreach ($dataSon as $key => $dataS) {
+                    foreach ($dataS as $key2 => $comSon) {
+                        $html.='
+                            <div class="titleComFils">
+                                <h3>
+                                    Commentaire de 
+                                    ';
+                                    $user = $userManager->getUser($comSon->getIdUtilisateur());
+                                    $html.=$user->getNom();
+                                    $html.=' le '.$comSon->getDateCommentaire().' à '.$comSon->getHeureCommentaire().'
+                                </h3>
+                            </div>
+                        ';
+                         $html.=$comSon->getCommentaire();
+                    }
+                   
+                }
+                $html.='
+                        <hr/>
+                    </div>
+                </div>
+
+                    
                 ';
             }
         }
