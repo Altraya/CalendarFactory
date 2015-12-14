@@ -199,6 +199,11 @@ end
 //
 DELIMITER ;
 
+INSERT INTO `calendarfactory`.`agenda` (`idAgenda`, `nom`, `priorite`, `lastEdition`, `estSuperposable`, `idUtilisateur`) VALUES (NULL, 'Mes cours', '1', NULL, '1', '1');
+INSERT INTO `calendarfactory`.`agenda` (`idAgenda`, `nom`, `priorite`, `lastEdition`, `estSuperposable`, `idUtilisateur`) VALUES (NULL, 'Elise agenda', '1', NULL, '1', '2');
+INSERT INTO `calendarfactory`.`agenda` (`idAgenda`, `nom`, `priorite`, `lastEdition`, `estSuperposable`, `idUtilisateur`) VALUES (NULL, 'Loisirs', '1', NULL, '1', '1');
+
+
 -- --------------------------------------------------------
 
 --
